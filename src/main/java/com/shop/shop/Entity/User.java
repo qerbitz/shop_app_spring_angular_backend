@@ -24,7 +24,7 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    /*@Column(name = "name")
+   /* @Column(name = "name")
     private String name;
 
     @Column(name = "surname")
@@ -32,13 +32,13 @@ public class User {
 
     @Column(name = "phone")
     private String phone;
-
-    @Column(name = "e-mail")
+*/
+    @Column(name = "e_mail")
     private String e_mail;
 
-    @OneToOne
-    @JoinColumn(name = "adress", nullable = false)
-    private Adress id_adress;*/
+   // @OneToOne
+    //@JoinColumn(name = "adress", nullable = false)
+    //private Adress id_adress;
 
 
     public User() {
@@ -68,5 +68,11 @@ public class User {
         this.password = password;
     }
 
+    public String getE_mail() {
+        return e_mail;
+    }
 
+    public void setE_mail(String e_mail) {
+        this.e_mail = e_mail;
+    }
 }

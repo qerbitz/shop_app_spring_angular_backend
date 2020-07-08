@@ -1,4 +1,4 @@
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <style>
 body{
     margin: 0;
@@ -10,10 +10,10 @@ body{
 }
     
 .error
-    {   font-size: 12px;
+    {   font-size: 14px;
         color:red;
-        margin-top: 10px;
-        margin-bottom: 10px;
+        margin-top: 5px;
+        margin-bottom: 5px;
     }
     
 .loginbox{
@@ -43,6 +43,11 @@ h1{
     padding: 0 0 20px;
     text-align: center;
     font-size: 22px;
+}
+
+h3{
+    background-color: red;
+    color: red
 }
 
 .loginbox p{
@@ -101,18 +106,31 @@ h1{
     <div class="loginbox">
         <img th:src="@{images/avatar.png}" class="avatar">
         <h1>Zarejestruj się</h1>
-        <form method="post">
+        <form th:action="@{/rejestracja}" th:object="${user}" method="post" modelAttribute="user">
+            <div th:if="${#fields.hasErrors('username')}" class="error">
+                <p class="h3" style="text-align: center;margin-top: 0;" th:errors="*{username}"/>
+            </div>
             <p>Login</p>
-            <input type="text" name="login" placeholder="Nazwa użytkownika">
-            
+
+            <input id="username" type="text" th:field="*{username}" placeholder="Nazwa użytkownika">
+
+            <div th:if="${#fields.hasErrors('password')}" class="error">
+                <p class="h3" style="text-align: center;margin-top: 0;" th:errors="*{password}"/>
+            </div>
+
             <p>Hasło</p>
-            <input type="password" name="haslo1" placeholder="Hasło">
-             
+            <input id="password" type="password" th:field="*{password}" placeholder="Hasło">
+
+
             <p>Powtórz hasło</p>
-            <input type="password" name="haslo2" placeholder="Powtórz hasło">
-            
+            <input id="confirm_password" type="password" placeholder="Hasło">
+
+            <div th:if="${#fields.hasErrors('e_mail')}" class="error">
+                <p class="h3" style="text-align: center;margin-top: 0;" th:errors="*{e_mail}"/>
+            </div>
+
             <p>E-mail</p>
-            <input type="text" name="email" placeholder="Adres e-mail">
+            <input id="e_mail" type="text" th:field="*{e_mail}" placeholder="Adres e-mail">
             
             <input type="submit" name="" value="Zarejestruj">
             
@@ -124,4 +142,21 @@ h1{
 
 </body>
 </head>
+
+<script>
+    var password = document.getElementById("password")
+        , confirm_password = document.getElementById("confirm_password");
+
+    function validatePassword(){
+        if(password.value != confirm_password.value) {
+            confirm_password.setCustomValidity("Hasła nie są identyczne");
+        } else {
+            confirm_password.setCustomValidity('');
+        }
+    }
+
+    password.onchange = validatePassword;
+    confirm_password.onkeyup = validatePassword;
+
+</script>
 </html>

@@ -6,7 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Set;
 
-@Entity
+/*@Entity
 @Table(name="product_category")
 // @Data -- known bug
 @Getter
@@ -24,4 +24,4 @@ public class ProductCategory {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
     private Set<Product> products;
 
-}
+}*/

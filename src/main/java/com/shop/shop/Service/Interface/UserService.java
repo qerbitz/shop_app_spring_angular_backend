@@ -4,7 +4,7 @@ import com.shop.shop.Entity.User;
 
 public interface UserService {
 
-    boolean saveUser(User user, String username, String password);
+    void saveUser(User user);
 
     boolean checkUniqueness(String username);
 }
