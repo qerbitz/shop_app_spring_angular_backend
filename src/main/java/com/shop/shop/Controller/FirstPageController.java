@@ -15,8 +15,9 @@ public class FirstPageController {
     @Autowired
     ProductService productService;
 
-    @GetMapping("/login")
-    public String sayHello(Model theModel){
-        return "login";
-    }
+    //@GetMapping("/login")
+    //public String Login(Model theModel){
+    //    return "login";
+    //}
+
 }

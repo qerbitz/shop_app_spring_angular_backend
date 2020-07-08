@@ -1,5 +1,4 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
-
 <style>
 body{
     margin: 0;
@@ -9,10 +8,17 @@ body{
     background-position: center;
     font-family: sans-serif;
 }
-
+    
+.error
+    {   font-size: 12px;
+        color:red;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
 .loginbox{
     width: 320px;
-    height: 420px;
+    height: 620px;
     background: #000;
     color: #fff;
     top: 50%;
@@ -47,7 +53,7 @@ h1{
 
 .loginbox input{
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .loginbox input[type="text"], input[type="password"]
@@ -93,18 +99,24 @@ h1{
     
 <body>
     <div class="loginbox">
-    <img th:src="@{images/avatar.png}" class="avatar">
-        <h1>Zaloguj się</h1>
-        <form th:action="@{/login}" th:object="${user}" method="post" modelAttribute="user">
-        <p th:if="${invalidCredidentials}" class="error">Login lub hasło jest niepoporawne</p>
-            <input type="text" name="username" placeholder="Login" onfocus="this.placeholder=''" onblur="this.placeholder='Login'">
+        <img th:src="@{images/avatar.png}" class="avatar">
+        <h1>Zarejestruj się</h1>
+        <form method="post">
+            <p>Login</p>
+            <input type="text" name="login" placeholder="Nazwa użytkownika">
             
-            <input type="password" name="password" placeholder="Hasło" onfocus="this.placeholder=''" onblur="this.placeholder='Hasło'">
+            <p>Hasło</p>
+            <input type="password" name="haslo1" placeholder="Hasło">
+             
+            <p>Powtórz hasło</p>
+            <input type="password" name="haslo2" placeholder="Powtórz hasło">
             
-            <input type="submit" value="Zaloguj">
+            <p>E-mail</p>
+            <input type="text" name="email" placeholder="Adres e-mail">
             
+            <input type="submit" name="" value="Zarejestruj">
             
-            <a href="/rejestracja">Zarejestruj się</a><br>
+            <a href="/login">Masz już konto? Zaloguj się!</a><br>
             <a href="index.php">Strona główna</a><br>
         </form>
         
