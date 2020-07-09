@@ -11,7 +11,12 @@ public interface ProductService {
 
     List<Product> getListOfProducts();
 
+    List<Product> getListOfProductsByName(String name);
+
+    List<Product> getListOfProductsByCategory(int category);
+
     void updateQuantity(int productId, Integer newQuantity);
 
-    Optional<Product> getSingleProduct(int idOfProduct);
+    Optional<Product> getSingleProduct(int id_Product);
+
 }

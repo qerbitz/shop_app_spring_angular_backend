@@ -2,6 +2,7 @@ package com.shop.shop.Entity;
 
 import lombok.Data;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Entity
@@ -10,13 +11,8 @@ import java.math.BigDecimal;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_product")
     private int id_product;
-
-    //@ManyToOne
-    //@JoinColumn(name = "category_id", nullable = false)
-    //private ProductCategory category;
 
     @Column(name = "name")
     private String name;
@@ -26,6 +22,10 @@ public class Product {
 
     @Column(name = "price")
     private Double price;
+
+    @ManyToOne
+    @JoinColumn(name = "id_category")
+    private Category id_category;
 
     /*@Column(name = "image_url")
     private String imageUrl;
@@ -37,6 +37,14 @@ public class Product {
     private int quantity;*/
 
     public Product() {
+    }
+
+    public Category getId_category() {
+        return id_category;
+    }
+
+    public void setId_category(Category id_category) {
+        this.id_category = id_category;
     }
 
     public int getId_product() {
