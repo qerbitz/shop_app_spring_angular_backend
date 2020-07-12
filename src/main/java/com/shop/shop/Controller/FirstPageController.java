@@ -53,9 +53,10 @@ public class FirstPageController {
 
         List<Product> cart_shop = new ArrayList<>();
         if (listToAdd != null) {
-            List<Product>listOfDishes = productService.getDishesByIds(listToAdd);
-            productService.addOrder(listOfDishes);
+            //List<Product>listOfDishes = productService.getDishesByIds(listToAdd);
+           // productService.addOrder(listOfDishes);
         }
+        return "products";
     }
 
 }

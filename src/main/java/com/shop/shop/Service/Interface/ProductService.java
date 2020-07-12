@@ -15,6 +15,14 @@ public interface ProductService {
 
     List<Product> getListOfProductsByCategory(int category);
 
+    List<Product> getListOfProductsOrderByNameAsc();
+
+    List<Product> getListOfProductsOrderByNameDesc();
+
+    List<Product> getListOfProductOrderByPriceAsc();
+
+    List<Product> getListOfProductOrderByPriceDesc();
+
     void updateQuantity(int productId, Integer newQuantity);
 
     Optional<Product> getSingleProduct(int id_Product);

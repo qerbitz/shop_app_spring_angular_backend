@@ -20,4 +20,16 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             nativeQuery = true)
     List<Product> findById_category(@Param("category")int category);
 
+    //Wyszukiwanie wszystkich produktów po nazwe rosnąco
+    List<Product> findAllByOrderByNameAsc();
+
+    //Wyszukiwanie wszystkich produktów po nazwe malejąca
+    List<Product> findAllByOrderByNameDesc();
+
+    //Wyszukiwanie wszystkich produktów po cenie rosnąco
+    List<Product> findAllByOrderByPriceAsc();
+
+    //Wyszukiwanie wszystkich produktów po cenie malejąca
+    List<Product> findAllByOrderByPriceDesc();
+
 }

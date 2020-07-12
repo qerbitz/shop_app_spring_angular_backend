@@ -32,6 +32,26 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getListOfProductsOrderByNameAsc() {
+        return productRepository.findAllByOrderByNameAsc();
+    }
+
+    @Override
+    public List<Product> getListOfProductsOrderByNameDesc() {
+        return productRepository.findAllByOrderByNameDesc();
+    }
+
+    @Override
+    public List<Product> getListOfProductOrderByPriceAsc() {
+        return productRepository.findAllByOrderByPriceAsc();
+    }
+
+    @Override
+    public List<Product> getListOfProductOrderByPriceDesc() {
+        return productRepository.findAllByOrderByPriceDesc();
+    }
+
+    @Override
     public void updateQuantity(int productId, Integer newQuantity) {
         Optional<Product> tempProduct = getSingleProduct(productId);
         tempProduct.ifPresent(product -> {
