@@ -23,8 +23,8 @@ public class Product {
     @Column(name = "price")
     private Double price;
 
-    @ManyToOne
-    @JoinColumn(name = "id_category")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_category" ,nullable = false)
     private Category id_category;
 
     /*@Column(name = "image_url")

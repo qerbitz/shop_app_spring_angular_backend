@@ -11,8 +11,10 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
+    //Wyszukiwanie wszystkich produktów po nazwie
     List<Product> findByNameContaining(@Param("name")String name);
 
+    //Wyszukiwanie wszystkich produktów ze względu na kategorie
     @Query(
             value = "select * from Product where id_category = :category",
             nativeQuery = true)
