@@ -59,4 +59,22 @@ public class FirstPageController {
         return "products";
     }
 
+    @PostMapping("/products_sort")
+    public String listSortedProducts(@RequestParam("option") int option, Model model){
+
+        List<Product> productList = new ArrayList<>();
+
+        switch(option){
+            case 1: productList = productService.getListOfProductOrderByPriceAsc();
+            break;
+            case 2: productList = productService.getListOfProductOrderByPriceDesc();
+            break;
+            case 3: productList = productService.getListOfProductsOrderByNameAsc();
+            break;
+            case 4: productList = productService.getListOfProductsOrderByNameDesc();
+        }
+        model.addAttribute("productList", productList);
+        return "products";
+    }
+
 }

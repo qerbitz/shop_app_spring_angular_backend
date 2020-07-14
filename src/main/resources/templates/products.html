@@ -75,6 +75,15 @@
 			<div class="main-content">
 				<div class="section-content section-content-p30">
 					<div class="container-fluid">
+						<form class="form-header" method="post" th:action="@{/products_sort}">
+							<select name="option" id="option" onchange="this.form.submit()">
+								<option> - </option>
+								<option th:value=1>Cena: od najniższej</option>
+								<option th:value=2>Cena: od najwyższej</option>
+								<option th:value=3>Nazwa: Od A do Z</option>
+								<option th:value=4>Nazwa: Od Z do A</option>
+							</select>
+						</form>
 						<div class="row">
 
 							<div class="col-md-3">

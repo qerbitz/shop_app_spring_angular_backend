@@ -23,6 +23,8 @@ public interface ProductService {
 
     List<Product> getListOfProductOrderByPriceDesc();
 
+    List<Product> getListOfProductByPriceBetween(int price_min, int price_max);
+
     void updateQuantity(int productId, Integer newQuantity);
 
     Optional<Product> getSingleProduct(int id_Product);

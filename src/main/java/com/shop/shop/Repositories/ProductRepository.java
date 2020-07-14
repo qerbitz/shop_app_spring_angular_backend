@@ -32,4 +32,11 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     //Wyszukiwanie wszystkich produktów po cenie malejąca
     List<Product> findAllByOrderByPriceDesc();
 
+    //Wyszukanie wszystkich produktów w podanym przedziale
+    @Query(
+            value = "select * from Product where price>= :price_min and price <= :price_max",
+            nativeQuery = true
+    )
+    List<Product> findAllByPriceBetween(@Param("price_min")int price_min, @Param("price_max")int price_max);
+
 }

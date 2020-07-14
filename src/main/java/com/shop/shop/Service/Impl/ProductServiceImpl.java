@@ -52,6 +52,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getListOfProductByPriceBetween(int price_min, int price_max) {
+        return productRepository.findAllByPriceBetween(price_min, price_max);
+    }
+
+    @Override
     public void updateQuantity(int productId, Integer newQuantity) {
         Optional<Product> tempProduct = getSingleProduct(productId);
         tempProduct.ifPresent(product -> {
