@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 public class Product {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_product")
     private int id_product;
 
@@ -27,24 +28,27 @@ public class Product {
     @JoinColumn(name = "id_category" ,nullable = false)
     private Category id_category;
 
-    /*@Column(name = "image_url")
-    private String imageUrl;
+    @Column(name = "quantity")
+    private int quantity;
 
     @Column(name = "active")
     private boolean active;
 
-    @Column(name = "quantity")
-    private int quantity;*/
+    @Column(name = "image")
+    private String image;
 
     public Product() {
     }
 
-    public Category getId_category() {
-        return id_category;
-    }
-
-    public void setId_category(Category id_category) {
+    public Product(int id_product, String name, String description, Double price, Category id_category, int quantity, boolean active, String image) {
+        this.id_product = id_product;
+        this.name = name;
+        this.description = description;
+        this.price = price;
         this.id_category = id_category;
+        this.quantity = quantity;
+        this.active = active;
+        this.image = image;
     }
 
     public int getId_product() {
@@ -77,5 +81,37 @@ public class Product {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Category getId_category() {
+        return id_category;
+    }
+
+    public void setId_category(Category id_category) {
+        this.id_category = id_category;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
