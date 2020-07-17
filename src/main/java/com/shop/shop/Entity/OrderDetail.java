@@ -2,20 +2,16 @@ package com.shop.shop.Entity;
 
 import javax.persistence.*;
 
-
+@Entity
+@Table(name = "order_detail")
 public class OrderDetail {
 
     @Id
-    @Column(name = "ID", length = 50, nullable = false)
-    private String id;
+    @Column(name = "id_order_detail")
+    private int id_order_detail;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ORDER_ID", nullable = false, //
-            foreignKey = @ForeignKey(name = "ORDER_DETAIL_ORD_FK"))
-    private Order order;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PRODUCT_ID", nullable = false, //
+    @JoinColumn(name = "id_product", nullable = false, //
             foreignKey = @ForeignKey(name = "ORDER_DETAIL_PROD_FK"))
     private Product product;
 
@@ -28,21 +24,14 @@ public class OrderDetail {
     @Column(name = "Amount", nullable = false)
     private double amount;
 
-    public String getId() {
-        return id;
+    public int getId_order_detail() {
+        return id_order_detail;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setId_order_detail(int id_order_detail) {
+        this.id_order_detail = id_order_detail;
     }
 
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
 
     public Product getProduct() {
         return product;

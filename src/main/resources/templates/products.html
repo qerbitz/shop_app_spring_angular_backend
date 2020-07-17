@@ -90,13 +90,22 @@
 								<div class="product-box">
 									<a href="product-detail.html">
 									</a>
-										<h1>
-											<tr th:each="product: ${productList}">
-												<td th:text="${product.getName()}"/><br>
-												<img th:src="@{images/avatar.png}" class="img-responsive">
-												<h2><td th:text="${product.getDescription()}"/><br></h2>
-											</tr>
-										</h1>
+									<table border="1">
+										<tr>
+											<th>Id</th>
+											<th>Name</th>
+											<th>Price</th>
+											<th>Buy</th>
+										</tr>
+										<tr th:each="product: ${productList}">
+											<td th:text="${product.id_product}"></td>
+											<td th:text="${product.name}"></td>
+											<td th:text="${product.price}"></td>
+											<td>
+												<a th:href="${'/cart/buy/' + product.id_product}">Buy now</a>
+											</td>
+										</tr>
+									</table>
 									<h2>Duis aute irure dolor in reprehenderit in voluptate </h2>
 									<div class="price">19.22 $</div>
 									<a href="#" class="primary-btn">Add to cart</a>

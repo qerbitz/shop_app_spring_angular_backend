@@ -57,16 +57,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void updateQuantity(int productId, Integer newQuantity) {
-        Optional<Product> tempProduct = getSingleProduct(productId);
-        tempProduct.ifPresent(product -> {
-           // product.setQuantity(newQuantity);
-            productRepository.save(product);
-        });
+    public Product getSingleProduct(int id) {
+        return productRepository.getOne(id);
     }
 
-    @Override
-    public Optional<Product> getSingleProduct(int id_Product) {
-        return productRepository.findById(id_Product);
-    }
+
 }
