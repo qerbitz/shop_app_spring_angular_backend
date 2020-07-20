@@ -50,16 +50,30 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<OrderDetail> getCartByUserId(int userId) {
+        return null;
+    }
+
+    @Override
+    public void updateQuantityByCartId(int cartId, int quantity, double price) {
+
+    }
+
+    @Override
+    public List<OrderDetail> removeCartByUserId(int cartId, int userId) {
+        return null;
+    }
+
+    @Override
+    public List<OrderDetail> removeAllCartByUserId(int userId) {
+        return null;
+    }
+
+    @Override
     public List<OrderDetail> cart_list() {
         return orderDetailRepository.findAllByUser();
     }
 
-    @Override
-    public void removeElementFromOrder(List<Product> theListToRemove) {
-
-        OrderDetail orderDetail = new OrderDetail();
-        orderDetailRepository.delete(orderDetail);
-    }
 
     public Date convertDate(LocalDate dateToConvert) {
         return java.sql.Date.valueOf(dateToConvert);

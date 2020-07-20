@@ -3,25 +3,39 @@ package com.shop.shop.Controller;
 import com.shop.shop.Entity.User;
 import com.shop.shop.Service.Interface.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 @Controller
+@RequestMapping("/login")
 public class LoginController {
 
     @Autowired
     UserService userService;
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    @GetMapping("/login")
+    @GetMapping("/showLoginPage")
     public String showLoginPage(Model model){
+        return "login";
+    }
 
-        User user = new User();
-        model.addAttribute("user", user);
 
-        return "login";}
+    @GetMapping("/login")
+    public void test(HttpServletResponse response) throws IOException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String role = auth.getAuthorities().toString();
+
+        if(role.contains("1"))
+        response.sendRedirect("/product");
+
+    }
 
     @PostMapping("/login")
     public String processlogin(@ModelAttribute("user")User user, Model model){

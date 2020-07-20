@@ -1,5 +1,6 @@
 package com.shop.shop.Controller;
 
+import com.shop.shop.Entity.Adress;
 import com.shop.shop.Entity.User;
 import com.shop.shop.Service.Interface.UserService;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -37,6 +38,12 @@ public class RegistrationController {
         userek.setUsername(username);
         userek.setPassword(password);
         userek.setE_mail(e_mail );
+
+        Adress adress = new Adress();
+        adress.setId_adress(1);
+
+        //userek.setId_adress(adress);
+
 
 
         int digit=0;
@@ -85,7 +92,7 @@ public class RegistrationController {
         return "registration";
     }
 
-    @GetMapping("/udana_rejestracja")
+    @GetMapping("/good_registery")
     public String GoodRegistration(Model theModel){
         return "goodregistery";
     }

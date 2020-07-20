@@ -18,10 +18,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveUser(User user) {
-        user.setId_user(11);
-        user.setUsername(user.getUsername());
-        user.setE_mail(user.getE_mail());
-
         StringBuilder password = new StringBuilder("{bcrypt}").append(passwordEncoder.encode(user.getPassword()));
         user.setPassword(password.toString());
 

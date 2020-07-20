@@ -9,29 +9,27 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @Controller
 @RequestMapping(value = "cart")
-public class OrderController {
+public class AddToCartController {
 
     @Autowired
     OrderService orderService;
     @Autowired
     ProductService productService;
 
-    @RequestMapping(value = "shopping-detail", method = RequestMethod.GET)
+    @GetMapping(value = "shopping-detail")
     public String index() {
         return "shopping-detail";
     }
 
-    @RequestMapping(value = "buy/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "buy/{id}")
     public String buy(
             @PathVariable("id") int id,
             Model model,

@@ -1,6 +1,8 @@
 package com.shop.shop.Controller;
 
+import com.shop.shop.Entity.Category;
 import com.shop.shop.Entity.Product;
+import com.shop.shop.Service.Interface.CategoryService;
 import com.shop.shop.Service.Interface.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,11 +19,18 @@ public class FirstPageController {
 
     @Autowired
     ProductService productService;
+    @Autowired
+    CategoryService categoryService;
 
     @RequestMapping(method = RequestMethod.GET)
     public String index(Model model) {
+
         List<Product> productList = productService.getListOfProducts();
+        List<Category> categoryList = categoryService.getListOfCategories();
+
         model.addAttribute("productList", productList);
+        model.addAttribute("categoryList", categoryList);
+
         return "products";
     }
 
@@ -34,8 +43,8 @@ public class FirstPageController {
         return "products";
     }*/
 
-    @PostMapping("/products-search")
-    public String listSearchedProducts(@RequestParam("value") String value, Model model){
+    @PostMapping("/products_search")
+    public String products_search(@RequestParam("value") String value, Model model){
 
         List<Product> productList = productService.getListOfProductsByName(value);
         model.addAttribute("productList", productList);
@@ -44,8 +53,8 @@ public class FirstPageController {
     }
 
 
-    @GetMapping("/products-category")
-    public String listSearchedProductsByCategory(@RequestParam("values") int values, Model model){
+    @GetMapping("/products_category")
+    public String products_category(@RequestParam("values") int values, Model model){
 
         List<Product> productList = productService.getListOfProductsByCategory(values);
         model.addAttribute("productList", productList);
@@ -53,19 +62,8 @@ public class FirstPageController {
         return "products";
     }
 
-    @GetMapping("/add-to-cart")
-    public String addToCart(@RequestParam(value = "listToAdd", required = false) List<Integer> listToAdd){
-
-        List<Product> cart_shop = new ArrayList<>();
-        if (listToAdd != null) {
-            //List<Product>listOfDishes = productService.getDishesByIds(listToAdd);
-           // productService.addOrder(listOfDishes);
-        }
-        return "products";
-    }
-
     @PostMapping("/products_sort")
-    public String listSortedProducts(@RequestParam("option") int option, Model model){
+    public String products_sort(@RequestParam("option") int option, Model model){
 
         List<Product> productList = new ArrayList<>();
 

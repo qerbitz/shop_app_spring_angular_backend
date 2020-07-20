@@ -15,7 +15,11 @@ public interface OrderService {
 
     void addOrderDetail(Product product, int quantity);
 
-    void removeElementFromOrder(List<Product>  theListToRemove);
+    List<OrderDetail> getCartByUserId(int userId);
 
+    void updateQuantityByCartId(int cartId,int quantity,double price);
 
+    List<OrderDetail> removeCartByUserId(int cartId,int userId);
+
+    List<OrderDetail> removeAllCartByUserId(int userId);
 }

@@ -32,11 +32,10 @@
 			<div class="menu-sidebar-content js-scrollbar1">
 				<nav class="navbar-sidebar">
 					<ul class="list-unstyled navbar-list">
-						<li>
-							<a th:href="@{/products-category(values=1)}" class="btn btn-info btn-sm">Coffee Musssgs</a>
-						</li>
-						<li>
-							<a th:href="@{/products-category(values=2)}" class="btn btn-info btn-sm">Coffee Mugs</a>
+						<li th:each="category: ${categoryList}">
+							<ul>
+								<li th:text="${category.name}">
+							</ul>
 						</li>
 					</ul>
 				</nav>

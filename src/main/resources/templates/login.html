@@ -1,4 +1,4 @@
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <style>
 body{
@@ -95,8 +95,9 @@ h1{
     <div class="loginbox">
     <img th:src="@{images/avatar.png}" class="avatar">
         <h1>Zaloguj się</h1>
-        <form th:action="@{/login}" th:object="${user}" method="post" modelAttribute="user">
-        <p th:if="${invalidCredidentials}" class="error">Login lub hasło jest niepoporawne</p>
+        <form th:action="@{/authenticateTheUser}" th:object="${user}" method="post" modelAttribute="user">
+        <p th:if="${param.error}" class="error">Login lub hasło jest niepoporawne</p>
+            <p th:if="${param.logout}" class="error">Zostałeś wylogowany</p>
             <input type="text" name="username" placeholder="Login" onfocus="this.placeholder=''" onblur="this.placeholder='Login'">
             
             <input type="password" name="password" placeholder="Hasło" onfocus="this.placeholder=''" onblur="this.placeholder='Hasło'">
