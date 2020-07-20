@@ -24,11 +24,13 @@
 
 		<!-- MENU SIDEBAR-->
 		<aside class="menu-sidebar d-none d-lg-block">
+			<form th:action="@{/logout}" method="post">
 			<div class="logo">
-				<a th:href="@{/products}">
-					<img src="assets/images/logo.png" alt="luv2shop" class="img-responsive">
-				</a>
+
+				<input type="submit" value="Wyloguj"
+					   class="btn btn-info btn-lg mb-3 col-2" style="float:right"/>
 			</div>
+			</form>
 			<div class="menu-sidebar-content js-scrollbar1">
 				<nav class="navbar-sidebar">
 					<ul class="list-unstyled navbar-list">

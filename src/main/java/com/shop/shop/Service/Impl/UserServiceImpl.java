@@ -1,6 +1,8 @@
 package com.shop.shop.Service.Impl;
 
+import com.shop.shop.Entity.Authorities;
 import com.shop.shop.Entity.User;
+import com.shop.shop.Repositories.AuthoritiesRepository;
 import com.shop.shop.Repositories.UserRepository;
 import com.shop.shop.Service.Interface.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +16,25 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    AuthoritiesRepository authoritiesRepository;
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
     public void saveUser(User user) {
         StringBuilder password = new StringBuilder("{bcrypt}").append(passwordEncoder.encode(user.getPassword()));
         user.setPassword(password.toString());
+        user.setEnabled(1);
+
+
+        Authorities authorities = new Authorities();
+        authorities.setUsername(user);
+        authorities.setAuthority("Customer");
+
 
         userRepository.save(user);
+        authoritiesRepository.save(authorities);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.shop.shop.Controller;
 
 import com.shop.shop.Entity.Adress;
+import com.shop.shop.Entity.Authorities;
 import com.shop.shop.Entity.User;
 import com.shop.shop.Service.Interface.UserService;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -12,15 +13,19 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import javax.validation.Valid;
+
 @Controller
+@RequestMapping("registration")
 public class RegistrationController {
 
     @Autowired
     UserService userService;
 
-    @GetMapping("/rejestracja2")
-    public String Registration(Model model){
+    @GetMapping("/showRegistrationForm")
+    public String showRegistrationForm(Model model){
 
         User user = new User();
         model.addAttribute("user", user);
@@ -28,7 +33,7 @@ public class RegistrationController {
         return "registration";
     }
 
-    @PostMapping("/rejestracja")
+    @PostMapping("/processRegistration")
     public String processRegistration(@Valid @ModelAttribute("user") User user, Model model, BindingResult bindingResult){
         String username = user.getUsername();
         String password = user.getPassword();
@@ -37,54 +42,20 @@ public class RegistrationController {
         User userek = new User();
         userek.setUsername(username);
         userek.setPassword(password);
-        userek.setE_mail(e_mail );
-
-        Adress adress = new Adress();
-        adress.setId_adress(1);
-
-        //userek.setId_adress(adress);
+        userek.setE_mail(e_mail);
 
 
-
-        int digit=0;
-        int special=0;
-        int upCount=0;
-        int loCount=0;
-
-
-        if(userService.checkUniqueness(username)) {
-            bindingResult.addError(new FieldError("username", "username", "Użytkownik już istnieje"));
-        }
+        //if(userService.checkUniqueness(username)) {
+        //    bindingResult.addError(new FieldError("username", "username", "Użytkownik już istnieje"));
+        //}
         if(!(password.length()>=8 && password.length()<=20)){
             bindingResult.addError(new FieldError("username", "password", "Hasło musi posiadać od 8 do 20 znaków!"));
-            /*for(int i=0; i<password.length(); i++){
-                char c = password.charAt(i);
-                if(Character.isUpperCase(c)){
-                    upCount++;
-                }
-                if(Character.isLowerCase(c)){
-                    loCount++;
-                }
-                if(Character.isDigit(c)){
-                    digit++;
-                }
-                if(c>=33&&c<=46||c==64){
-                    special++;
-                }
-            }
-            if(special>=1&&loCount>=1&&upCount>=1&&digit>=1) {
-                userService.saveUser(userek);
-                return "goodregistery";
-            }
-            else{
-                return "registration";
-            }*/
         }
         if(!isValidEmail(e_mail)){
             bindingResult.addError(new FieldError("username", "e_mail", "Podany e-mail jest niepoprawny"));
         }
         else{
-            userService.saveUser(userek);
+            userService.saveUser(user);
             return "goodregistery";
         }
 

@@ -23,19 +23,19 @@ public class User {
     private String password;
 
     //@Column(name = "name")
-    private String name;
+    //private String name;
 
     //@Column(name = "surname")
-    private String surname;
+    //private String surname;
 
     //@Column(name = "phone")
-    private String phone;
+    //private String phone;
 
-    //@Column(name = "e_mail")
+    @Column(name = "e_mail")
     private String e_mail;
 
     @Column(name = "enabled")
-    private String enabled;
+    private int enabled;
 
     //@OneToOne
     //@JoinColumn(name = "id_adress", nullable = false)
@@ -71,7 +71,15 @@ public class User {
         this.e_mail = e_mail;
     }
 
-    public String getName() {
+    public int getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(int enabled) {
+        this.enabled = enabled;
+    }
+
+    /*public String getName() {
         return name;
     }
 
@@ -93,5 +101,5 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
+    }*/
 }

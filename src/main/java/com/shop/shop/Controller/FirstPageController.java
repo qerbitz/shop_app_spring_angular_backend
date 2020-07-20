@@ -1,10 +1,11 @@
 package com.shop.shop.Controller;
 
-import com.shop.shop.Entity.Category;
 import com.shop.shop.Entity.Product;
 import com.shop.shop.Service.Interface.CategoryService;
 import com.shop.shop.Service.Interface.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,29 +26,22 @@ public class FirstPageController {
     @RequestMapping(method = RequestMethod.GET)
     public String index(Model model) {
 
-        List<Product> productList = productService.getListOfProducts();
-        List<Category> categoryList = categoryService.getListOfCategories();
+        model.addAttribute("productList", productService.getListOfProducts());
+        model.addAttribute("categoryList", categoryService.getListOfCategories());
 
-        model.addAttribute("productList", productList);
-        model.addAttribute("categoryList", categoryList);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String role = auth.getName();                                                   //pobieranie id aktualnego zalogowanego uzytkownika
+        System.out.println(role);
 
         return "products";
     }
 
-    /*@GetMapping("/products")
-    public String ProductsList(Model model){
-
-        List<Product> productList = productService.getListOfProducts();
-        model.addAttribute("productList", productList);
-
-        return "products";
-    }*/
 
     @PostMapping("/products_search")
     public String products_search(@RequestParam("value") String value, Model model){
 
-        List<Product> productList = productService.getListOfProductsByName(value);
-        model.addAttribute("productList", productList);
+        model.addAttribute("productList", productService.getListOfProductsByName(value));
+        model.addAttribute("categoryList", categoryService.getListOfCategories());
 
         return "products";
     }
@@ -56,8 +50,8 @@ public class FirstPageController {
     @GetMapping("/products_category")
     public String products_category(@RequestParam("values") int values, Model model){
 
-        List<Product> productList = productService.getListOfProductsByCategory(values);
-        model.addAttribute("productList", productList);
+        model.addAttribute("productList", productService.getListOfProductsByCategory(values));
+        model.addAttribute("categoryList", categoryService.getListOfCategories());
 
         return "products";
     }
@@ -76,7 +70,9 @@ public class FirstPageController {
             break;
             case 4: productList = productService.getListOfProductsOrderByNameDesc();
         }
+
         model.addAttribute("productList", productList);
+        model.addAttribute("categoryList", categoryService.getListOfCategories());
         return "products";
     }
 
