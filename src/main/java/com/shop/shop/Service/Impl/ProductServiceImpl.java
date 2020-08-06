@@ -55,7 +55,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getSingleProduct(int id) {
+    public Product getProductById(int id) {
         return productRepository.getOne(id);
     }
 

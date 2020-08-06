@@ -29,10 +29,7 @@ public class Product {
     private Category id_category;
 
     @Column(name = "quantity")
-    private int quantity;
-
-    @Column(name = "active")
-    private boolean active;
+    private Integer quantity;
 
     @Column(name = "image")
     private String image;
@@ -40,14 +37,13 @@ public class Product {
     public Product() {
     }
 
-    public Product(int id_product, String name, String description, Double price, Category id_category, int quantity, boolean active, String image) {
+    public Product(int id_product, String name, String description, Double price, Category id_category, int quantity, String image) {
         this.id_product = id_product;
         this.name = name;
         this.description = description;
         this.price = price;
         this.id_category = id_category;
         this.quantity = quantity;
-        this.active = active;
         this.image = image;
     }
 
@@ -97,14 +93,6 @@ public class Product {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
     }
 
     public String getImage() {

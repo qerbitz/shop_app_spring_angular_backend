@@ -1,6 +1,7 @@
 package com.shop.shop.Service.Impl;
 
 import com.shop.shop.Entity.Authorities;
+import com.shop.shop.Entity.Cart;
 import com.shop.shop.Entity.User;
 import com.shop.shop.Repositories.AuthoritiesRepository;
 import com.shop.shop.Repositories.UserRepository;
@@ -27,6 +28,10 @@ public class UserServiceImpl implements UserService {
         user.setPassword(password.toString());
         user.setEnabled(1);
 
+        Cart cart = new Cart();
+        cart.setId_cart(1);
+        user.setCart(cart);
+
 
         Authorities authorities = new Authorities();
         authorities.setUsername(user);
@@ -47,6 +52,11 @@ public class UserServiceImpl implements UserService {
         {
             return false;
         }
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        return userRepository.getOne(username);
     }
 
 }

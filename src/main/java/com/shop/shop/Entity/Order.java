@@ -22,18 +22,17 @@ public class Order {
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_user" ,nullable = false)
-    private User id_user;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_order_detail", nullable = false, //
-            foreignKey = @ForeignKey(name = "ORDER_DETAIL_ORD_FK"))
-    private OrderDetail id_order_detail;
+    @JoinColumn(name = "id_cart", nullable = false)
+    private Cart id_cart;
 
-    public Order(int id_order, Date orderDate, double amount, User id_user) {
+    public Order(int id_order, Date orderDate, double amount, User user) {
         this.id_order = id_order;
         this.orderDate = orderDate;
         this.amount = amount;
-        this.id_user = id_user;
+        this.user = user;
     }
 
     public Order() {
@@ -47,12 +46,12 @@ public class Order {
         this.status = status;
     }
 
-    public OrderDetail getId_order_detail() {
-        return id_order_detail;
+    public Cart getId_cart() {
+        return id_cart;
     }
 
-    public void setId_order_detail(OrderDetail id_order_detail) {
-        this.id_order_detail = id_order_detail;
+    public void setId_cart(Cart id_cart) {
+        this.id_cart = id_cart;
     }
 
     public int getId_order() {
@@ -79,11 +78,11 @@ public class Order {
         this.amount = amount;
     }
 
-    public User getId_user() {
-        return id_user;
+    public User getUser() {
+        return user;
     }
 
-    public void setId_user(User id_user) {
-        this.id_user = id_user;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

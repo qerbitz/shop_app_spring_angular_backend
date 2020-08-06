@@ -10,12 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "product")
-public class FirstPageController {
+@RequestMapping("/product")
+public class ProductController {
 
 
     @Autowired
@@ -23,8 +24,8 @@ public class FirstPageController {
     @Autowired
     CategoryService categoryService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public String index(Model model) {
+    @RequestMapping("/productList")
+    public String productList(Model model) {
 
         model.addAttribute("productList", productService.getListOfProducts());
         model.addAttribute("categoryList", categoryService.getListOfCategories());
@@ -74,6 +75,14 @@ public class FirstPageController {
         model.addAttribute("productList", productList);
         model.addAttribute("categoryList", categoryService.getListOfCategories());
         return "products";
+    }
+
+    @RequestMapping("/viewProduct/{productId}")
+    public String viewProduct(@PathVariable int productId, Model model) throws IOException {
+        Product product = productService.getProductById(productId);
+        model.addAttribute("product", product);
+
+        return "viewProduct";
     }
 
 }

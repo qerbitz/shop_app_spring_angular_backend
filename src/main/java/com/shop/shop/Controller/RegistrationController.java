@@ -1,7 +1,5 @@
 package com.shop.shop.Controller;
 
-import com.shop.shop.Entity.Adress;
-import com.shop.shop.Entity.Authorities;
 import com.shop.shop.Entity.User;
 import com.shop.shop.Service.Interface.UserService;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -35,23 +33,14 @@ public class RegistrationController {
 
     @PostMapping("/processRegistration")
     public String processRegistration(@Valid @ModelAttribute("user") User user, Model model, BindingResult bindingResult){
-        String username = user.getUsername();
-        String password = user.getPassword();
-        String e_mail = user.getE_mail();
 
-        User userek = new User();
-        userek.setUsername(username);
-        userek.setPassword(password);
-        userek.setE_mail(e_mail);
-
-
-        //if(userService.checkUniqueness(username)) {
-        //    bindingResult.addError(new FieldError("username", "username", "Użytkownik już istnieje"));
-        //}
-        if(!(password.length()>=8 && password.length()<=20)){
+        if(userService.checkUniqueness(user.getUsername())) {
+            bindingResult.addError(new FieldError("username", "username", "Użytkownik już istnieje"));
+        }
+        if(!(user.getPassword().length()>=8 && user.getPassword().length()<=20)){
             bindingResult.addError(new FieldError("username", "password", "Hasło musi posiadać od 8 do 20 znaków!"));
         }
-        if(!isValidEmail(e_mail)){
+        if(!isValidEmail(user.getE_mail())){
             bindingResult.addError(new FieldError("username", "e_mail", "Podany e-mail jest niepoprawny"));
         }
         else{

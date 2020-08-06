@@ -23,6 +23,6 @@ public interface ProductService {
 
     List<Product> getListOfProductByPriceBetween(int price_min, int price_max);
 
-    Product getSingleProduct(int id);
+    Product getProductById(int id);
 
 }

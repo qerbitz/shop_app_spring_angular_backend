@@ -1,17 +1,11 @@
 package com.shop.shop.Entity;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import javax.validation.constraints.NotNull;
 
 import javax.persistence.*;
 
 @Entity
-@Data
 @Table(name = "users")
-@Getter
-@Setter
 public class User {
 
     @Id
@@ -22,14 +16,14 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    //@Column(name = "name")
-    //private String name;
+    @Column(name = "name")
+    private String name;
 
-    //@Column(name = "surname")
-    //private String surname;
+    @Column(name = "surname")
+    private String surname;
 
-    //@Column(name = "phone")
-    //private String phone;
+    @Column(name = "phone")
+    private String phone;
 
     @Column(name = "e_mail")
     private String e_mail;
@@ -37,9 +31,13 @@ public class User {
     @Column(name = "enabled")
     private int enabled;
 
+    @OneToOne
+    @JoinColumn(name = "id_cart", nullable = false)
+    private Cart cart;
+
     //@OneToOne
     //@JoinColumn(name = "id_adress", nullable = false)
-   // private Adress id_adress;
+    // private Adress id_adress;
 
 
 
@@ -79,7 +77,7 @@ public class User {
         this.enabled = enabled;
     }
 
-    /*public String getName() {
+    public String getName() {
         return name;
     }
 
@@ -101,5 +99,13 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }*/
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
 }

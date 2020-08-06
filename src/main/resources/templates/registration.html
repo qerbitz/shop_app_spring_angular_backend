@@ -104,7 +104,7 @@ h3{
     
 <body>
     <div class="loginbox">
-        <img th:src="@{images/avatar.png}" class="avatar">
+        <img src="/images/avatar.png" class="avatar">
         <h1>Zarejestruj się</h1>
         <form th:action="@{/registration/processRegistration}" th:object="${user}" method="post" modelAttribute="user">
             <div th:if="${#fields.hasErrors('username')}" class="error">

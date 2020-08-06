@@ -52,7 +52,7 @@
 				<div class="section-content section-content-p30">
 					<div class="container-fluid">
 						<div class="header-wrap">
-							<form class="form-header" method="post" th:action="@{/products-search}" id="getform">
+							<form class="form-header" method="post" th:action="@{/product/products-search}" id="getform">
 								<input class="au-input au-input-xl" type="text" name="value" id="value" th:object="${user}"
 									placeholder="Search for data ..." form="getform"/>
 								<button class="au-btn-submit" type="submit" form="getform">
@@ -60,7 +60,7 @@
 								</button>
 							</form>
 							<div class="cart-area d-n">
-								 <a th:href="@{/shopping_cart}">
+								 <a th:href="@{/cart/showCartList}">
 									<div class="total">19.22 <span> 2</span> </div> <i class="fa fa-shopping-cart"
 										aria-hidden="true"></i>
 								</a>
@@ -76,7 +76,7 @@
 			<div class="main-content">
 				<div class="section-content section-content-p30">
 					<div class="container-fluid">
-						<form class="form-header" method="post" th:action="@{/products_sort}">
+						<form class="form-header" method="post" th:action="@{/product/products_sort}">
 							<select name="option" id="option" onchange="this.form.submit()">
 								<option> - </option>
 								<option th:value=1>Cena: od najniższej</option>
@@ -103,7 +103,7 @@
 											<td th:text="${product.name}"></td>
 											<td th:text="${product.price}"></td>
 											<td>
-												<a th:href="${'/cart/buy/' + product.id_product}">Buy now</a>
+												<a th:href="@{/cart/add/{id_product}(id_product=${product.id_product})}">Buy now</a>
 											</td>
 										</tr>
 									</table>
