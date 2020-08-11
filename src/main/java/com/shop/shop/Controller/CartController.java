@@ -30,29 +30,18 @@ public class CartController {
     CartItemService cartItemService;
 
 
-    @GetMapping("/showCartList")
-    public String showCartList(Model model){
-
-
-        return "cart";
-    }
-
-
     @RequestMapping
     public String get() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getUserByUsername(authentication.getName());
         int cartId = user.getCart().getId_cart();
-        return "redirect:/cart/"+1;
+        return "redirect:/cart/"+cartId;
     }
-
-
 
     @RequestMapping(value="/{cartId}", method = RequestMethod.GET)
     public String getCart(@PathVariable(value = "cartId") int cartId, Model model) {
         model.addAttribute("cart", cartService.getCartById(cartId).getCartItems());
-        List<CartItem> listka = new ArrayList<>();
         return "cart";
     }
 
@@ -69,7 +58,7 @@ public class CartController {
         int produkcik = Integer.parseInt(id_product);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        User user = userService.getUserByUsername("john");
+        User user = userService.getUserByUsername(authentication.getName());
         Cart cart = user.getCart();
 
         Product product = productService.getProductById(produkcik);
@@ -97,15 +86,29 @@ public class CartController {
     @RequestMapping(value = "/remove/{id_product}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void removeItem(@PathVariable(value = "id_product") int id_product) {
-        CartItem cartItem = cartItemService.getCartItemByProductId(id_product);
+        Product product = new Product();
+        product.setId_product(id_product);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getUserByUsername(authentication.getName());
+        int cartId = user.getCart().getId_cart();
+
+        Cart cart = new Cart();
+        cart.setId_cart(cartId);
+
+        CartItem cartItem = cartItemService.getCartItemByProductId(product, cart);
         cartItemService.removeCartItem(cartItem);
+
     }
 
-    @RequestMapping(value = "/{cartId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/clear/{cartId}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void clearCart(@PathVariable(value = "cartId") int cartId) {
-        Cart cart = cartService.getCartById(cartId);
-        //cartItemService.removeAllCartItems(cart);
+    public void clearCart(@PathVariable(value = "cartId") String cartId) {
+        int zmiana = Integer.parseInt(cartId);
+        Cart cart = cartService.getCartById(zmiana);
+        cartItemService.removeAllCartItems(cart);
+        System.out.println(cart.getId_cart());
+        System.out.println("xdd");
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

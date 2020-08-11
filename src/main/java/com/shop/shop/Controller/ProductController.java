@@ -31,9 +31,6 @@ public class ProductController {
         model.addAttribute("categoryList", categoryService.getListOfCategories());
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String role = auth.getName();                                                   //pobieranie id aktualnego zalogowanego uzytkownika
-        System.out.println(role);
-
         return "products";
     }
 

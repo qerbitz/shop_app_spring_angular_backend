@@ -15,7 +15,7 @@ public class Cart {
     @GeneratedValue
     private int id_cart;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "cart")
     private List<CartItem> cartItems;
 
     @OneToOne

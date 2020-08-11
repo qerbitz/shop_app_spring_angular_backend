@@ -4,6 +4,7 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name="product")
@@ -33,6 +34,22 @@ public class Product {
 
     @Column(name = "image")
     private String image;
+
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<CartItem> cartItemList;
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public List<CartItem> getCartItemList() {
+        return cartItemList;
+    }
+
+    public void setCartItemList(List<CartItem> cartItemList) {
+        this.cartItemList = cartItemList;
+    }
 
     public Product() {
     }

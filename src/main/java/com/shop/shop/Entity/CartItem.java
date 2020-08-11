@@ -8,6 +8,7 @@ import javax.persistence.*;
 public class CartItem {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_cart_item")
     private int id_cart_item;
 
@@ -15,16 +16,18 @@ public class CartItem {
     @JoinColumn(name = "id_cart")
     private Cart cart;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_product", nullable = false, //
-            foreignKey = @ForeignKey(name = "ORDER_DETAIL_PROD_FK"))
+    @ManyToOne
+    @JoinColumn(name = "id_product")
     private Product product;
 
-    @Column(name = "quantity", nullable = false)
+    @Column(name = "quantity")
     private int quantity;
 
-    @Column(name = "total_price", nullable = false)
+    @Column(name = "total_price")
     private double total_price;
+
+    public CartItem() {
+    }
 
     public int getId_order_detail() {
         return id_cart_item;

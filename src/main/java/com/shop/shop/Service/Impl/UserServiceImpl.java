@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
         user.setEnabled(1);
 
         Cart cart = new Cart();
-        cart.setId_cart(1);
+        cart.setId_cart(2);
         user.setCart(cart);
 
 

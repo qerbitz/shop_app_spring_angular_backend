@@ -2,6 +2,7 @@ package com.shop.shop.Service.Impl;
 
 import com.shop.shop.Entity.Cart;
 import com.shop.shop.Entity.CartItem;
+import com.shop.shop.Entity.Product;
 import com.shop.shop.Repositories.CartItemRepository;
 import com.shop.shop.Service.Interface.CartItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class CartItemServiceImpl implements CartItemService {
 
     @Override
     public void removeCartItem(CartItem cartItem) {
-        cartItemRepository.delete(cartItem);
+        cartItemRepository.deleteCartItemById_cart_item(cartItem.getId_cart_item());
     }
 
     @Override
@@ -30,13 +31,13 @@ public class CartItemServiceImpl implements CartItemService {
         List<CartItem> cartItems = cart.getCartItems();
 
         for(CartItem item : cartItems){
-            cartItemRepository.delete(item);
+            cartItemRepository.deleteCartItemById_cart_item(item.getId_cart_item());
         }
 
     }
 
     @Override
-    public CartItem getCartItemByProductId(int productId) {
-        return null;
+    public CartItem getCartItemByProductId(Product product, Cart cart) {
+        return cartItemRepository.getCartItemByProductAndCart(product, cart);
     }
 }
