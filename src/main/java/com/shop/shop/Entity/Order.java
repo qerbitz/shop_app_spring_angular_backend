@@ -8,30 +8,27 @@ import java.util.Date;
 public class Order {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_order")
     private int id_order;
 
-    @Column(name = "order_Date", nullable = false)
+    @Column(name = "order_date", nullable = false)
     private Date orderDate;
-
-    @Column(name = "amount", nullable = false)
-    private double amount;
 
     @Column(name= "status")
     private String status;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_user" ,nullable = false)
+    @JoinColumn(name = "username" ,nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_cart", nullable = false)
-    private Cart id_cart;
+    private Cart cart;
 
     public Order(int id_order, Date orderDate, double amount, User user) {
         this.id_order = id_order;
         this.orderDate = orderDate;
-        this.amount = amount;
         this.user = user;
     }
 
@@ -46,12 +43,12 @@ public class Order {
         this.status = status;
     }
 
-    public Cart getId_cart() {
-        return id_cart;
+    public Cart getCart() {
+        return cart;
     }
 
-    public void setId_cart(Cart id_cart) {
-        this.id_cart = id_cart;
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 
     public int getId_order() {
@@ -68,14 +65,6 @@ public class Order {
 
     public void setOrderDate(Date orderDate) {
         this.orderDate = orderDate;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
     }
 
     public User getUser() {

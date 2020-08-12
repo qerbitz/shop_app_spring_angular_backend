@@ -10,14 +10,5 @@ public interface OrderService {
 
 
     void addNewOrder(Order order);
-
-    void addOrderDetail(Product product, int quantity);
-
-
-
-    void updateQuantityByCartId(int cartId,int quantity,double price);
-
-
-
     void updateStatusOrder(Order order);
 }

@@ -22,10 +22,13 @@ public class CartController {
 
     @Autowired
     CartService cartService;
+
     @Autowired
     ProductService productService;
+
     @Autowired
     UserService userService;
+
     @Autowired
     CartItemService cartItemService;
 
@@ -41,6 +44,15 @@ public class CartController {
 
     @RequestMapping(value="/{cartId}", method = RequestMethod.GET)
     public String getCart(@PathVariable(value = "cartId") int cartId, Model model) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getUserByUsername(authentication.getName());
+
+        if(cartId!=user.getCart().getId_cart())
+        {
+            return "redirect:/cart/"+user.getCart().getId_cart();
+        }
+
         model.addAttribute("cart", cartService.getCartById(cartId).getCartItems());
         return "cart";
     }
@@ -107,16 +119,6 @@ public class CartController {
         int zmiana = Integer.parseInt(cartId);
         Cart cart = cartService.getCartById(zmiana);
         cartItemService.removeAllCartItems(cart);
-        System.out.println(cart.getId_cart());
-        System.out.println("xdd");
     }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Illegal request, please verify your payload.")
-    public void handleClientErrors (Exception e){}
-
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Internal Server Error.")
-    public void handleServerErrors(Exception e){}
 
 }

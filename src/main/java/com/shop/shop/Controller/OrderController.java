@@ -17,35 +17,35 @@ import java.time.LocalDate;
 import java.util.Date;
 
 @Controller
+@RequestMapping("/order")
 public class OrderController {
 
     @Autowired
     CartService cartService;
 
-    //@Autowired
-    //OrderService orderService;
+    @Autowired
+    OrderService orderService;
 
     @Autowired
     UserService userService;
 
-    @RequestMapping("/order/{cartId}")
+    @RequestMapping("/newOrder/{cartId}")
     public String createOrder(@PathVariable("cartId") int cartId) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        Order order = new Order();
         Cart cart = cartService.getCartById(cartId);
 
-
-        order.setId_cart(cart);
-
-
+        Order order = new Order();
+        order.setCart(cart);
         order.setUser(userService.getUserByUsername(authentication.getName()));
         order.setOrderDate(convertDate(LocalDate.now()));
+        order.setStatus("Oczekujacy");
 
-       // orderService.addNewOrder(order);
+        orderService.addNewOrder(order);
 
-        return "redirect:/checkout?cartId="+cartId;
+        //return "redirect:/checkout?cartId="+cartId;
+        return "redirect:/cart/"+cartId;
 
     }
 

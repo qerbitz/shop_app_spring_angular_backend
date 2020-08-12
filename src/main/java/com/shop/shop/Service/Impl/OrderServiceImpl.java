@@ -16,24 +16,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     OrderRepository orderRepository;
-    ProductRepository productRepository;
-
-
 
     @Override
     public void addNewOrder(Order order) {
         orderRepository.save(order);
-    }
-
-    @Override
-    public void addOrderDetail(Product product, int quantity) {
-
-    }
-
-
-    @Override
-    public void updateQuantityByCartId(int cartId, int quantity, double price) {
-
     }
 
 
