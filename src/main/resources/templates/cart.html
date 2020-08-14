@@ -31,7 +31,7 @@
     <br>
     <a href="/product/productList">Continue Shopping</a>
     <br>
-    <a th:href="@{/cart/clear/{cartId}(cartId=${2})}" class="btn btn-danger">Delete All</a>
+    <a th:href="@{/cart/clear/{cartId}(cartId=${cart_id.getId_cart()})}" class="btn btn-danger">Delete All</a>
     <br>
-    <a>Zamow</a>
+    <a th:href="@{/order/newOrder/{cartId}(cartId=${cart_id.getId_cart()})}" class="btn btn-danger">Zamow</a>
 </body>

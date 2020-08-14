@@ -32,17 +32,27 @@ public class OrderController {
     @RequestMapping("/newOrder/{cartId}")
     public String createOrder(@PathVariable("cartId") int cartId) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();         //pobranie autentykacji
 
-        Cart cart = cartService.getCartById(cartId);
+        Cart cart = cartService.getCartById(cartId);                                                    //pobranie obecnej karty
 
         Order order = new Order();
+
+        User user = userService.getUserByUsername(authentication.getName());
+
         order.setCart(cart);
-        order.setUser(userService.getUserByUsername(authentication.getName()));
+        order.setUser(user);
         order.setOrderDate(convertDate(LocalDate.now()));
         order.setStatus("Oczekujacy");
 
+
+        Cart newCart = new Cart();                                                              //utworzenie nowej karty dla uzytklownika oraz przypisanie
+
+
+
         orderService.addNewOrder(order);
+        user.setCart(newCart);
+        userService.saveUser(user);
 
         //return "redirect:/checkout?cartId="+cartId;
         return "redirect:/cart/"+cartId;

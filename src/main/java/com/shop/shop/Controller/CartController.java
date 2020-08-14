@@ -54,6 +54,7 @@ public class CartController {
         }
 
         model.addAttribute("cart", cartService.getCartById(cartId).getCartItems());
+        model.addAttribute("cart_id", cartService.getCartById(cartId));
         return "cart";
     }
 

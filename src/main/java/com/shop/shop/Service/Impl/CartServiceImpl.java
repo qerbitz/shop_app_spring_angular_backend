@@ -13,6 +13,11 @@ public class CartServiceImpl implements CartService {
     CartRepository cartRepository;
 
     @Override
+    public void addCart(Cart cart) {
+        cartRepository.save(cart);
+    }
+
+    @Override
     public Cart getCartById(int cartId) {
         return cartRepository.getOne(cartId);
     }

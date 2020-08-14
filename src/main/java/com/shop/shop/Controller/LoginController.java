@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 public class LoginController {
 
     @GetMapping("/showLoginPage")
-    public String showLoginPage(Model model){
+    public String showLoginPage(){
         return "login";
     }
 

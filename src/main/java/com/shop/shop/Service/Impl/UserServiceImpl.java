@@ -4,6 +4,7 @@ import com.shop.shop.Entity.Authorities;
 import com.shop.shop.Entity.Cart;
 import com.shop.shop.Entity.User;
 import com.shop.shop.Repositories.AuthoritiesRepository;
+import com.shop.shop.Repositories.CartRepository;
 import com.shop.shop.Repositories.UserRepository;
 import com.shop.shop.Service.Interface.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class UserServiceImpl implements UserService {
     AuthoritiesRepository authoritiesRepository;
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    @Autowired
+    CartRepository cartRepository;
+
     @Override
     public void saveUser(User user) {
         StringBuilder password = new StringBuilder("{bcrypt}").append(passwordEncoder.encode(user.getPassword()));
@@ -29,7 +33,6 @@ public class UserServiceImpl implements UserService {
         user.setEnabled(1);
 
         Cart cart = new Cart();
-        cart.setId_cart(2);
         user.setCart(cart);
 
 
@@ -38,6 +41,7 @@ public class UserServiceImpl implements UserService {
         authorities.setAuthority("Customer");
 
 
+        cartRepository.save(cart);
         userRepository.save(user);
         authoritiesRepository.save(authorities);
     }
