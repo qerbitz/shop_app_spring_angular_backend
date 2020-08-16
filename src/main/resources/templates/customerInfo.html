@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <title>Save Employee</title>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h3>Employee Directory</h3>
+    <hr>
+
+    <p class="h4 mb-4">Save Employee</p>
+
+    <form action="#" th:action="@{/order/showFormForUpdate}"
+          th:object="${user}" method="GET">
+
+        <!-- Add hidden form field to handle update -->
+        <input type="hidden" th:field="*{phone}" />
+
+        <input type="text" th:field="*{username}"
+               class="form-control mb-4 col-4" placeholder="Login">
+
+        <input type="text" th:field="*{name}"
+               class="form-control mb-4 col-4" placeholder="Imie">
+
+        <input type="text" th:field="*{surname}"
+               class="form-control mb-4 col-4" placeholder="Nazwisko">
+
+        <input type="text" th:field="*{e_mail}"
+               class="form-control mb-4 col-4" placeholder="Email">
+
+        <input type="text" th:field="*{phone}"
+               class="form-control mb-4 col-4" placeholder="Telefon">
+
+        <input type="text" th:field="*{adress.voivodeship}"
+               class="form-control mb-4 col-4" placeholder="Wojewodztwo">
+
+        <input type="text" th:field="*{adress.place}"
+               class="form-control mb-4 col-4" placeholder="Miejscowosc">
+
+        <input type="text" th:field="*{adress.street}"
+               class="form-control mb-4 col-4" placeholder="Ulica">
+
+        <input type="text" th:field="*{adress.nr_house}"
+               class="form-control mb-4 col-4" placeholder="Nr domu">
+
+        <input type="text" th:field="*{adress.zip_code}"
+               class="form-control mb-4 col-4" placeholder="Kod pocztowy">
+
+        <button type="submit" class="btn btn-info col-2">Save</button>
+
+    </form>
+
+    <hr>
+    <a th:href="@{/cart}">Back to Cart</a>
+
+</div>
+</body>
+
+</html>

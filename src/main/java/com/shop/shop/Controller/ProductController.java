@@ -1,8 +1,12 @@
 package com.shop.shop.Controller;
 
+import com.shop.shop.Entity.Cart;
 import com.shop.shop.Entity.Product;
+import com.shop.shop.Entity.User;
+import com.shop.shop.Service.Interface.CartService;
 import com.shop.shop.Service.Interface.CategoryService;
 import com.shop.shop.Service.Interface.ProductService;
+import com.shop.shop.Service.Interface.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,12 +27,24 @@ public class ProductController {
     ProductService productService;
     @Autowired
     CategoryService categoryService;
+    @Autowired
+    UserService userService;
+    @Autowired
+    CartService cartService;
+
+
 
     @RequestMapping("/productList")
     public String productList(Model model) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getUserByUsername(authentication.getName());
+        int cartId = user.getCart().getId_cart();
+
         model.addAttribute("productList", productService.getListOfProducts());
         model.addAttribute("categoryList", categoryService.getListOfCategories());
+        model.addAttribute("quantity", cartService.getQuantityofCart(cartId));
+        model.addAttribute("total", cartService.getTotalPrice(cartId));
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return "products";
@@ -38,8 +54,13 @@ public class ProductController {
     @PostMapping("/products_search")
     public String products_search(@RequestParam("value") String value, Model model){
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getUserByUsername(authentication.getName());
+        int cartId = user.getCart().getId_cart();
+
         model.addAttribute("productList", productService.getListOfProductsByName(value));
         model.addAttribute("categoryList", categoryService.getListOfCategories());
+        model.addAttribute("quantity", cartService.getQuantityofCart(cartId));
 
         return "products";
     }
@@ -48,14 +69,23 @@ public class ProductController {
     @GetMapping("/products_category")
     public String products_category(@RequestParam("values") int values, Model model){
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getUserByUsername(authentication.getName());
+        int cartId = user.getCart().getId_cart();
+
         model.addAttribute("productList", productService.getListOfProductsByCategory(values));
         model.addAttribute("categoryList", categoryService.getListOfCategories());
+        model.addAttribute("quantity", cartService.getQuantityofCart(cartId));
 
         return "products";
     }
 
     @PostMapping("/products_sort")
     public String products_sort(@RequestParam("option") int option, Model model){
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getUserByUsername(authentication.getName());
+        int cartId = user.getCart().getId_cart();
 
         List<Product> productList = new ArrayList<>();
 
@@ -71,6 +101,7 @@ public class ProductController {
 
         model.addAttribute("productList", productList);
         model.addAttribute("categoryList", categoryService.getListOfCategories());
+        model.addAttribute("quantity", cartService.getQuantityofCart(cartId));
         return "products";
     }
 

@@ -1,6 +1,8 @@
 package com.shop.shop.Controller;
 
+import com.shop.shop.Entity.Adress;
 import com.shop.shop.Entity.User;
+import com.shop.shop.Repositories.AdressRepository;
 import com.shop.shop.Service.Interface.UserService;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;

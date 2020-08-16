@@ -14,8 +14,6 @@ public class User {
     private String username;
 
     @Column(name = "password")
-
-
     private String password;
 
     @Column(name = "name")
@@ -37,11 +35,22 @@ public class User {
     @JoinColumn(name = "id_cart", nullable = false)
     private Cart cart;
 
-    //@OneToOne
-    //@JoinColumn(name = "id_adress", nullable = false)
-    // private Adress id_adress;
+    @OneToOne
+    @JoinColumn(name = "id_adress", nullable = false)
+    private Adress adress;
 
 
+    public User(@NotNull String username, String password, String name, String surname, String phone, String e_mail, int enabled, Cart cart, Adress adress) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.surname = surname;
+        this.phone = phone;
+        this.e_mail = e_mail;
+        this.enabled = enabled;
+        this.cart = cart;
+        this.adress = adress;
+    }
 
     public User() {
     }
@@ -109,5 +118,13 @@ public class User {
 
     public void setCart(Cart cart) {
         this.cart = cart;
+    }
+
+    public Adress getAdress() {
+        return adress;
+    }
+
+    public void setAdress(Adress adress) {
+        this.adress = adress;
     }
 }

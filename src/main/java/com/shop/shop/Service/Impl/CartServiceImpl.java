@@ -21,4 +21,21 @@ public class CartServiceImpl implements CartService {
     public Cart getCartById(int cartId) {
         return cartRepository.getOne(cartId);
     }
+
+    @Override
+    public int getQuantityofCart(int cartId) {
+        return cartRepository.getQuantityofCart(cartId);
+    }
+
+    @Override
+    public Double getTotalPrice(int cartId) {
+
+        if(cartRepository.getTotalPrice(cartId)==null)
+        {
+            return 0.0;
+        }else
+        {
+            return cartRepository.getTotalPrice(cartId);
+        }
+    }
 }

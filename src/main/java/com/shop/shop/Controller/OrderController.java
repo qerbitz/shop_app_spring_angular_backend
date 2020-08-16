@@ -10,8 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -50,13 +53,26 @@ public class OrderController {
 
 
 
-        orderService.addNewOrder(order);
-        user.setCart(newCart);
-        userService.saveUser(user);
+        //orderService.addNewOrder(order);
+        //user.setCart(newCart);
+        //userService.saveUser(user);
 
-        //return "redirect:/checkout?cartId="+cartId;
-        return "redirect:/cart/"+cartId;
+        return "redirect:/order/showFormForUpdate";
 
+    }
+
+
+    @GetMapping("/showFormForUpdate")
+    public String showFormForUpdate(Model theModel) {
+
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getUserByUsername(authentication.getName());
+
+        theModel.addAttribute("user", user);
+
+
+        return "customerInfo";
     }
 
     public Date convertDate(LocalDate dateToConvert) {
