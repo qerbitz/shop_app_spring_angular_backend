@@ -57,4 +57,14 @@ public class Cart {
     public void setGrandTotal(double grandTotal) {
         this.grandTotal = grandTotal;
     }
+
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "id_cart=" + id_cart +
+                ", cartItems=" + cartItems +
+                ", user=" + user +
+                ", grandTotal=" + grandTotal +
+                '}';
+    }
 }

@@ -85,4 +85,16 @@ public class Adress {
     public void setZip_code(String zip_code) {
         this.zip_code = zip_code;
     }
+
+    @Override
+    public String toString() {
+        return "Adress{" +
+                "id_adress=" + id_adress +
+                ", place='" + place + '\'' +
+                ", voivodeship='" + voivodeship + '\'' +
+                ", street='" + street + '\'' +
+                ", nr_house='" + nr_house + '\'' +
+                ", zip_code='" + zip_code + '\'' +
+                '}';
+    }
 }

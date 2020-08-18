@@ -55,6 +55,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void updateUser(User user) {
+
+        adressRepository.save(user.getAdress());
+        userRepository.save(user);
+    }
+
+    @Override
     public boolean checkUniqueness(String username) {
         Optional<User> xdd = userRepository.findByUsername(username);
         if (xdd.isPresent()) {

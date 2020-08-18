@@ -11,10 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -32,38 +29,9 @@ public class OrderController {
     @Autowired
     UserService userService;
 
-    @RequestMapping("/newOrder/{cartId}")
-    public String createOrder(@PathVariable("cartId") int cartId) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();         //pobranie autentykacji
-
-        Cart cart = cartService.getCartById(cartId);                                                    //pobranie obecnej karty
-
-        Order order = new Order();
-
-        User user = userService.getUserByUsername(authentication.getName());
-
-        order.setCart(cart);
-        order.setUser(user);
-        order.setOrderDate(convertDate(LocalDate.now()));
-        order.setStatus("Oczekujacy");
-
-
-        Cart newCart = new Cart();                                                              //utworzenie nowej karty dla uzytklownika oraz przypisanie
-
-
-
-        //orderService.addNewOrder(order);
-        //user.setCart(newCart);
-        //userService.saveUser(user);
-
-        return "redirect:/order/showFormForUpdate";
-
-    }
-
-
-    @GetMapping("/showFormForUpdate")
-    public String showFormForUpdate(Model theModel) {
+    @GetMapping("/showUserDetails")
+    public String showUserDetails(Model theModel) {
 
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -74,6 +42,55 @@ public class OrderController {
 
         return "customerInfo";
     }
+
+    @RequestMapping(value = "/createOrder", method = RequestMethod.POST)
+    public String createOrder(@ModelAttribute("user") User user, Model theModel){
+
+        userService.updateUser(user);
+
+        Cart cart = cartService.getCartById(user.getCart().getId_cart());
+
+        Order order = new Order();
+
+        order.setCart(cart);
+        order.setUser(user);
+        order.setOrderDate(convertDate(LocalDate.now()));
+        order.setStatus("Oczekujacy");
+
+
+        theModel.addAttribute("order", order);
+        theModel.addAttribute("user", user);
+        theModel.addAttribute("cart", cartService.getCartById(user.getCart().getId_cart()).getCartItems());
+        theModel.addAttribute("total",cartService.getTotalPrice(user.getCart().getId_cart()));
+
+
+        return "orderConfirmation";
+    }
+
+    @RequestMapping(value = "/confirmOrder", method = RequestMethod.POST)
+    public String confirmOrder(){
+
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getUserByUsername(authentication.getName());
+        Cart cart = cartService.getCartById(user.getCart().getId_cart());   
+
+        Order order = new Order();
+        order.setCart(cart);
+        order.setUser(user);
+        order.setOrderDate(convertDate(LocalDate.now()));
+        order.setStatus("Oczekujacy");
+
+        orderService.addNewOrder(order);
+        Cart newCart = new Cart();
+        user.setCart(newCart);
+        cartService.addCart(newCart);
+        userService.updateUser(user);
+
+        return "redirect:/product/productList";
+    }
+
+
 
     public Date convertDate(LocalDate dateToConvert) {
         return java.sql.Date.valueOf(dateToConvert);

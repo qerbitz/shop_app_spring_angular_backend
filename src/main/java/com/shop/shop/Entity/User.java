@@ -127,4 +127,19 @@ public class User {
     public void setAdress(Adress adress) {
         this.adress = adress;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", phone='" + phone + '\'' +
+                ", e_mail='" + e_mail + '\'' +
+                ", enabled=" + enabled +
+                ", cart=" + cart +
+                ", adress=" + adress +
+                '}';
+    }
 }

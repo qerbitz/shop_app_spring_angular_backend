@@ -21,11 +21,13 @@
 
     <p class="h4 mb-4">Save Employee</p>
 
-    <form action="#" th:action="@{/order/showFormForUpdate}"
-          th:object="${user}" method="GET">
+    <form action="#" th:action="@{/order/createOrder}"
+          th:object="${user}" method="POST" modelAttribute="user">
 
         <!-- Add hidden form field to handle update -->
-        <input type="hidden" th:field="*{phone}" />
+        <input type="hidden" th:field="*{adress.id_adress}" />
+        <input type="hidden" th:field="*{cart.id_cart}" />
+        <input type="hidden" th:field="*{password}" />
 
         <input type="text" th:field="*{username}"
                class="form-control mb-4 col-4" placeholder="Login">

@@ -46,7 +46,6 @@ public class ProductController {
         model.addAttribute("quantity", cartService.getQuantityofCart(cartId));
         model.addAttribute("total", cartService.getTotalPrice(cartId));
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return "products";
     }
 
