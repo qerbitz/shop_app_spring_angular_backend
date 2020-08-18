@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<table border="1">
+    <tr>
+        <th>Id order</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Total Price</th>
+        <th>Details</th>
+    </tr>
+    <tr th:each="order: ${orders_list}">
+        <td th:text="${order.id_order}"></td>
+        <td th:text="${order.getOrderDate()}"></td>
+        <td th:text="${order.getStatus()}"></td>
+        <td>
+            <a th:href="@{/order/detailsOrder/{id_cart}(id_cart=${order.cart.id_cart})}">Details</a>
+        </td>
+        <th>Grand Total</th>
+    </tr>
+</table>
+
+</body>
+</html>

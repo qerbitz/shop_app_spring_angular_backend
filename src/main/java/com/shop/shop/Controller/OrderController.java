@@ -73,7 +73,7 @@ public class OrderController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getUserByUsername(authentication.getName());
-        Cart cart = cartService.getCartById(user.getCart().getId_cart());   
+        Cart cart = cartService.getCartById(user.getCart().getId_cart());
 
         Order order = new Order();
         order.setCart(cart);
@@ -87,7 +87,31 @@ public class OrderController {
         cartService.addCart(newCart);
         userService.updateUser(user);
 
+
         return "redirect:/product/productList";
+    }
+
+    @RequestMapping(value = "/allOrders", method = RequestMethod.GET)
+    public String allOrders(Model theModel){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        theModel.addAttribute("orders_list",orderService.getAllOrdersByUser(userService.getUserByUsername("Zarejestruj")));
+        return "ordersList";
+    }
+
+    @RequestMapping(value = "/detailsOrder/{cartId}", method = RequestMethod.GET)
+    public String detailsOrder(@PathVariable(value = "cartId") int cartId, Model theModel){
+
+
+        //if(cartId!=cartId)
+        //{
+        //    return "redirect:/order/detailsOrder/"+cartId;
+        //}
+
+
+        theModel.addAttribute("cart", cartService.getCartById(cartId).getCartItems());
+
+        return "orderDetails";
     }
 
 

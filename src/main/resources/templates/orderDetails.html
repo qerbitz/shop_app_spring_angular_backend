@@ -1,0 +1,29 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <title>xddd</title>
+</head>
+<body>
+    <h3>details info</h3>
+    <table border="1">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Total Price</th>
+            <th>Quantity</th>
+        </tr>
+        <tr th:each="item: ${cart}">
+            <td th:text="${item.getProduct().getId_product()}"></td>
+            <td th:text="${item.getProduct().getName()}"></td>
+            <td th:text="${item.getProduct().getPrice()}"></td>
+            <td th:text="${item.getTotal_price()}"></td>
+            <td th:text="${item.getQuantity()}"></td>
+            <th>Grand Total</th>
+        </tr>
+    </table>
+    <br>
+    <a href="/product/productList">Continue Shopping</a>
+</body>
