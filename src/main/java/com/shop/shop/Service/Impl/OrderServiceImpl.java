@@ -34,4 +34,9 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.getAllByUser(user);
     }
 
+    @Override
+    public Order getOrderById(int id_order) {
+        return orderRepository.getOne(id_order);
+    }
+
 }

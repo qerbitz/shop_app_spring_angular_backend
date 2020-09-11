@@ -1,12 +1,11 @@
 package com.shop.shop.Controller;
 
-import com.shop.shop.Entity.Cart;
+import com.shop.shop.Algorithm.Weka;
+import com.shop.shop.Entity.CartItem;
+import com.shop.shop.Entity.Order;
 import com.shop.shop.Entity.Product;
 import com.shop.shop.Entity.User;
-import com.shop.shop.Service.Interface.CartService;
-import com.shop.shop.Service.Interface.CategoryService;
-import com.shop.shop.Service.Interface.ProductService;
-import com.shop.shop.Service.Interface.UserService;
+import com.shop.shop.Service.Interface.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,7 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +34,25 @@ public class ProductController {
     @Autowired
     CartService cartService;
 
+    @Autowired
+    OrderService orderService;
+
+    Weka weka = new Weka();
+
+
+    @RequestMapping("/test")
+    public String test(Model model) throws Exception {
+
+        model.addAttribute("categoryList", categoryService.getListOfCategories());
+        model.addAttribute("productList", productService.getListOfProducts());
+        String wynik = weka.Apriori("1");
+
+        OrderController orderController = new OrderController();
+
+       // orderController.appendToApriori(orderService.getOrderById(1));
+
+        return "index";
+    }
 
 
     @RequestMapping("/productList")
@@ -46,7 +67,7 @@ public class ProductController {
         model.addAttribute("quantity", cartService.getQuantityofCart(cartId));
         model.addAttribute("total", cartService.getTotalPrice(cartId));
 
-        return "products";
+        return "product/products";
     }
 
 
@@ -61,7 +82,7 @@ public class ProductController {
         model.addAttribute("categoryList", categoryService.getListOfCategories());
         model.addAttribute("quantity", cartService.getQuantityofCart(cartId));
 
-        return "products";
+        return "product/products";
     }
 
 
@@ -76,7 +97,7 @@ public class ProductController {
         model.addAttribute("categoryList", categoryService.getListOfCategories());
         model.addAttribute("quantity", cartService.getQuantityofCart(cartId));
 
-        return "products";
+        return "product/products";
     }
 
     @PostMapping("/products_sort")
@@ -101,15 +122,15 @@ public class ProductController {
         model.addAttribute("productList", productList);
         model.addAttribute("categoryList", categoryService.getListOfCategories());
         model.addAttribute("quantity", cartService.getQuantityofCart(cartId));
-        return "products";
+        return "product/products";
     }
 
-    @RequestMapping("/viewProduct/{productId}")
+    @GetMapping("/viewProduct/{productId}")
     public String viewProduct(@PathVariable int productId, Model model) throws IOException {
         Product product = productService.getProductById(productId);
         model.addAttribute("product", product);
 
-        return "viewProduct";
+        return "product/viewProduct";
     }
 
 }

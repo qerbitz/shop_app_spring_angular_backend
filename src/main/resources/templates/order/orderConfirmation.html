@@ -21,7 +21,7 @@
                             <div class="col-xs-6 col-sm-6 col-md-6">
                                     <strong>Address</strong><br>
                                 <a th:text="${order.user.adress.place}"></a><br>
-                                <a th:text="${order.user.adress.street}"></a><br>
+                                <a th:text="${order.user.adress.street}"></a><br> 
                             </div>
                             <div class="col-xs-6 col-sm-6 col-md-6 text-right">
                                 <!--     <p>Shipping Date: <fmt:formatDate value="${now}" type="date" /> </p>-->
@@ -64,7 +64,7 @@
                 <input type="hidden" name="_flowExecutionKey" />
                 <br>
 
-            <form action="#" th:action="@{/order/confirmOrder}"
+            <form action="#" th:action="@{/order/confirmOrder(order2=${order})}"
                   method="POST">
                 <div class="col-lg-8 col-lg-offset-2 text-center">
                     <button class="btn btn-info" name="_eventId_backToCollectShippingDetail">Back</button>

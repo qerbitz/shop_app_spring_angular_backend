@@ -20,7 +20,7 @@
         <td th:text="${order.getOrderDate()}"></td>
         <td th:text="${order.getStatus()}"></td>
         <td>
-            <a th:href="@{/order/detailsOrder/{id_cart}(id_cart=${order.cart.id_cart})}">Details</a>
+            <a th:href="@{/order/detailsOrder/{id_cart}(id_cart=${order.cart.id_cart},orderId=${order.id_order})}">Details</a>
         </td>
         <th>Grand Total</th>
     </tr>

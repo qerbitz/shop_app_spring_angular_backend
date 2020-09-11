@@ -1,8 +1,6 @@
 package com.shop.shop.Controller;
 
-import com.shop.shop.Entity.Adress;
 import com.shop.shop.Entity.User;
-import com.shop.shop.Repositories.AdressRepository;
 import com.shop.shop.Service.Interface.UserService;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +28,7 @@ public class RegistrationController {
         User user = new User();
         model.addAttribute("user", user);
 
-        return "registration";
+        return "registration/registration_form";
     }
 
     @PostMapping("/processRegistration")
@@ -47,18 +45,24 @@ public class RegistrationController {
         }
         else{
             userService.saveUser(user);
-            return "goodregistery";
+            return "registration/goodregistery";
         }
 
 
-        return "registration";
+        return "registration/registration_form";
     }
 
     @GetMapping("/good_registery")
-    public String GoodRegistration(Model theModel){
-        return "goodregistery";
+    public String good_registery(Model theModel){
+        return "registration/goodregistery";
     }
 
+
+    /**
+     *
+     * @param email sprawdza czy podany przez użytkownika e-mail jest poprawny, jest to zabezpieczenie antybotowe
+     * @return
+     */
     public static boolean isValidEmail(String email) {
         EmailValidator validator = EmailValidator.getInstance();
 

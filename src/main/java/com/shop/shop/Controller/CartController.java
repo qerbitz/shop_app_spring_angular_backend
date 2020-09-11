@@ -42,7 +42,8 @@ public class CartController {
         return "redirect:/cart/"+cartId;
     }
 
-    @RequestMapping(value="/{cartId}", method = RequestMethod.GET)
+
+    @GetMapping("/{cartId}")
     public String getCart(@PathVariable(value = "cartId") int cartId, Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -55,7 +56,7 @@ public class CartController {
 
         model.addAttribute("cart", cartService.getCartById(cartId).getCartItems());
         model.addAttribute("cart_id", cartService.getCartById(cartId));
-        return "cart";
+        return "cart/cart";
     }
 
 
@@ -64,7 +65,7 @@ public class CartController {
         return cartService.getCartById(cartId);
     }
 
-    @RequestMapping(value = "/add/{id_product}", method = RequestMethod.GET)
+    @GetMapping("/add/{id_product}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void addItem (@PathVariable(value = "id_product") String id_product) {
 
@@ -96,7 +97,7 @@ public class CartController {
 
     }
 
-    @RequestMapping(value = "/remove/{id_product}", method = RequestMethod.GET)
+    @GetMapping("/remove/{id_product}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void removeItem(@PathVariable(value = "id_product") int id_product) {
         Product product = new Product();
@@ -114,7 +115,7 @@ public class CartController {
 
     }
 
-    @RequestMapping(value = "/clear/{cartId}", method = RequestMethod.GET)
+    @GetMapping("/clear/{cartId}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void clearCart(@PathVariable(value = "cartId") String cartId) {
         int zmiana = Integer.parseInt(cartId);
