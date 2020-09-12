@@ -21,6 +21,8 @@ public interface ProductService {
 
     List<Product> getListOfProductOrderByPriceDesc();
 
+    List<Product> getListOfProductsOrderBySaleDesc();
+
     List<Product> getListOfProductByPriceBetween(int price_min, int price_max);
 
     Product getProductById(int id);

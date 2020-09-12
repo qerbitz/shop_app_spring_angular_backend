@@ -6,6 +6,7 @@ import com.shop.shop.Service.Interface.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -47,6 +48,17 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getListOfProductOrderByPriceDesc() {
         return productRepository.findAllByOrderByPriceDesc();
+    }
+
+    @Override
+    public List<Product> getListOfProductsOrderBySaleDesc() {
+        List<Product> productList = new ArrayList<>();
+
+        for(Object[] obj: productRepository.findAllBySaleDesc()){
+            String product = String.valueOf(obj[0]);
+            productList.add(productRepository.getOne(Integer.parseInt(product)));
+        }
+        return productList;
     }
 
     @Override

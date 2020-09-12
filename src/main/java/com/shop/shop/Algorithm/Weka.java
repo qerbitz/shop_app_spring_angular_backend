@@ -7,14 +7,17 @@ import weka.associations.Item;
 import weka.core.Instances;
 import weka.core.Utils;
 
-import java.io.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 public class Weka {
 
-    public String Apriori(String danie) throws Exception {
+
+    public List<Integer> Apriori(String product_name) throws Exception {
+
+        List<Integer> id_products_list = new ArrayList<>();
 
         StringBuilder recommendedProduct = new StringBuilder();
 
@@ -25,7 +28,7 @@ public class Weka {
         //Opcje liczenia regul asocjacyjnych
         //-N ->Liczba regul do policzenia (standardowo: 10)
         //-C ->Minmalna ufnosc reguly (standardowo: 0.9).
-        String[] options = Utils.splitOptions("-N 10 -C 0.6");
+        String[] options = Utils.splitOptions("-N 40 -C 0.6");
         Apriori apriori = new Apriori();
         apriori.setOptions(options);
         apriori.buildAssociations(data); //Generowanie regul asocjacyjnych
@@ -62,31 +65,42 @@ public class Weka {
             double ufnosc = (double) wsparcieCalosci / wsparciePoprzednika;
 
 
+            String first = poprzednikText;
+            String second = nastepnikText;
 
-            String xd2 = poprzednikText;
-            String xd3 = nastepnikText;
+            int id_product1 = 0;
+            int id_product2 = 0;
 
+            if (first.matches(".product.*=" + product_name + ".*")) {
 
-               // if(xd2.matches(".ubranie=" + danie+".*")){
-                    recommendedProduct.append(poprzednikText);
-                    recommendedProduct.append("=>");
-                    recommendedProduct.append(nastepnikText);
-                    recommendedProduct.append(", ");
-                    recommendedProduct.append("Wsparcie:");
-                    recommendedProduct.append(wsparcieCalosci);
-                    recommendedProduct.append(", ");
-                    recommendedProduct.append("Ufnosc:");
-                    recommendedProduct.append(ufnosc);
-                    recommendedProduct.append("\n");
-                    recommendedProduct.append("\n");
-                    recommendedProduct.append("\n");
-               // }
-
-
+                id_product1 = Integer.parseInt(first.substring(first.length() - 2, first.length() - 1));
+                id_product2 = Integer.parseInt(second.substring(second.length() - 2, second.length() - 1));
+                if (!id_products_list.contains(id_product1) ) {
+                    id_products_list.add(id_product1);
+                }
+                if (!id_products_list.contains(id_product2) ) {
+                    id_products_list.add(id_product2);
+                }
             }
-        System.out.println(recommendedProduct.toString());
+            if (second.matches(".product.*=" + product_name + ".*")) {
 
-        return "1";
+                id_product1 = Integer.parseInt(first.substring(first.length() - 2, first.length() - 1));
+                id_product2 = Integer.parseInt(second.substring(second.length() - 2, second.length() - 1));
+                if (!id_products_list.contains(id_product1) ) {
+                    id_products_list.add(id_product1);
+                }
+                if (!id_products_list.contains(id_product2) ) {
+                    id_products_list.add(id_product2);
+                }
+            }
+
+            //System.out.println(poprzednikText + "=>" + nastepnikText);
+
+
+
+        }
+        System.out.println(recommendedProduct.toString());
+        return id_products_list;
     }
 
 }

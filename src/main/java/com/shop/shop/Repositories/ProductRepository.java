@@ -39,4 +39,17 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     )
     List<Product> findAllByPriceBetween(@Param("price_min")int price_min, @Param("price_max")int price_max);
 
+    //Wyszukanie najpopularniejszych produktow(Najwiecej sprzedanych) od najpopularniejszego
+    @Query(
+            value= "select p.id_product, p.name, count(*) as counter" +
+                    " from orders o, cart_item ct, cart c, product p" +
+                    " where o.id_cart=c.id_cart" +
+                    " and c.id_cart=ct.id_cart" +
+                    " and p.id_product=ct.id_product" +
+                    " group by p.name" +
+                    " order by counter desc",
+            nativeQuery = true
+    )
+    List<Object[]> findAllBySaleDesc();
+
 }

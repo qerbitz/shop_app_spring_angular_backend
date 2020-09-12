@@ -45,11 +45,15 @@ public class ProductController {
 
         model.addAttribute("categoryList", categoryService.getListOfCategories());
         model.addAttribute("productList", productService.getListOfProducts());
-        String wynik = weka.Apriori("1");
+        List<Integer> listRecommended = weka.Apriori("4");
 
-        OrderController orderController = new OrderController();
-
-       // orderController.appendToApriori(orderService.getOrderById(1));
+        List<Product> listRecommendedProducts = new ArrayList<>();
+        for(int i=0; i<listRecommended.size(); i++){
+            listRecommendedProducts.add(productService.getProductById(i+1));
+        }
+        System.out.println(listRecommended);
+        System.out.println(listRecommendedProducts.get(0).getName());
+        System.out.println(listRecommendedProducts.get(1).getName());
 
         return "index";
     }
@@ -117,6 +121,8 @@ public class ProductController {
             case 3: productList = productService.getListOfProductsOrderByNameAsc();
             break;
             case 4: productList = productService.getListOfProductsOrderByNameDesc();
+            break;
+            case 5: productList = productService.getListOfProductsOrderBySaleDesc();
         }
 
         model.addAttribute("productList", productList);

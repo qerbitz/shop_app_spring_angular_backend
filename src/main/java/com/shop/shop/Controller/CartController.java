@@ -69,13 +69,13 @@ public class CartController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void addItem (@PathVariable(value = "id_product") String id_product) {
 
-        int produkcik = Integer.parseInt(id_product);
+        int ajdi = Integer.parseInt(id_product);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         User user = userService.getUserByUsername(authentication.getName());
         Cart cart = user.getCart();
 
-        Product product = productService.getProductById(produkcik);
+        Product product = productService.getProductById(ajdi);
         List<CartItem> cartItems = cart.getCartItems();
 
         for (int i=0; i<cartItems.size(); i++) {
@@ -94,6 +94,9 @@ public class CartController {
         cartItem.setTotal_price(product.getPrice()*cartItem.getQuantity());
         cartItem.setCart(cart);
         cartItemService.addCartItem(cartItem);
+
+
+
 
     }
 
