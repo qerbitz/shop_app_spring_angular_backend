@@ -20,9 +20,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Controller
 @RequestMapping("/order")
@@ -49,7 +47,7 @@ public class OrderController {
         theModel.addAttribute("user", user);
 
 
-        return "customerInfo";
+        return "order/customerInfo";
     }
 
     @PostMapping("/createOrder")
@@ -72,7 +70,7 @@ public class OrderController {
         theModel.addAttribute("total",cartService.getTotalPrice(user.getCart().getId_cart()));
 
 
-        return "orderConfirmation";
+        return "order/orderConfirmation";
     }
 
     @PostMapping("/confirmOrder")
@@ -108,7 +106,7 @@ public class OrderController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         theModel.addAttribute("orders_list",orderService.getAllOrdersByUser(userService.getUserByUsername("najnowszy")));
-        return "ordersList";
+        return "order/ordersList";
     }
 
     @GetMapping("/detailsOrder/{cartId}")
@@ -126,7 +124,7 @@ public class OrderController {
 
         theModel.addAttribute("cart", cartService.getCartById(cartId).getCartItems());
 
-        return "orderDetails";
+        return "order/orderDetails";
     }
 
 

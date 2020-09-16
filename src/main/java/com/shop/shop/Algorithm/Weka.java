@@ -33,7 +33,7 @@ public class Weka {
         apriori.setOptions(options);
         apriori.buildAssociations(data); //Generowanie regul asocjacyjnych
 
-        System.out.println("Liczba regul=" + apriori.getNumRules());
+        //System.out.println("Liczba regul=" + apriori.getNumRules());
 
         AssociationRules rules = apriori.getAssociationRules();
         List<AssociationRule> ruleList = rules.getRules();
@@ -99,7 +99,13 @@ public class Weka {
 
 
         }
-        System.out.println(recommendedProduct.toString());
+
+        for(int i=0; i<id_products_list.size(); i++){
+            if(id_products_list.get(i)==Integer.parseInt(product_name)){
+                id_products_list.remove(i);
+            }
+        }
+
         return id_products_list;
     }
 

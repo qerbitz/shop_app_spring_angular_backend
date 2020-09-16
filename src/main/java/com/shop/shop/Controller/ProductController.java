@@ -1,8 +1,6 @@
 package com.shop.shop.Controller;
 
 import com.shop.shop.Algorithm.Weka;
-import com.shop.shop.Entity.CartItem;
-import com.shop.shop.Entity.Order;
 import com.shop.shop.Entity.Product;
 import com.shop.shop.Entity.User;
 import com.shop.shop.Service.Interface.*;
@@ -13,10 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +35,21 @@ public class ProductController {
 
 
     @GetMapping("/test")
-    public String test(@RequestParam("id_product") String id_product, Model model) throws Exception {
+    public String test(Model model) {
+
+
+        model.addAttribute("categoryList", categoryService.getListOfCategories());
+        model.addAttribute("productList", productService.getListOfProducts());
+        return "product/products";
+    }
+
+
+    @RequestMapping("/productList")
+    public String productList(@RequestParam(value= "id_product", required = false) String id_product, Model model) throws Exception {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getUserByUsername(authentication.getName());
+        int cartId = user.getCart().getId_cart();
 
         List<Integer> listRecommended = weka.Apriori(id_product);
 
@@ -50,23 +58,9 @@ public class ProductController {
             listRecommendedProducts.add(productService.getProductById(listRecommended.get(i)));
         }
 
-        model.addAttribute("categoryList", categoryService.getListOfCategories());
-        model.addAttribute("productList", productService.getListOfProducts());
-        model.addAttribute("recommendedList",listRecommendedProducts);
-
-        return "product/products";
-    }
-
-
-    @RequestMapping("/productList")
-    public String productList(Model model) {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getUserByUsername(authentication.getName());
-        int cartId = user.getCart().getId_cart();
-
         model.addAttribute("productList", productService.getListOfProducts());
         model.addAttribute("categoryList", categoryService.getListOfCategories());
+        model.addAttribute("recommendedList", listRecommendedProducts);
         model.addAttribute("quantity", cartService.getQuantityofCart(cartId));
         model.addAttribute("total", cartService.getTotalPrice(cartId));
 

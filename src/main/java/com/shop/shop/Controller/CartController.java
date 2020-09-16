@@ -7,7 +7,6 @@ import com.shop.shop.Service.Interface.CartService;
 import com.shop.shop.Service.Interface.ProductService;
 import com.shop.shop.Service.Interface.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -89,12 +88,17 @@ public class CartController {
                     cartItem.setQuantity(cartItem.getQuantity()+1);
                     cartItem.setTotal_price(product.getPrice()*cartItem.getQuantity());
                     cartItemService.addCartItem(cartItem);
-                    return null;
+
+
+                    redirectAttributes.addAttribute("id_product", id_product);
+                    return "redirect:/product/productList";
                 }
             }
             else {
                 System.out.println("Brak towaru");
-                return null;
+
+                redirectAttributes.addAttribute("id_product", id_product);
+                return "redirect:/product/productList";
             }
         }
 
@@ -117,7 +121,7 @@ public class CartController {
 
 
         redirectAttributes.addAttribute("id_product", id_product);
-        return "redirect:/product/test";
+        return "redirect:/product/productList";
     }
 
     @GetMapping("/remove/{id_product}")
