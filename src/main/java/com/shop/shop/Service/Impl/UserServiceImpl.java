@@ -57,6 +57,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(User user) {
 
+        user.setEnabled(1);
         adressRepository.save(user.getAdress());
         userRepository.save(user);
     }
