@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>xddd</title>
+    <title>nie gra cos</title>
 </head>
 <body>
     <h3>Cart info</h3>
@@ -23,7 +23,7 @@
             <td th:text="${item.getTotal_price()}"></td>
             <td th:text="${item.getQuantity()}"></td>
             <td>
-                <a th:href="@{/cart/remove/{id_product}(id_product=${item.getProduct().getId_product()})}">Buy now</a>
+                <a th:href="@{/cart/remove/{id_product}(id_product=${item.getProduct().getId_product()})}" onclick="refreshPage()">Buy now</a>
             </td>
             <th>Grand Total</th>
         </tr>
@@ -34,4 +34,6 @@
     <a th:href="@{/cart/clear/{cartId}(cartId=${cart_id.getId_cart()})}" class="btn btn-danger">Delete All</a>
     <br>
     <a th:href="@{/order/showUserDetails}" class="btn btn-danger">Zamow</a>
+
 </body>
+</html>

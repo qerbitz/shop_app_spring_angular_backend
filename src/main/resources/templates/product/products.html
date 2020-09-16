@@ -112,9 +112,33 @@
 									</table>
 									<h2>Duis aute irure dolor in reprehenderit in voluptate </h2>
 									<div class="price">19.22 $</div>
-									<a href="#" class="primary-btn">Add to cart</a>
+									<a th:href="@{/product/test}" class="primary-btn">Add to cart</a>
 								</div>
 							</div>
+
+							<div class="col-md-3">
+								<div class="product-box">
+									<a href="product-detail.html">
+									</a>
+									<table border="1">
+										<tr>
+											<th>Id</th>
+											<th>Name</th>
+											<th>Price</th>
+											<th>Buy</th>
+										</tr>
+										<tr th:each="product: ${recommendedList}">
+											<td th:text="${product.id_product}"></td>
+											<td th:text="${product.name}"></td>
+											<td th:text="${product.price}"></td>
+											<td>
+												<a th:href="@{/cart/add/{id_product}(id_product=${product.id_product})}">Buy now</a>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+
 
 
 

@@ -50,6 +50,8 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAllByOrderByPriceDesc();
     }
 
+
+    //Wyswietlanie produktow najpopularniejszych wobed sprzedazy malejaco
     @Override
     public List<Product> getListOfProductsOrderBySaleDesc() {
         List<Product> productList = new ArrayList<>();
@@ -71,5 +73,18 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.getOne(id);
     }
 
+
+    //Funkcja do zmiany ilosci produktow w asortymencie
+    @Override
+    public boolean changeQuantityOfProduct(Product product, int quantity) {
+        if(product.getQuantity()>0){
+            product.setQuantity(product.getQuantity()-quantity);
+            productRepository.save(product);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
 }

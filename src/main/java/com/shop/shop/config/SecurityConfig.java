@@ -23,7 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-           /* http.authorizeRequests()
+            http.authorizeRequests()
                     .antMatchers("/product/**").authenticated()
                     .antMatchers("/cart/**").authenticated()
                     .antMatchers("/order/**").authenticated()
@@ -31,13 +31,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .formLogin()
                         .loginPage("/login/showLoginPage")
                         .loginProcessingUrl("/authenticateTheUser")
+                        .defaultSuccessUrl("/product/productList")
                         .permitAll()
                     .and()
                     .logout()
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
                     .and()
-                    .exceptionHandling().accessDeniedPage("/login/showLoginPage");*/
+                    .exceptionHandling().accessDeniedPage("/login/showLoginPage");
     }
 
 }

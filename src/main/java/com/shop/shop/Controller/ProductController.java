@@ -40,22 +40,21 @@ public class ProductController {
     Weka weka = new Weka();
 
 
-    @RequestMapping("/test")
-    public String test(Model model) throws Exception {
+    @GetMapping("/test")
+    public String test(@RequestParam("id_product") String id_product, Model model) throws Exception {
 
-        model.addAttribute("categoryList", categoryService.getListOfCategories());
-        model.addAttribute("productList", productService.getListOfProducts());
-        List<Integer> listRecommended = weka.Apriori("4");
+        List<Integer> listRecommended = weka.Apriori(id_product);
 
         List<Product> listRecommendedProducts = new ArrayList<>();
         for(int i=0; i<listRecommended.size(); i++){
-            listRecommendedProducts.add(productService.getProductById(i+1));
+            listRecommendedProducts.add(productService.getProductById(listRecommended.get(i)));
         }
-        System.out.println(listRecommended);
-        System.out.println(listRecommendedProducts.get(0).getName());
-        System.out.println(listRecommendedProducts.get(1).getName());
 
-        return "index";
+        model.addAttribute("categoryList", categoryService.getListOfCategories());
+        model.addAttribute("productList", productService.getListOfProducts());
+        model.addAttribute("recommendedList",listRecommendedProducts);
+
+        return "product/products";
     }
 
 
@@ -132,7 +131,7 @@ public class ProductController {
     }
 
     @GetMapping("/viewProduct/{productId}")
-    public String viewProduct(@PathVariable int productId, Model model) throws IOException {
+    public String viewProduct(@PathVariable int productId, Model model){
         Product product = productService.getProductById(productId);
         model.addAttribute("product", product);
 

@@ -27,4 +27,6 @@ public interface ProductService {
 
     Product getProductById(int id);
 
+    boolean changeQuantityOfProduct(Product product, int quantity);
+
 }
