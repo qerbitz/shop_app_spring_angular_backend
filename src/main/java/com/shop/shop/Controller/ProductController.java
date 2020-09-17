@@ -1,9 +1,12 @@
 package com.shop.shop.Controller;
 
 import com.shop.shop.Algorithm.Weka;
+import com.shop.shop.Entity.CartItem;
+import com.shop.shop.Entity.Order;
 import com.shop.shop.Entity.Product;
 import com.shop.shop.Entity.User;
 import com.shop.shop.Service.Interface.*;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +44,7 @@ public class ProductController {
 
         model.addAttribute("categoryList", categoryService.getListOfCategories());
         model.addAttribute("productList", productService.getListOfProducts());
+
         return "product/products";
     }
 

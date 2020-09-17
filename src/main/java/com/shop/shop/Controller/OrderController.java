@@ -15,10 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -41,8 +38,7 @@ public class OrderController {
 
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //User user = userService.getUserByUsername(authentication.getName());
-        User user = userService.getUserByUsername("najnowszy");
+        User user = userService.getUserByUsername(authentication.getName());
 
         theModel.addAttribute("user", user);
 
@@ -51,7 +47,7 @@ public class OrderController {
     }
 
     @PostMapping("/createOrder")
-    public String createOrder(@ModelAttribute("user") User user, Model theModel, RedirectAttributes redirectAttributes){
+    public String createOrder(@ModelAttribute("user") User user, Model theModel){
 
         userService.updateUser(user);
 
@@ -74,12 +70,9 @@ public class OrderController {
     }
 
     @PostMapping("/confirmOrder")
-    public String confirmOrder(@ModelAttribute("order2") Order order) {
+    public String confirmOrder() throws IOException {
 
-        System.out.println(order.toString());
-
-
-       /* Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getUserByUsername(authentication.getName());
         Cart cart = cartService.getCartById(user.getCart().getId_cart());
 
@@ -93,9 +86,9 @@ public class OrderController {
         Cart newCart = new Cart();
         user.setCart(newCart);
         cartService.addCart(newCart);
-        userService.updateUser(user);*/
+        userService.updateUser(user);
 
-        //appendToApriori(order);
+        appendToApriori(order);
 
 
         return "redirect:/product/productList";
@@ -104,8 +97,9 @@ public class OrderController {
     @GetMapping("/allOrders")
     public String allOrders(Model theModel){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getUserByUsername(authentication.getName());
 
-        theModel.addAttribute("orders_list",orderService.getAllOrdersByUser(userService.getUserByUsername("najnowszy")));
+        theModel.addAttribute("orders_list",orderService.getAllOrdersByUser(userService.getUserByUsername(user.getUsername())));
         return "order/ordersList";
     }
 
@@ -120,24 +114,33 @@ public class OrderController {
             return "redirect:/order/detailsOrder/{cartId}";
         }
 
-
-
         theModel.addAttribute("cart", cartService.getCartById(cartId).getCartItems());
 
         return "order/orderDetails";
     }
 
-
-
     public Date convertDate(LocalDate dateToConvert) {
         return java.sql.Date.valueOf(dateToConvert);
     }
 
-    public void appendToApriori(Order order){
+    public void appendToApriori(Order order) throws IOException {
 
-        String word ="";
-        for(CartItem product : order.getCart().getCartItems()){
+        BufferedReader input = new BufferedReader(new FileReader("src/main/resources/Apriori.arff"));
+
+        String word = ""; //nowy przypadek do dodania
+        String last = ""; //ostatni przypadek
+        String line; //aktualna linia w pliku Apriori.arff
+
+        while ((line = input.readLine()) != null) {  //Szukamy ostatniego przypadku w celu sprawdzenia poprawnej dlugosci
+            last = line;
+        }
+
+        for(CartItem product : order.getCart().getCartItems()){  //Zapisywanie najnowszego zamowienia do zmiennej typu String w celu zapisania nowego przypadku reguł
                 word = word + product.getProduct().getId_product() + ", ";
+        }
+
+        while(last.length()!=word.length()-2){  //Dopasowanie dlugosci nowego zamowienia do dlugosci wszystkich reguł asocjacyjnych
+            word = word + "?, ";
         }
 
         Writer output = null;
