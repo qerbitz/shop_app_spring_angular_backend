@@ -34,6 +34,9 @@ public class Product {
     @Column(name = "image")
     private String image;
 
+    @Column(name = "time_interval")
+    private String time_interval;
+
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<CartItem> cartItemList;
@@ -53,7 +56,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(int id_product, String name, String description, Double price, Category id_category, int quantity, String image) {
+    public Product(int id_product, String name, String description, Double price, Category id_category, int quantity, String image, String time_interval) {
         this.id_product = id_product;
         this.name = name;
         this.description = description;
@@ -61,6 +64,15 @@ public class Product {
         this.id_category = id_category;
         this.quantity = quantity;
         this.image = image;
+        this.time_interval = time_interval;
+    }
+
+    public String getTime_interval() {
+        return time_interval;
+    }
+
+    public void setTime_interval(String time_interval) {
+        this.time_interval = time_interval;
     }
 
     public int getId_product() {

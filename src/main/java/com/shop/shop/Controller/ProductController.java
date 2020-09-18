@@ -6,7 +6,6 @@ import com.shop.shop.Entity.Order;
 import com.shop.shop.Entity.Product;
 import com.shop.shop.Entity.User;
 import com.shop.shop.Service.Interface.*;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,8 +51,6 @@ public class ProductController {
     public String productList(@RequestParam(value= "id_product", required = false) String id_product, Model model) throws Exception {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getUserByUsername(authentication.getName());
-        int cartId = user.getCart().getId_cart();
 
         List<Integer> listRecommended = weka.Apriori(id_product);
 
@@ -66,10 +62,19 @@ public class ProductController {
         model.addAttribute("productList", productService.getListOfProducts());
         model.addAttribute("categoryList", categoryService.getListOfCategories());
         model.addAttribute("recommendedList", listRecommendedProducts);
-        model.addAttribute("quantity", cartService.getQuantityofCart(cartId));
-        model.addAttribute("total", cartService.getTotalPrice(cartId));
 
-        return "product/products";
+
+        if(authentication.getName().equals("anonymousUser")){
+            return "product/products";
+        }
+        else{
+            User user = userService.getUserByUsername(authentication.getName());
+            int cartId = user.getCart().getId_cart();
+            model.addAttribute("quantity", cartService.getQuantityofCart(cartId));
+            model.addAttribute("total", cartService.getTotalPrice(cartId));
+            return "product/products";
+        }
+
     }
 
 
