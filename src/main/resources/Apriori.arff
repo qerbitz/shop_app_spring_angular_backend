@@ -1,10 +1,10 @@
 @relation Apriori
 
-@attribute product {1, 2, 3, 4, 5, 6}
-@attribute product2 {1, 2, 3, 4, 5, 6}
-@attribute product3 {1, 2, 3, 4, 5, 6}
-@attribute product4 {1, 2, 3, 4, 5, 6}
-@attribute product5 {1, 2, 3, 4, 5, 6}
+@attribute product {1, 2, 3, 4, 5, 6, 7}
+@attribute product2 {1, 2, 3, 4, 5, 6, 7}
+@attribute product3 {1, 2, 3, 4, 5, 6, 7}
+@attribute product4 {1, 2, 3, 4, 5, 6, 7}
+@attribute product5 {1, 2, 3, 4, 5, 6, 7}
 
 @data
 6, ?, 4, ?, ?
@@ -15,3 +15,4 @@
 6, 5, 4, ?, ?
 3, 2, 1, 5, ?
 5, 3, 2, 1, 4
+7, ?, ?, ?, ?

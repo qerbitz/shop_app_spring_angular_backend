@@ -52,4 +52,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     )
     List<Object[]> findAllBySaleDesc();
 
+
+    List<Product> findAllByAgeContaining(String age);
+
 }

@@ -2,6 +2,7 @@ package com.shop.shop.Service.Interface;
 
 import com.shop.shop.Entity.Product;
 import java.util.List;
+import java.util.Map;
 
 
 public interface ProductService {
@@ -25,8 +26,13 @@ public interface ProductService {
 
     List<Product> getListOfProductByPriceBetween(int price_min, int price_max);
 
+    List<Product> getListOfProductsByAgeContaining(String age);
+
+    List<Product> findByCriteria(Map<String, List<String>> filterParams, List<Product> products);
+
     Product getProductById(int id);
 
     boolean changeQuantityOfProduct(Product product, int quantity);
+
 
 }

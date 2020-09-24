@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -69,6 +71,36 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getListOfProductsByAgeContaining(String age) {
+        return productRepository.findAllByAgeContaining(age);
+    }
+
+    @Override
+    public List<Product> findByCriteria(Map<String, List<String>> filterParams,  List<Product> products) {
+
+        List<String> categoryCriteria = filterParams.get("category").stream().map(f -> f.toLowerCase()).collect(Collectors.toList());
+        List<String> ageCriteria = filterParams.get("age").stream().map(f -> f.toLowerCase()).collect(Collectors.toList());
+        //List<String> priceCriteria = filterParams.get("price").stream().map(f -> f.toLowerCase()).collect(Collectors.toList());
+        //List<String> sizeCriteria = filterParams.get("size").stream().map(f -> f.toLowerCase()).collect(Collectors.toList());
+
+        List<String> finalCategoryCriteria = categoryCriteria;
+        List<Product> list = products.stream()
+                 .filter(p -> ageCriteria.contains(p.getAge().toLowerCase()))
+                 .filter(p -> categoryCriteria.contains(p.getId_category().getName().toLowerCase()))
+                 //.filter(p -> priceCriteria.c)
+                .collect(Collectors.toList());
+
+        if (list.isEmpty()) {
+            //throw new IllegalArgumentException("Did not find elements");
+            System.out.println("chuja");
+        }
+
+        return list;
+    }
+
+
+    //Wyszukiwanie produktu po id
+    @Override
     public Product getProductById(int id) {
         return productRepository.getOne(id);
     }
@@ -86,5 +118,6 @@ public class ProductServiceImpl implements ProductService {
             return false;
         }
     }
+
 
 }

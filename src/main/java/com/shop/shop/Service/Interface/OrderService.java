@@ -1,6 +1,5 @@
 package com.shop.shop.Service.Interface;
 
-import com.shop.shop.Entity.Cart;
 import com.shop.shop.Entity.Order;
 import com.shop.shop.Entity.User;
 
