@@ -55,4 +55,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     List<Product> findAllByAgeContaining(String age);
 
+    @Query(value="select distinct age from product",
+            nativeQuery = true)
+    List<Object[]> findAllAges();
+
 }

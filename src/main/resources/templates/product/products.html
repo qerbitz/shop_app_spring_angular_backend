@@ -36,13 +36,31 @@
 			<div class="menu-sidebar-content js-scrollbar1">
 				<nav class="navbar-sidebar">
 					<ul class="list-unstyled navbar-list">
+						<form method="post" th:action="@{/product/test}"
+							  th:object="${categoryList}" id="getforma">
 						<li th:each="category: ${categoryList}">
-							<ul>
-								<li th:text="${category.name}">
-
-							</ul>
+								<input type="checkbox" th:value="${category.id_category}"  th:name="listOfCategoryChecked" th:checked="${categoryCheckedList.contains(category)}" onclick="this.form.submit()"/>
+								<label th:text="${category.name}"></label>
 						</li>
+							<button class="au-btn-submit" type="submit" form="getforma">
+								Search
+							</button>
+						</form>
 					</ul>
+
+					<ul class="list-unstyled navbar-list">
+						<form method="post" th:action="@{/product/test}"
+							  th:object="${agesList}" id="getformo">
+							<li th:each="age: ${agesList}">
+								<input type="checkbox" th:value="${age}"  th:name="listOfAgesChecked"  onclick="this.form.submit()"/>
+								<label th:text="${age}"></label>
+							</li>
+							<button class="au-btn-submit" type="submit" form="getformo">
+								Search
+							</button>
+						</form>
+					</ul>
+
 				</nav>
 			</div>
 		</aside>

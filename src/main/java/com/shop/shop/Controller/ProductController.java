@@ -1,6 +1,7 @@
 package com.shop.shop.Controller;
 
 import com.shop.shop.Algorithm.Weka;
+import com.shop.shop.Entity.Category;
 import com.shop.shop.Entity.Order;
 import com.shop.shop.Entity.Product;
 import com.shop.shop.Entity.User;
@@ -40,23 +41,20 @@ public class ProductController {
     Weka weka = new Weka();
 
 
-    @GetMapping("/test")
-    public String test(Model model) throws ParseException {
+    @PostMapping("/test")
+    public String test(@RequestParam(value = "listOfCategoryChecked", required = false) List<Integer> listOfCategoryChecked,
+                       @RequestParam(value = "listOfAgesChecked", required = false) List<String> listOfAgesChecked,
+                       Model model) throws ParseException {
+
 
         List<Product> proponowaneNowe = new ArrayList<>();
 
 
         model.addAttribute("categoryList", categoryService.getListOfCategories());
-        model.addAttribute("productList", productService.getListOfProducts());
+        model.addAttribute("agesList",productService.getListOfAges());
+        //model.addAttribute("productList", productService.getListOfProducts());
 
         Order order = orderService.getOrderById(26);
-        //System.out.println("Kategoria: "+order.getCart().getCartItems().get(0).getProduct().getId_category().getName());
-        //System.out.println("Produkt: "+order.getCart().getCartItems().get(0).getProduct().getName());
-        //System.out.println("Rozmiar: "+order.getCart().getCartItems().get(0).getProduct().getSize());
-        //System.out.println("Wiek: "+order.getCart().getCartItems().get(0).getProduct().getAge());
-        // System.out.println("Data zamowienia: " + order.getOrderDate());
-        //System.out.println("Aktualna data: " + LocalDate.now());
-
 
         Date actual_date = java.sql.Date.valueOf(LocalDate.now());
 
@@ -78,12 +76,8 @@ public class ProductController {
 
 
         System.out.println(productService.getListOfProductsByAgeContaining("6-9").get(0).getName());
-        //System.out.println(productService.getListOfProductsByAgeContaining("6-9").get(3).getName());
-        //System.out.println(productService.getListOfProductsByAgeContaining("6-9").get(4).getName());
-        //System.out.println(productService.getListOfProductsByAgeContaining("6-9").get(5).getName());
-        //System.out.println(productService.getListOfProductsByAgeContaining("9-12").get(2).getName());
 
-
+/*
         //Sprawdzanie roznicy daty od ostatniego zakupu do wieku dziecka
         if(diff_months>=2 && diff_months<=4){
             //proponowaneNowe = productService.getListOfProductsByAgeContaining("i");
@@ -123,7 +117,43 @@ public class ProductController {
         }
         if(diff_years>=7 && diff_years<=8){
 
+        }*/
+
+        List<Category> categoryCheckedList = new ArrayList<>();
+
+        if(listOfCategoryChecked!=null){
+            for(int i=0; i<listOfCategoryChecked.size(); i++){
+                categoryCheckedList.add(categoryService.getCategoryById(listOfCategoryChecked.get(i)));
+            }
         }
+
+        List<Product> list = new ArrayList<>();
+        
+
+        if(listOfAgesChecked==null){
+            list = productService.getListOfProducts().stream()
+                    .filter(p -> listOfCategoryChecked.contains(p.getId_category().getId_category()))
+                    .collect(Collectors.toList());
+        }
+        if(listOfCategoryChecked==null){
+            list = productService.getListOfProducts().stream()
+                    .filter(p -> listOfAgesChecked.contains(p.getAge()))
+                    .collect(Collectors.toList());
+        }
+        else if(listOfAgesChecked!=null && listOfCategoryChecked!=null){
+            list = productService.getListOfProducts().stream()
+                    .filter(p -> listOfCategoryChecked.contains(p.getId_category().getId_category()))
+                    .filter(p -> listOfAgesChecked.contains(p.getAge()))
+                    .collect(Collectors.toList());
+        }
+
+
+        System.out.println(categoryCheckedList);
+        System.out.println(listOfAgesChecked);
+
+        model.addAttribute("categoryCheckedList", categoryCheckedList);
+        model.addAttribute("agesCheckedList",listOfAgesChecked);
+        model.addAttribute("productList", list);
 
         return "product/products";
     }
@@ -134,7 +164,14 @@ public class ProductController {
         model.addAttribute("productList",productService.findByCriteria(filterParams, productService.getListOfProducts()));
 
         //model.addAttribute("productList", productService.getListOfProducts());
+
+        List<Category> listka = new ArrayList<>();
+        List<String> listka2 = new ArrayList<>();
+
+        model.addAttribute("categoryCheckedList",listka);
+        model.addAttribute("agesCheckedList",listka2);
         model.addAttribute("categoryList", categoryService.getListOfCategories());
+        model.addAttribute("agesList",productService.getListOfAges());
 
         return "product/products";
     }
@@ -150,6 +187,7 @@ public class ProductController {
         for (int i = 0; i < listRecommended.size(); i++) {
             listRecommendedProducts.add(productService.getProductById(listRecommended.get(i)));
         }
+
 
         model.addAttribute("productList", productService.getListOfProducts());
         model.addAttribute("categoryList", categoryService.getListOfCategories());
@@ -173,14 +211,24 @@ public class ProductController {
     public String products_search(@RequestParam("value") String value, Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getUserByUsername(authentication.getName());
-        int cartId = user.getCart().getId_cart();
+
+        List<Category> categoryCheckedList = new ArrayList<>();
 
         model.addAttribute("productList", productService.getListOfProductsByName(value));
         model.addAttribute("categoryList", categoryService.getListOfCategories());
-        model.addAttribute("quantity", cartService.getQuantityofCart(cartId));
+        model.addAttribute("categoryCheckedList", categoryCheckedList);
 
-        return "product/products";
+
+        if (authentication.getName().equals("anonymousUser")) {
+            return "product/products";
+        } else {
+            User user = userService.getUserByUsername(authentication.getName());
+            int cartId = user.getCart().getId_cart();
+            model.addAttribute("quantity", cartService.getQuantityofCart(cartId));
+            model.addAttribute("total", cartService.getTotalPrice(cartId));
+            return "product/products";
+        }
+
     }
 
 

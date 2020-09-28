@@ -98,6 +98,18 @@ public class ProductServiceImpl implements ProductService {
         return list;
     }
 
+    @Override
+    public List<String> getListOfAges() {
+        List<String> listOfAges = new ArrayList<>();
+
+        for(Object[] obj: productRepository.findAllAges()){
+            String age = String.valueOf(obj[0]);
+            listOfAges.add(age);
+        }
+
+        return listOfAges;
+    }
+
 
     //Wyszukiwanie produktu po id
     @Override

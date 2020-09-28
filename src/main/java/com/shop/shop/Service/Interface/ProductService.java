@@ -30,6 +30,8 @@ public interface ProductService {
 
     List<Product> findByCriteria(Map<String, List<String>> filterParams, List<Product> products);
 
+    List<String> getListOfAges();
+
     Product getProductById(int id);
 
     boolean changeQuantityOfProduct(Product product, int quantity);
