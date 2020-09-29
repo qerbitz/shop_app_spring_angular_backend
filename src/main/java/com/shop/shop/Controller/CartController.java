@@ -2,10 +2,7 @@ package com.shop.shop.Controller;
 
 import com.shop.shop.Algorithm.Weka;
 import com.shop.shop.Entity.*;
-import com.shop.shop.Service.Interface.CartItemService;
-import com.shop.shop.Service.Interface.CartService;
-import com.shop.shop.Service.Interface.ProductService;
-import com.shop.shop.Service.Interface.UserService;
+import com.shop.shop.Service.Interface.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -29,6 +27,9 @@ public class CartController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    CategoryService categoryService;
 
     @Autowired
     CartItemService cartItemService;
@@ -69,7 +70,13 @@ public class CartController {
     }
 
     @GetMapping("/add/{id_product}")
-    public String addItem (@PathVariable(value = "id_product") String id_product, RedirectAttributes redirectAttributes) throws Exception {
+    public String addItem (
+            @RequestParam(value = "listOffCategoryChecked", required = false) List<Integer> listOfCategoryChecked,
+            @RequestParam(value = "listOffAgesChecked", required = false) List<String> listOfAgesChecked,
+            @RequestParam(value = "price_min", required = false) String price_min,
+            @RequestParam(value = "price_max", required = false) String price_max,
+            @PathVariable(value = "id_product") String id_product,
+                           RedirectAttributes redirectAttributes) throws Exception {
 
         int ajdi = Integer.parseInt(id_product);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -80,6 +87,8 @@ public class CartController {
         Product product = productService.getProductById(ajdi);
         List<CartItem> cartItems = cart.getCartItems();
 
+        System.out.println(price_min);
+
         for (int i=0; i<cartItems.size(); i++) {
             if(productService.changeQuantityOfProduct(product, 1)==true){
                 System.out.println("Jest git");
@@ -89,16 +98,15 @@ public class CartController {
                     cartItem.setTotal_price(product.getPrice()*cartItem.getQuantity());
                     cartItemService.addCartItem(cartItem);
 
-
-                    redirectAttributes.addAttribute("id_product", id_product);
-                    return "redirect:/product/productList";
+                    redirect(listOfCategoryChecked,listOfAgesChecked,price_min,price_max,redirectAttributes, id_product);
+                    return "redirect:/product/test";
                 }
             }
             else {
                 System.out.println("Brak towaru");
 
-                redirectAttributes.addAttribute("id_product", id_product);
-                return "redirect:/product/productList";
+                redirect(listOfCategoryChecked,listOfAgesChecked,price_min,price_max,redirectAttributes, id_product);
+                return "redirect:/product/test";
             }
         }
 
@@ -119,9 +127,8 @@ public class CartController {
             System.out.println("Brak towaru");
         }
 
-
-        redirectAttributes.addAttribute("id_product", id_product);
-        return "redirect:/product/productList";
+        redirect(listOfCategoryChecked,listOfAgesChecked,price_min,price_max,redirectAttributes, id_product);
+        return "redirect:/product/test";
     }
 
     @GetMapping("/remove/{id_product}")
@@ -154,5 +161,13 @@ public class CartController {
         cartItemService.removeAllCartItems(cart);
 
         return "redirect:/cart/"+user.getCart().getId_cart(); //odswiezenie strony
+    }
+
+    public void redirect(List<Integer> listOfCategoryChecked,List<String> listOfAgesChecked,String price_min,String price_max,RedirectAttributes redirectAttributes, String id_product){
+        redirectAttributes.addAttribute("categoryCheckedList", listOfCategoryChecked);
+        redirectAttributes.addAttribute("listOfAgesChecked", listOfAgesChecked);
+        redirectAttributes.addAttribute("price_min", price_min);
+        redirectAttributes.addAttribute("price_max", price_max);
+        //redirectAttributes.addAttribute("id_product", id_product);
     }
 }

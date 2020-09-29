@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -168,13 +169,17 @@ public class ProductController {
 
 
         model.addAttribute("categoryCheckedList", categoryCheckedList);
+        model.addAttribute("jakastamkategoria", listOfCategoryChecked);
         model.addAttribute("agesCheckedList", listOfAgesChecked);
         model.addAttribute("productList", list);
         model.addAttribute("price_min", price_min);
         model.addAttribute("price_max", price_max);
 
+        //addToModel(categoryCheckedList, listOfCategoryChecked,listOfAgesChecked,price_min,price_max,model);
+
         return "product/products";
     }
+
 
     @GetMapping("/filter/{criteria}")
     public String test2(Model model, @MatrixVariable(pathVar = "criteria") Map<String, List<String>> filterParams) {
@@ -253,8 +258,6 @@ public class ProductController {
     public String products_sort(@RequestParam("option") int option, Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getUserByUsername(authentication.getName());
-        int cartId = user.getCart().getId_cart();
 
         List<Product> productList = new ArrayList<>();
 
@@ -277,8 +280,17 @@ public class ProductController {
 
         model.addAttribute("productList", productList);
         model.addAttribute("categoryList", categoryService.getListOfCategories());
-        model.addAttribute("quantity", cartService.getQuantityofCart(cartId));
-        return "product/products";
+
+
+        if (authentication.getName().equals("anonymousUser")) {
+            return "product/products";
+        } else {
+            User user = userService.getUserByUsername(authentication.getName());
+            int cartId = user.getCart().getId_cart();
+            model.addAttribute("quantity", cartService.getQuantityofCart(cartId));
+            model.addAttribute("total", cartService.getTotalPrice(cartId));
+            return "product/products";
+        }
     }
 
     @GetMapping("/viewProduct/{productId}")
@@ -288,5 +300,84 @@ public class ProductController {
 
         return "product/viewProduct";
     }
+
+    @GetMapping("/test")
+    public String testmapowania(@RequestParam(value = "categoryCheckedList", required = false) List<Integer> listOfCategoryChecked,
+                       @RequestParam(value = "listOfAgesChecked", required = false) List<String> listOfAgesChecked,
+                       @RequestParam(value = "price_min", required = false) String price_min,
+                       @RequestParam(value = "price_max", required = false) String price_max,
+                       Model model) throws ParseException {
+
+        List<Product> proponowaneNowe = new ArrayList<>();
+
+
+        model.addAttribute("categoryList", categoryService.getListOfCategories());
+        model.addAttribute("agesList", productService.getListOfAges());
+
+
+        List<Category> categoryCheckedList = new ArrayList<>();
+
+
+        if (listOfCategoryChecked != null) {
+            for (int i = 0; i < listOfCategoryChecked.size(); i++) {
+                categoryCheckedList.add(categoryService.getCategoryById(listOfCategoryChecked.get(i)));
+            }
+        }
+
+        List<Product> list = productService.getListOfProducts();
+
+
+        //Sortowania poprzez cene
+        if (price_min.compareTo("") == 0 && price_max.compareTo("") != 0) { //jezeli podana jest tylko maxymalna kwota
+            int price_max_parsed = Integer.parseInt(price_max);
+            list = productService.getListOfProductByPriceBetween(0, price_max_parsed);
+        }
+        if (price_min.compareTo("") != 0 && price_max.compareTo("") == 0) { //jezeli podana jest tylko minimalna kwota
+            int price_min_parsed = Integer.parseInt(price_min);
+            list = productService.getListOfProductByPriceBetween(price_min_parsed, 9999999);
+        }
+        if (price_min.compareTo("") != 0 && price_max.compareTo("") != 0) { //Jezeli podane sa obydwie kwoty
+
+            int price_min_parsed = Integer.parseInt(price_min);
+            int price_max_parsed = Integer.parseInt(price_max);
+            list = productService.getListOfProductByPriceBetween(price_min_parsed, price_max_parsed);
+        }
+
+        //Sortowania poprzez kategorie oraz przeznaczenie wiekowe
+        if (listOfAgesChecked == null && listOfCategoryChecked !=null) {
+            list = list.stream()
+                    .filter(p -> listOfCategoryChecked.contains(p.getId_category().getId_category()))
+                    .collect(Collectors.toList());
+        }
+        if (listOfAgesChecked !=null && listOfCategoryChecked == null) {
+            list = list.stream()
+                    .filter(p -> listOfAgesChecked.contains(p.getAge()))
+                    .collect(Collectors.toList());
+        } else if (listOfAgesChecked != null && listOfCategoryChecked != null) {
+            list = list.stream()
+                    .filter(p -> listOfCategoryChecked.contains(p.getId_category().getId_category()))
+                    .filter(p -> listOfAgesChecked.contains(p.getAge()))
+                    .collect(Collectors.toList());
+        }
+
+
+        model.addAttribute("categoryCheckedList", categoryCheckedList);
+        model.addAttribute("agesCheckedList", listOfAgesChecked);
+        model.addAttribute("productList", list);
+        model.addAttribute("price_min", price_min);
+        model.addAttribute("price_max", price_max);
+
+        return "product/products";
+    }
+
+
+    public void addToModel(List<Category> categoryCheckedList, List<Integer> listOfCategoryChecked, List<String> listOfAgesChecked, String price_min, String price_max, Model model){
+        model.addAttribute("categoryCheckedList", listOfCategoryChecked);
+        model.addAttribute("listOfAgesChecked", listOfAgesChecked);
+        model.addAttribute("price_min", price_min);
+        model.addAttribute("price_max", price_max);
+        //redirectAttributes.addAttribute("id_product", id_product);
+    }
+
 
 }

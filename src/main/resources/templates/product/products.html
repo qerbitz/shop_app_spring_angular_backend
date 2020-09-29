@@ -131,7 +131,8 @@
 											<td th:text="${product.name}"></td>
 											<td th:text="${product.price}"></td>
 											<td>
-												<a th:href="@{/cart/add/{id_product}(id_product=${product.id_product})}">Buy now</a>
+												<a th:href="@{/cart/add/{id_product}(id_product=${product.id_product},price_min=${price_min},price_max=${price_max},
+																listOffAgesChecked=${agesCheckedList}, listOffCategoryChecked=${jakastamkategoria})}">Buy now</a>
 											</td>
 										</tr>
 									</table>
