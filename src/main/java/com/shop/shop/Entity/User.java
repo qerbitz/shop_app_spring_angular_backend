@@ -55,6 +55,9 @@ public class User {
     public User() {
     }
 
+    public User(String username, String password) {
+    }
+
 
     public String getUsername() {
         return username;

@@ -42,19 +42,14 @@ public class ProductController {
     Weka weka = new Weka();
 
 
-    @PostMapping("/test")
-    public String test(@RequestParam(value = "listOfCategoryChecked", required = false) List<Integer> listOfCategoryChecked,
+    @PostMapping("/filter")
+    public String filterpost(@RequestParam(value = "listOfCategoryChecked", required = false) List<Integer> listOfCategoryCheckedint,
                        @RequestParam(value = "listOfAgesChecked", required = false) List<String> listOfAgesChecked,
                        @RequestParam(value = "price_min", required = false) String price_min,
                        @RequestParam(value = "price_max", required = false) String price_max,
                        Model model) throws ParseException {
 
         List<Product> proponowaneNowe = new ArrayList<>();
-
-
-        model.addAttribute("categoryList", categoryService.getListOfCategories());
-        model.addAttribute("agesList", productService.getListOfAges());
-        //model.addAttribute("productList", productService.getListOfProducts());
 
         Order order = orderService.getOrderById(26);
 
@@ -64,70 +59,23 @@ public class ProductController {
         long diff_months = diff / (24 * 60 * 60 * 1000) / 30;
         long diff_years = diff / (24 * 60 * 60 * 1000) / 365;
 
-        //System.out.println("Roznica w miesiacach: " + diff_months);
+        System.out.println("Roznica w miesiacach: " + diff_months);
 
-        //System.out.println("Roznica w latach: " +diff_years);
+        System.out.println("Roznica w latach: " +diff_years);
 
         String dawny_rozmiar = order.getCart().getCartItems().get(0).getProduct().getAge();
         String nowy_rozmiar = String.valueOf(diff_months);
 
-        // System.out.println(dawny_rozmiar);
-        // System.out.println(nowy_rozmiar);
-
-        String nowy_rozmiar_2 = "";
-
-
-        // System.out.println(productService.getListOfProductsByAgeContaining("6-9").get(0).getName());
-
-/*
-        //Sprawdzanie roznicy daty od ostatniego zakupu do wieku dziecka
-        if(diff_months>=2 && diff_months<=4){
-            //proponowaneNowe = productService.getListOfProductsByAgeContaining("i");
-        }
-        if(diff_months>=4 && diff_months<=6){
-
-        }
-        if(diff_months>=6 && diff_months<=9){
-
-        }
-        if(diff_months>=9 && diff_months<=12){
-
-        }
-        if(diff_months>=12 && diff_months<=18){
-
-        }
-        if(diff_months>=18 && diff_months<=24){
-
-        }
-        if(diff_years>=1 && diff_years<=2){
-
-        }
-        if(diff_years>=2 && diff_years<=3){
-
-        }
-        if(diff_years>=3 && diff_years<=4){
-
-        }
-        if(diff_years>=4 && diff_years<=5){
-
-        }
-        if(diff_years>=5 && diff_years<=6){
-
-        }
-        if(diff_years>=6 && diff_years<=7){
-
-        }
-        if(diff_years>=7 && diff_years<=8){
-
-        }*/
+         System.out.println(dawny_rozmiar);
+         System.out.println(nowy_rozmiar);
 
 
         List<Category> categoryCheckedList = new ArrayList<>();
 
 
-        if (listOfCategoryChecked != null) {
-            for (int i = 0; i < listOfCategoryChecked.size(); i++) {
-                categoryCheckedList.add(categoryService.getCategoryById(listOfCategoryChecked.get(i)));
+        if (listOfCategoryCheckedint != null) {
+            for (int i = 0; i < listOfCategoryCheckedint.size(); i++) {
+                categoryCheckedList.add(categoryService.getCategoryById(listOfCategoryCheckedint.get(i)));
             }
         }
 
@@ -151,50 +99,31 @@ public class ProductController {
         }
 
         //Sortowania poprzez kategorie oraz przeznaczenie wiekowe
-        if (listOfAgesChecked == null && listOfCategoryChecked !=null) {
+        if (listOfAgesChecked == null && listOfCategoryCheckedint !=null) {
             list = list.stream()
-                    .filter(p -> listOfCategoryChecked.contains(p.getId_category().getId_category()))
+                    .filter(p -> listOfCategoryCheckedint.contains(p.getId_category().getId_category()))
                     .collect(Collectors.toList());
         }
-        if (listOfAgesChecked !=null && listOfCategoryChecked == null) {
+        if (listOfAgesChecked !=null && listOfCategoryCheckedint == null) {
             list = list.stream()
                     .filter(p -> listOfAgesChecked.contains(p.getAge()))
                     .collect(Collectors.toList());
-        } else if (listOfAgesChecked != null && listOfCategoryChecked != null) {
+        } else if (listOfAgesChecked != null && listOfCategoryCheckedint != null) {
             list = list.stream()
-                    .filter(p -> listOfCategoryChecked.contains(p.getId_category().getId_category()))
+                    .filter(p -> listOfCategoryCheckedint.contains(p.getId_category().getId_category()))
                     .filter(p -> listOfAgesChecked.contains(p.getAge()))
                     .collect(Collectors.toList());
         }
 
 
+        model.addAttribute("categoryList", categoryService.getListOfCategories());
+        model.addAttribute("agesList", productService.getListOfAges());
         model.addAttribute("categoryCheckedList", categoryCheckedList);
-        model.addAttribute("jakastamkategoria", listOfCategoryChecked);
+        model.addAttribute("categoryCheckedListint", listOfCategoryCheckedint);
         model.addAttribute("agesCheckedList", listOfAgesChecked);
         model.addAttribute("productList", list);
         model.addAttribute("price_min", price_min);
         model.addAttribute("price_max", price_max);
-
-        //addToModel(categoryCheckedList, listOfCategoryChecked,listOfAgesChecked,price_min,price_max,model);
-
-        return "product/products";
-    }
-
-
-    @GetMapping("/filter/{criteria}")
-    public String test2(Model model, @MatrixVariable(pathVar = "criteria") Map<String, List<String>> filterParams) {
-
-        model.addAttribute("productList", productService.findByCriteria(filterParams, productService.getListOfProducts()));
-
-        //model.addAttribute("productList", productService.getListOfProducts());
-
-        List<Category> listka = new ArrayList<>();
-        List<String> listka2 = new ArrayList<>();
-
-        model.addAttribute("categoryCheckedList", listka);
-        model.addAttribute("agesCheckedList", listka2);
-        model.addAttribute("categoryList", categoryService.getListOfCategories());
-        model.addAttribute("agesList", productService.getListOfAges());
 
         return "product/products";
     }
@@ -212,6 +141,7 @@ public class ProductController {
         }
 
 
+        model.addAttribute("agesList", productService.getListOfAges());
         model.addAttribute("productList", productService.getListOfProducts());
         model.addAttribute("categoryList", categoryService.getListOfCategories());
         model.addAttribute("recommendedList", listRecommendedProducts);
@@ -301,18 +231,12 @@ public class ProductController {
         return "product/viewProduct";
     }
 
-    @GetMapping("/test")
-    public String testmapowania(@RequestParam(value = "categoryCheckedList", required = false) List<Integer> listOfCategoryChecked,
+    @GetMapping("/filter")
+    public String filterget(@RequestParam(value = "categoryCheckedList", required = false) List<Integer> listOfCategoryChecked,
                        @RequestParam(value = "listOfAgesChecked", required = false) List<String> listOfAgesChecked,
                        @RequestParam(value = "price_min", required = false) String price_min,
                        @RequestParam(value = "price_max", required = false) String price_max,
                        Model model) throws ParseException {
-
-        List<Product> proponowaneNowe = new ArrayList<>();
-
-
-        model.addAttribute("categoryList", categoryService.getListOfCategories());
-        model.addAttribute("agesList", productService.getListOfAges());
 
 
         List<Category> categoryCheckedList = new ArrayList<>();
@@ -361,6 +285,8 @@ public class ProductController {
         }
 
 
+        model.addAttribute("categoryList", categoryService.getListOfCategories());
+        model.addAttribute("agesList", productService.getListOfAges());
         model.addAttribute("categoryCheckedList", categoryCheckedList);
         model.addAttribute("agesCheckedList", listOfAgesChecked);
         model.addAttribute("productList", list);
@@ -369,15 +295,4 @@ public class ProductController {
 
         return "product/products";
     }
-
-
-    public void addToModel(List<Category> categoryCheckedList, List<Integer> listOfCategoryChecked, List<String> listOfAgesChecked, String price_min, String price_max, Model model){
-        model.addAttribute("categoryCheckedList", listOfCategoryChecked);
-        model.addAttribute("listOfAgesChecked", listOfAgesChecked);
-        model.addAttribute("price_min", price_min);
-        model.addAttribute("price_max", price_max);
-        //redirectAttributes.addAttribute("id_product", id_product);
-    }
-
-
 }

@@ -36,7 +36,7 @@
 			<div class="menu-sidebar-content js-scrollbar1">
 				<nav class="navbar-sidebar">
 					<ul class="list-unstyled navbar-list">
-						<form method="post" th:action="@{/product/test}"
+						<form method="post" th:action="@{/product/filter}"
 							  th:object="${categoryList}" id="getforma">
 
 							<label for="price_min">Cena od:</label><br>
@@ -132,13 +132,13 @@
 											<td th:text="${product.price}"></td>
 											<td>
 												<a th:href="@{/cart/add/{id_product}(id_product=${product.id_product},price_min=${price_min},price_max=${price_max},
-																listOffAgesChecked=${agesCheckedList}, listOffCategoryChecked=${jakastamkategoria})}">Buy now</a>
+																listOffAgesChecked=${agesCheckedList}, listOffCategoryChecked=${categoryCheckedListint})}">Buy now</a>
 											</td>
 										</tr>
 									</table>
 									<h2>Duis aute irure dolor in reprehenderit in voluptate </h2>
 									<div class="price">19.22 $</div>
-									<a th:href="@{/product/test}" class="primary-btn">Add to cart</a>
+									<a th:href="@{/product/filter}" class="primary-btn">Add to cart</a>
 								</div>
 							</div>
 

@@ -59,6 +59,12 @@ public class Product {
     public Product() {
     }
 
+    public Product(int id_product, String name, int quantity) {
+        this.id_product = id_product;
+        this.name = name;
+        this.quantity = quantity;
+    }
+
     public Product(int id_product, String name, String description, Double price, Category id_category, Integer quantity, String image, String age, String size, List<CartItem> cartItemList) {
         this.id_product = id_product;
         this.name = name;
