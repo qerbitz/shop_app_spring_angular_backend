@@ -7,18 +7,13 @@
 
 	<title>xdd</title>
 
-	<!-- Bootstrap CSS and Font Awesome -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+		  integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" media="all">
 
 	<!-- Main CSS-->
-	<!--<link th:href="@{/css/styles.css}" rel="stylesheet" type="text/css"/>-->
-	
-	<link href="F:/Programowanie/shop/src/main/resources/static/css/styles.css" rel="stylesheet" type="text/css"/>
-
-	<link rel="icon" href="assets/images/fav-icon.png">
+	<link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet" />
 </head>
 
 <body>
@@ -26,13 +21,6 @@
 
 		<!-- MENU SIDEBAR-->
 		<aside class="menu-sidebar d-none d-lg-block">
-			<form th:action="@{/logout}" method="post">
-			<div class="logo">
-
-				<input type="submit" value="Wyloguj"
-					   class="btn btn-info btn-lg mb-3 col-2" style="float:right"/>
-			</div>
-			</form>
 			<div class="menu-sidebar-content js-scrollbar1">
 				<nav class="navbar-sidebar">
 					<ul class="list-unstyled navbar-list">
@@ -92,6 +80,16 @@
 										aria-hidden="true"></i>
 								</a>
 							</div>
+							<li class="dropdown">
+								<a href="javascript:void(0)" class="dropbtn"><img src="/images/nouser.png" height="3px"></a>
+								<div class="dropdown-content">
+									<a href="twoje.php">Twoje zamowienia</a>
+									<a th:action="@{/logout}" method="post">
+										<input type="submit" value=""/>Wyloguj sie</a>
+									</form>
+									<a type="submit" value="Wyloguj" th:action="@{/logout}">Wyloguj się</a>
+									</ul>
+								</div>
 						</div>
 						<div class="account-wrap"></div>
 					</div>
@@ -126,42 +124,31 @@
 											<th>Price</th>
 											<th>Buy</th>
 										</tr>
-										<tr th:each="product: ${productList}">
-											<td th:text="${product.id_product}"></td>
-											<td th:text="${product.name}"></td>
-											<td th:text="${product.price}"></td>
-											<td>
-												<a th:href="@{/cart/add/{id_product}(id_product=${product.id_product},price_min=${price_min},price_max=${price_max},
-																listOffAgesChecked=${agesCheckedList}, listOffCategoryChecked=${categoryCheckedListint})}">Buy now</a>
-											</td>
-										</tr>
-									</table>
-									<h2>Duis aute irure dolor in reprehenderit in voluptate </h2>
-									<div class="price">19.22 $</div>
-									<a th:href="@{/product/filter}" class="primary-btn">Add to cart</a>
-								</div>
-							</div>
-
-							<div class="col-md-3">
-								<div class="product-box">
-									<a href="product-detail.html">
-									</a>
-									<table border="1">
-										<tr>
-											<th>Id</th>
-											<th>Name</th>
-											<th>Price</th>
-											<th>Buy</th>
-										</tr>
 										<tr th:each="product: ${recommendedList}">
 											<td th:text="${product.id_product}"></td>
 											<td th:text="${product.name}"></td>
 											<td th:text="${product.price}"></td>
 											<td>
-												<a th:href="@{/cart/add/{id_product}(id_product=${product.id_product})}">Buy now</a>
+												<a th:href="@{/cart/add/{id_product}(id_product=${product.id_product},price_min=${price_min},price_max=${price_max},
+												listOffAgesChecked=${agesCheckedList}, listOffCategoryChecked=${categoryCheckedListint})}">Buy now</a>
 											</td>
 										</tr>
 									</table>
+								</div>
+							</div>
+
+							<div class="col-md-3" th:each="product: ${productList}">
+								<div class="product-box">
+									<a href="product-detail.html">
+										<img src="/images/avatar.png" class="img-responsive">
+									</a>
+									<a href="product-detail.html">
+										<h1 th:text="${product.name}"></h1>
+									</a>
+									<h2>Duis aute irure dolor in reprehenderit in voluptate </h2>
+									<div class="price" td th:text="${product.price} + ' zł'"></td>></div>
+									<a th:href="@{/cart/add/{id_product}(id_product=${product.id_product},price_min=${price_min},price_max=${price_max},
+												listOffAgesChecked=${agesCheckedList}, listOffCategoryChecked=${categoryCheckedListint})}" class="primary-btn">Add to cart</a>
 								</div>
 							</div>
 

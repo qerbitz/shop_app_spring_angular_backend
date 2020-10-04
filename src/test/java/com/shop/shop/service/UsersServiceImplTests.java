@@ -23,10 +23,9 @@ public class UsersServiceImplTests {
 
 
     @Test
-    public void checkUserUniquess(){
-
+    public void saveuser(){
         //given
-        //given(userRepository.findById("batonik2")).willReturn(java.util.Optional.of(new User("batonik2","zaq1@WSX")));
+       // given(userRepository.save(userService.getUserByUsername("batonik2"))).willReturn(java.util.Optional.of(userService.getUserByUsername("batonik2")));
     }
 
 

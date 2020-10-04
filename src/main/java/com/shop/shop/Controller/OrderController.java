@@ -38,12 +38,12 @@ public class OrderController {
 
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getUserByUsername(authentication.getName());
+        User user = userService.getUserByUsername("batonik2");
 
         theModel.addAttribute("user", user);
 
 
-        return "order/customerInfo";
+        return "order/checkout-page";
     }
 
     @PostMapping("/createOrder")

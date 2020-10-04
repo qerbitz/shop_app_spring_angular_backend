@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface CartRepository extends JpaRepository<Cart, Integer> {
 
 
-    @Query(value = "select count(quantity) from cart c, cart_item ct" +
+    @Query(value = "select sum(ct.quantity) from cart c, cart_item ct" +
             " where c.id_cart = :cartId" +
             " and ct.id_cart = c.id_cart",
             nativeQuery = true)

@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.util.UrlPathHelper;
 
-@EnableWebMvc
+//@EnableWebMvc
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 

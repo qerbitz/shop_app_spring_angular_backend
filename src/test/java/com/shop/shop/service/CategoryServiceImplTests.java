@@ -16,6 +16,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
+import static org.hamcrest.Matchers.*;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -37,8 +38,18 @@ public class CategoryServiceImplTests {
         assertThat(categoryList, hasSize(5));
     }
 
+    @Test
+    public void getCategoryById(){
+        //given
+        given(categoryRepository.getOne(1)).willReturn(prepareData().get(0));
+        //when
+        Category category = categoryService.getCategoryById(1);
+        //then
+        assertThat(category.getId_category(), is(equalTo(1)));
+    }
+
     private List<Category> prepareData() {
-        Category category1 = new Category();
+        Category category1 = new Category(1, "Spodnie");
         Category category2 = new Category();
         Category category3 = new Category();
         Category category4 = new Category();

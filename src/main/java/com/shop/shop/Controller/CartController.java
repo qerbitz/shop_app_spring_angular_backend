@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -51,13 +50,18 @@ public class CartController {
     public String getCart(@PathVariable(value = "cartId") int cartId, Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getUserByUsername(authentication.getName());
+        User user = userService.getUserByUsername("batonik2");
 
         if(cartId!=user.getCart().getId_cart())
         {
             return "redirect:/cart/"+user.getCart().getId_cart();
         }
 
+        System.out.println(cartService.getQuantityofCart(cartId));
+        System.out.println(cartId);
+
+        model.addAttribute("quantity", cartService.getQuantityofCart(cartId));
+        model.addAttribute("total", cartService.getTotalPrice(cartId));
         model.addAttribute("cart", cartService.getCartById(cartId).getCartItems());
         model.addAttribute("cart_id", cartService.getCartById(cartId));
         return "cart/cart";
@@ -99,14 +103,14 @@ public class CartController {
                     cartItemService.addCartItem(cartItem);
 
                     redirect(listOfCategoryChecked,listOfAgesChecked,price_min,price_max,redirectAttributes, id_product);
-                    return "redirect:/product/test";
+                    return "redirect:/product/productList";
                 }
             }
             else {
                 System.out.println("Brak towaru");
 
                 redirect(listOfCategoryChecked,listOfAgesChecked,price_min,price_max,redirectAttributes, id_product);
-                return "redirect:/product/test";
+                return "redirect:/product/productList";
             }
         }
 
@@ -128,7 +132,7 @@ public class CartController {
         }
 
         redirect(listOfCategoryChecked,listOfAgesChecked,price_min,price_max,redirectAttributes, id_product);
-        return "redirect:/product/test";
+        return "redirect:/product/productList";
     }
 
     @GetMapping("/remove/{id_product}")
