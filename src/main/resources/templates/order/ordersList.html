@@ -1,30 +1,113 @@
-<!DOCTYPE html>
-<html lang="en">
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>luv2shop - Full Stack eCommerce: Angular and Spring Boot</title>
+
+    <!-- Bootstrap CSS and Font Awesome -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" media="all">
+
+    <!-- Main CSS-->
+    <link href="../../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet" />
+
 </head>
+
 <body>
 
-<table border="1">
-    <tr>
-        <th>Id order</th>
-        <th>Date</th>
-        <th>Status</th>
-        <th>Total Price</th>
-        <th>Details</th>
-    </tr>
-    <tr th:each="order: ${orders_list}">
-        <td th:text="${order.id_order}"></td>
-        <td th:text="${order.getOrderDate()}"></td>
-        <td th:text="${order.getStatus()}"></td>
-        <td>
-            <a th:href="@{/order/detailsOrder/{id_cart}(id_cart=${order.cart.id_cart},orderId=${order.id_order})}">Details</a>
-        </td>
-        <th>Grand Total</th>
-    </tr>
-</table>
+<div class="page-wrapper">
+
+    <!-- MENU SIDEBAR-->
+    <aside class="menu-sidebar d-none d-lg-block">
+        <div class="logo">
+            <a th:href="@{/product/productList}">
+                <img src="/images/avatar.png" alt="Strona glowna" class="avatar">
+            </a>
+        </div>
+        <div class="menu-sidebar-content js-scrollbar1">
+            <nav class="navbar-sidebar">
+                <ul class="list-unstyled navbar-list">
+                </ul>
+            </nav>
+        </div>
+    </aside>
+    <!-- END MENU SIDEBAR-->
+
+    <!-- PAGE CONTAINER-->
+    <div class="page-container">
+        <!-- HEADER DESKTOP-->
+        <header class="header-desktop">
+            <div class="section-content section-content-p30">
+                <div class="container-fluid">
+                    <div class="header-wrap">
+                        <form class="form-header" method="post" th:action="@{/product/products_search}" id="getform">
+                            <input class="au-input au-input-xl" type="text" name="value" id="value" th:object="${user}"
+                                   placeholder="Search for data ..." form="getform"/>
+                            <button class="au-btn-submit" type="submit" form="getform">
+                                Search
+                            </button>
+                        </form>
+                        <div class="cart-area d-n">
+                           <!--- <a th:href="@{/cart/}">
+                                <div class="total" th:text="${total}"> <span th:text="${quantity}"> </span> </div> <i class="fa fa-shopping-cart"
+                                                                                                                      aria-hidden="true"></i>
+                            </a>-->
+                        </div>
+                    </div>
+                    <div class="account-wrap"></div>
+                </div>
+            </div>
+        </header>
+        <!-- END HEADER DESKTOP-->
+
+        <!-- MAIN CONTENT-->
+        <div class="main-content">
+            <div class="section-content section-content-p30">
+                <div class="container-fluid">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th width="10%">Order id</th>
+                            <th width="20%">Data zamowienia</th>
+                            <th width="20%">Status</th>
+                            <th width="30%">Zobacz szczegóły</th>
+                        </tr>
+
+                        <tr th:each="order: ${orders_list}">
+                            <td th:text="${order.id_order}">
+                            <td>
+                                <p th:text="${order.getOrderDate()}"></p>
+                            </td>
+                            <td th:text="${order.getStatus()}">
+
+                            </td>
+                            <td>
+                                <a th:href="@{/order/detailsOrder/{id_cart}(id_cart=${order.cart.id_cart},orderId=${order.id_order})}" onclick="refreshPage()" class="primary-btn">Pokaż</a>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- END PAGE CONTAINER-->
+
+
+<footer>
+    <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">Help</a></li>
+    </ul>
+</footer>
 
 </body>
+
 </html>
+<!-- end document-->

@@ -50,15 +50,12 @@ public class CartController {
     public String getCart(@PathVariable(value = "cartId") int cartId, Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getUserByUsername("batonik2");
+        User user = userService.getUserByUsername(authentication.getName());
 
         if(cartId!=user.getCart().getId_cart())
         {
             return "redirect:/cart/"+user.getCart().getId_cart();
         }
-
-        System.out.println(cartService.getQuantityofCart(cartId));
-        System.out.println(cartId);
 
         model.addAttribute("quantity", cartService.getQuantityofCart(cartId));
         model.addAttribute("total", cartService.getTotalPrice(cartId));
@@ -91,7 +88,6 @@ public class CartController {
         Product product = productService.getProductById(ajdi);
         List<CartItem> cartItems = cart.getCartItems();
 
-        System.out.println(price_min);
 
         for (int i=0; i<cartItems.size(); i++) {
             if(productService.changeQuantityOfProduct(product, 1)==true){

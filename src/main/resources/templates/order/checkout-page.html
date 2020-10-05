@@ -64,24 +64,28 @@
 				<div class="section-content section-content-p30 e-spc">
 					<form action="#" th:action="@{/order/createOrder}"
 						  th:object="${user}" method="POST" modelAttribute="user">
+						<input type="hidden" th:field="*{username}"/>
+						<input type="hidden" th:field="*{adress.id_adress}" />
+						<input type="hidden" th:field="*{cart.id_cart}" />
 
 						<div class="form-area">
 							<h3>Customer</h3>
 							<div class="row">
 								<div class="col-md-6">
 									<div class="input-space">
-										<input type="text" th:field="*{name}" placeholder="Imie">
+
+										<input type="text" th:field="*{name}" placeholder="Imie" required>
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="input-space">
-										<input type="text" th:field="*{surname}" placeholder="Nazwisko">
+										<input type="text" th:field="*{surname}" placeholder="Nazwisko" required>
 									</div>
 								</div>
 								<div class="clearfix"></div>
 								<div class="col-md-6">
 									<div class="input-space">
-										<input type="text" th:field="*{e_mail}" placeholder="Email Address">
+										<input type="text" th:field="*{e_mail}" placeholder="Email Address" required>
 									</div>
 								</div>
 							</div>
@@ -93,12 +97,12 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="input-space">
-										<input type="text" th:field="*{adress.street}" placeholder="Ulica">
+										<input type="text" th:field="*{adress.street}" placeholder="Ulica" required>
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="input-space">
-										<input type="text" th:field="*{adress.place}" placeholder="Miejscowosc">
+										<input type="text" th:field="*{adress.place}" placeholder="Miejscowosc" required>
 									</div>
 								</div>
 
@@ -109,7 +113,7 @@
 								</div>
 								<div class="col-md-12">
 									<div class="input-space">
-										<input type="text" th:field="*{adress.zip_code}" placeholder="Kod pocztowy">
+										<input type="text" th:field="*{adress.zip_code}" placeholder="Kod pocztowy" required>
 									</div>
 								</div>
 							</div>
@@ -171,7 +175,7 @@
 							<B>Total Price: $19.99</B>
 						</div>
 						<div class="text-center">
-							<button class="btn btn-info">Kontynuj</button>
+							<button type="submit" class="btn btn-info" >Kontynuj</button>
 						</div>
 					</form>
 					</div>

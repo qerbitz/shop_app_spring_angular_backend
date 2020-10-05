@@ -24,7 +24,14 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public int getQuantityofCart(int cartId) {
-        return cartRepository.getQuantityofCart(cartId);
+        Integer quantity = cartRepository.getQuantityofCart(cartId);
+        if(quantity == null){
+            return 0;
+        }
+        else
+        {
+            return quantity;
+        }
     }
 
     @Override

@@ -83,11 +83,11 @@
 							<li class="dropdown">
 								<a href="javascript:void(0)" class="dropbtn"><img src="/images/nouser.png" height="3px"></a>
 								<div class="dropdown-content">
-									<a href="twoje.php">Twoje zamowienia</a>
-									<a th:action="@{/logout}" method="post">
-										<input type="submit" value=""/>Wyloguj sie</a>
+									<a th:href="@{/order/allOrders}">Twoje zamowienia</a>
+									<form th:action="@{/logout}" method="post">
+										<a onclick="this.form.submit()">Wyloguj sie</a>
 									</form>
-									<a type="submit" value="Wyloguj" th:action="@{/logout}">Wyloguj się</a>
+									<a type="submit" value="Wyloguj" th:href="@{/logout}">Wyloguj się</a>
 									</ul>
 								</div>
 						</div>

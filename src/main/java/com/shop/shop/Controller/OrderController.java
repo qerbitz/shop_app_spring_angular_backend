@@ -38,7 +38,7 @@ public class OrderController {
 
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getUserByUsername("batonik2");
+        User user = userService.getUserByUsername(authentication.getName());
 
         theModel.addAttribute("user", user);
 
@@ -47,33 +47,10 @@ public class OrderController {
     }
 
     @PostMapping("/createOrder")
-    public String createOrder(@ModelAttribute("user") User user, Model theModel){
+    public String createOrder(@ModelAttribute("user") User user ) throws IOException {
 
         userService.updateUser(user);
 
-        Cart cart = cartService.getCartById(user.getCart().getId_cart());
-
-        Order order = new Order();
-        order.setCart(cart);
-        order.setUser(user);
-        order.setOrderDate(convertDate(LocalDate.now()));
-        order.setStatus("Oczekujacy");
-
-
-        theModel.addAttribute("order", order);
-        theModel.addAttribute("user", user);
-        theModel.addAttribute("cart", cartService.getCartById(user.getCart().getId_cart()).getCartItems());
-        theModel.addAttribute("total",cartService.getTotalPrice(user.getCart().getId_cart()));
-
-
-        return "order/orderConfirmation";
-    }
-
-    @PostMapping("/confirmOrder")
-    public String confirmOrder() throws IOException {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getUserByUsername(authentication.getName());
         Cart cart = cartService.getCartById(user.getCart().getId_cart());
 
         Order order = new Order();
@@ -104,7 +81,7 @@ public class OrderController {
     }
 
     @GetMapping("/detailsOrder/{cartId}")
-    public String detailsOrder(@PathVariable(value = "cartId") int cartId, @RequestParam(value = "orderId") int orderId, Model theModel, RedirectAttributes redirectAttributes){
+    public String detailsOrder(@PathVariable(value = "cartId") int cartId, @RequestParam(value = "orderId") int orderId, Model model, RedirectAttributes redirectAttributes){
 
 
         if(cartId!=orderService.getOrderById(orderId).getCart().getId_cart())
@@ -114,7 +91,9 @@ public class OrderController {
             return "redirect:/order/detailsOrder/{cartId}";
         }
 
-        theModel.addAttribute("cart", cartService.getCartById(cartId).getCartItems());
+        model.addAttribute("quantity", cartService.getQuantityofCart(cartId));
+        model.addAttribute("total", cartService.getTotalPrice(cartId));
+        model.addAttribute("cart", cartService.getCartById(cartId).getCartItems());
 
         return "order/orderDetails";
     }

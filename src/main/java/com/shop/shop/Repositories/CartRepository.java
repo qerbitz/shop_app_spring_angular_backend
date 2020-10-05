@@ -14,7 +14,7 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
             " where c.id_cart = :cartId" +
             " and ct.id_cart = c.id_cart",
             nativeQuery = true)
-    int getQuantityofCart(int cartId);
+    Integer getQuantityofCart(int cartId);
 
 
     @Query(value = "select sum(total_price) from cart c, cart_item ct" +
