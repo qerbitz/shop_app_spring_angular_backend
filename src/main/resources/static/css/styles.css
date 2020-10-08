@@ -4,6 +4,13 @@
  * ----------------------------
  */
 
+.hidden {
+    display: none;
+}
+.visible {
+    display: block;
+}
+
 li.dropdown
 {
     display: inline-block;

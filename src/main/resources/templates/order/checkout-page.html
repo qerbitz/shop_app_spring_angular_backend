@@ -25,8 +25,8 @@
 		<!-- MENU SIDEBAR-->
 		<aside class="menu-sidebar d-none d-lg-block clr">
 			<div class="logo">
-				<a href="home.html">
-					<img src="assets/images/logo.png" alt="luv2shop" class="img-responsive">
+				<a th:href="@{/product/productList}">
+					<img src="/images/avatar.png" alt="Strona glowna" class="avatar">
 				</a>
 			</div>
 		</aside>
@@ -47,9 +47,9 @@
 								</button>
 							</form>
 							<div class="cart-area d-n">
-								<a href="shopping-detail.html">
-									<div class="total">19.22 <span> 2</span> </div> <i class="fa fa-shopping-cart"
-										aria-hidden="true"></i>
+								<a th:href="@{/cart/}">
+									<div class="total" th:text="${total}"> <span th:text="${quantity}"> </span> </div> <i class="fa fa-shopping-cart"
+																														  aria-hidden="true"></i>
 								</a>
 							</div>
 						</div>
@@ -65,6 +65,7 @@
 					<form action="#" th:action="@{/order/createOrder}"
 						  th:object="${user}" method="POST" modelAttribute="user">
 						<input type="hidden" th:field="*{username}"/>
+						<input type="hidden" th:field="*{password}"/>
 						<input type="hidden" th:field="*{adress.id_adress}" />
 						<input type="hidden" th:field="*{cart.id_cart}" />
 
@@ -169,9 +170,16 @@
 						</div>
 
 						<div class="form-area">
-							<h3>Review Your Order</h3>
-							<b>Total Quantity: 2</b>
-							<h4>Shipping: FREE</h4>
+							<h3>Produkty</h3>
+							<tr th:each="item: ${cart}">
+								<td class="col-md-1" style="text-align: center" th:text="${item.getProduct().getName()}"></td>
+								<td></td>
+								<td class="col-md-1" style="text-align: center" th:text="${item.getProduct().getPrice()}"></td>
+
+								<b>Total Quantity: 2</b>
+								<h4>Shipping: FREE</h4>
+							<td th:text="${total}"></td>
+							</tr>
 							<B>Total Price: $19.99</B>
 						</div>
 						<div class="text-center">

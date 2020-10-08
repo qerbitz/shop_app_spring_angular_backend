@@ -33,25 +33,20 @@
 							<label for="price_max" >Cena do:</label><br>
 							<input type="number" id="price_max" th:name="price_max" th:value="${price_max}" onfocusout="this.form.submit()">
 
+							<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+							<button class="button">Kategorie</button>
 
-						<li th:each="category: ${categoryList}">
-								<input type="checkbox" th:value="${category.id_category}"  th:name="listOfCategoryChecked" th:checked="${categoryCheckedList?.contains(category)}" onclick="this.form.submit()"/>
+							<li class="item" th:each="category: ${categoryList}">
+								<input type="checkbox" th:value="${category.id_category}" th:name="listOfCategoryChecked" th:checked="${categoryCheckedList?.contains(category)}" onclick="this.form.submit()"/>
 								<label th:text="${category.name}"></label>
-						</li>
-							<button class="au-btn-submit" type="submit" form="getforma">
-								Search
-							</button>
-						<!--</form>-->
-					</ul>
+							</li>
 
-					<ul class="list-unstyled navbar-list">
+							<br>
+
 							<li th:each="age: ${agesList}">
 								<input type="checkbox" th:value="${age}"  th:name="listOfAgesChecked" th:checked="${agesCheckedList?.contains(age)}" onclick="this.form.submit()"/>
 								<label th:text="${age}"></label>
 							</li>
-							<button class="au-btn-submit" type="submit" form="getforma">
-								Search
-							</button>
 						</form>
 					</ul>
 
@@ -69,9 +64,9 @@
 						<div class="header-wrap">
 							<form class="form-header" method="post" th:action="@{/product/products_search}" id="getform">
 								<input class="au-input au-input-xl" type="text" name="value" id="value" th:object="${user}"
-									placeholder="Search for data ..." form="getform"/>
+									placeholder="Szukaj produktów ..." form="getform"/>
 								<button class="au-btn-submit" type="submit" form="getform">
-									Search
+									Szukaj
 								</button>
 							</form>
 							<div class="cart-area d-n">
@@ -148,7 +143,7 @@
 									<h2>Duis aute irure dolor in reprehenderit in voluptate </h2>
 									<div class="price" td th:text="${product.price} + ' zł'"></td>></div>
 									<a th:href="@{/cart/add/{id_product}(id_product=${product.id_product},price_min=${price_min},price_max=${price_max},
-												listOffAgesChecked=${agesCheckedList}, listOffCategoryChecked=${categoryCheckedListint})}" class="primary-btn">Add to cart</a>
+												listOffAgesChecked=${agesCheckedList}, listOffCategoryChecked=${categoryCheckedListint})}" class="primary-btn">Dodaj do koszyka</a>
 								</div>
 							</div>
 
@@ -201,6 +196,8 @@
 			<li><a href="#">Help</a></li>
 		</ul>
 	</footer>
+
+	<script src="../static/css/test.js" th:src="@{/css/test.js}"></script>
 
 </body>
 
