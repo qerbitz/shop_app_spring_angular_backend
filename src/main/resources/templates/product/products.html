@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	<title>xdd</title>
+	<title>test</title>
 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
 		  integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -34,16 +34,16 @@
 							<input type="number" id="price_max" th:name="price_max" th:value="${price_max}" onfocusout="this.form.submit()">
 
 							<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-							<button class="button">Kategorie</button>
+							<button class="btn btn-secondary dropdown-toggle" name="drop_category" th:value="${value_category}">Kategorie</button>
 
-							<li class="item" th:each="category: ${categoryList}">
+							<li th:hidden="${hidden_category}" th:each="category: ${categoryList}">
 								<input type="checkbox" th:value="${category.id_category}" th:name="listOfCategoryChecked" th:checked="${categoryCheckedList?.contains(category)}" onclick="this.form.submit()"/>
 								<label th:text="${category.name}"></label>
 							</li>
 
-							<br>
-
-							<li th:each="age: ${agesList}">
+							<br><br><br>
+							<button class="btn btn-secondary dropdown-toggle" name="drop_age" th:value="${value_age}">Wiek</button>
+							<li th:hidden="${hidden_age}" th:each="age: ${agesList}">
 								<input type="checkbox" th:value="${age}"  th:name="listOfAgesChecked" th:checked="${agesCheckedList?.contains(age)}" onclick="this.form.submit()"/>
 								<label th:text="${age}"></label>
 							</li>

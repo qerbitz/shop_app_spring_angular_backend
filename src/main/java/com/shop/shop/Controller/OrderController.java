@@ -34,13 +34,15 @@ public class OrderController {
 
 
     @GetMapping("/showUserDetails")
-    public String showUserDetails(Model theModel) {
+    public String showUserDetails(Model model) {
 
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getUserByUsername(authentication.getName());
 
-        theModel.addAttribute("user", user);
+        model.addAttribute("user", user);
+        model.addAttribute("total", cartService.getTotalPrice(user.getCart().getId_cart()));
+        model.addAttribute("cart", cartService.getCartById(user.getCart().getId_cart()).getCartItems());
 
 
         return "order/checkout-page";

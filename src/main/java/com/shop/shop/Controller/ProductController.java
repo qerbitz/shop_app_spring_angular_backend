@@ -36,34 +36,18 @@ public class ProductController {
 
     Weka weka = new Weka();
 
+    int pierwsza = 0;
+    int druga = 0;
+
 
     @PostMapping("/filter")
     public String filterpost(@RequestParam(value = "listOfCategoryChecked", required = false) List<Integer> listOfCategoryCheckedint,
-                       @RequestParam(value = "listOfAgesChecked", required = false) List<String> listOfAgesChecked,
-                       @RequestParam(value = "price_min", required = false) String price_min,
-                       @RequestParam(value = "price_max", required = false) String price_max,
-                       Model model) throws ParseException {
-
-        List<Product> proponowaneNowe = new ArrayList<>();
-
-        Order order = orderService.getOrderById(26);
-
-        Date actual_date = java.sql.Date.valueOf(LocalDate.now());
-
-        long diff = Math.abs(actual_date.getTime() - order.getOrderDate().getTime());
-        long diff_months = diff / (24 * 60 * 60 * 1000) / 30;
-        long diff_years = diff / (24 * 60 * 60 * 1000) / 365;
-
-        System.out.println("Roznica w miesiacach: " + diff_months);
-
-        System.out.println("Roznica w latach: " +diff_years);
-
-        String dawny_rozmiar = order.getCart().getCartItems().get(0).getProduct().getAge();
-        String nowy_rozmiar = String.valueOf(diff_months);
-
-         System.out.println(dawny_rozmiar);
-         System.out.println(nowy_rozmiar);
-
+                             @RequestParam(value = "listOfAgesChecked", required = false) List<String> listOfAgesChecked,
+                             @RequestParam(value = "price_min", required = false) String price_min,
+                             @RequestParam(value = "price_max", required = false) String price_max,
+                             @RequestParam(required = false) String drop_category,
+                             @RequestParam(required = false) String drop_age,
+                             Model model) throws ParseException {
 
         List<Category> categoryCheckedList = new ArrayList<>();
 
@@ -94,12 +78,12 @@ public class ProductController {
         }
 
         //Sortowania poprzez kategorie oraz przeznaczenie wiekowe
-        if (listOfAgesChecked == null && listOfCategoryCheckedint !=null) {
+        if (listOfAgesChecked == null && listOfCategoryCheckedint != null) {
             list = list.stream()
                     .filter(p -> listOfCategoryCheckedint.contains(p.getId_category().getId_category()))
                     .collect(Collectors.toList());
         }
-        if (listOfAgesChecked !=null && listOfCategoryCheckedint == null) {
+        if (listOfAgesChecked != null && listOfCategoryCheckedint == null) {
             list = list.stream()
                     .filter(p -> listOfAgesChecked.contains(p.getAge()))
                     .collect(Collectors.toList());
@@ -120,16 +104,51 @@ public class ProductController {
         model.addAttribute("price_min", price_min);
         model.addAttribute("price_max", price_max);
 
+        showCategoryLi(drop_category,drop_age, model);
+
         return "product/products";
     }
 
-    @RequestMapping("/nooo")
-    public String jazda(Model model){
+    @GetMapping("/test")
+        public String test() {
+        List<Product> proponowaneNowe = new ArrayList<>();
 
+        Order order = orderService.getOrderById(26);
 
-        model.addAttribute("cart", cartService.getCartById(21).getCartItems());
-        return "shopping-detail";
+        Date actual_date = java.sql.Date.valueOf(LocalDate.now());
+
+        long diff = Math.abs(actual_date.getTime() - order.getOrderDate().getTime());
+        long diff_months = diff / (24 * 60 * 60 * 1000) / 30;
+        long diff_years = diff / (24 * 60 * 60 * 1000) / 365;
+
+        System.out.println("Roznica w miesiacach: " + diff_months);
+
+        System.out.println("Roznica w latach: " + diff_years);
+
+        String dawny_rozmiar = order.getCart().getCartItems().get(0).getProduct().getAge();
+        String nowy_rozmiar = String.valueOf(diff_months);
+
+        System.out.println(order.getCart().getCartItems().get(0).getProduct().getName());
+        System.out.println("Rozmiar zamowionego produktu wczesniej: " + dawny_rozmiar);
+        System.out.println("Ile dodac: " + nowy_rozmiar);
+
+        int ile_dodac = Integer.parseInt(nowy_rozmiar);
+        int nowy_poczatek = Integer.parseInt(dawny_rozmiar.substring(0,1)) + ile_dodac;
+        int nowy_koniec = Integer.parseInt(dawny_rozmiar.substring(2,3)) + ile_dodac;
+
+        System.out.println(nowy_poczatek+"-"+nowy_koniec);
+
+        proponowaneNowe = productService.getListOfProductsByAgeContaining(nowy_poczatek, nowy_koniec);
+
+        for(int i=0; i< proponowaneNowe.size(); i++){
+            if(proponowaneNowe.get(i).getAge().length()<=8){
+                System.out.println(proponowaneNowe.get(i).getName());
+            }
+        }
+
+        return "product/products";
     }
+
 
     @RequestMapping("/productList")
     public String productList(@RequestParam(value = "id_product", required = false) String id_product, Model model) throws Exception {
@@ -148,6 +167,11 @@ public class ProductController {
         model.addAttribute("productList", productService.getListOfProducts());
         model.addAttribute("categoryList", categoryService.getListOfCategories());
         model.addAttribute("recommendedList", listRecommendedProducts);
+        model.addAttribute("hidden_category",true);
+        model.addAttribute("value_category", 0);
+
+        model.addAttribute("hidden_age",true);
+        model.addAttribute("value_age", 0);
 
 
         if (authentication.getName().equals("anonymousUser")) {
@@ -236,10 +260,10 @@ public class ProductController {
 
     @GetMapping("/filter")
     public String filterget(@RequestParam(value = "categoryCheckedList", required = false) List<Integer> listOfCategoryChecked,
-                       @RequestParam(value = "listOfAgesChecked", required = false) List<String> listOfAgesChecked,
-                       @RequestParam(value = "price_min", required = false) String price_min,
-                       @RequestParam(value = "price_max", required = false) String price_max,
-                       Model model) throws ParseException {
+                            @RequestParam(value = "listOfAgesChecked", required = false) List<String> listOfAgesChecked,
+                            @RequestParam(value = "price_min", required = false) String price_min,
+                            @RequestParam(value = "price_max", required = false) String price_max,
+                            Model model) throws ParseException {
 
 
         List<Category> categoryCheckedList = new ArrayList<>();
@@ -271,12 +295,12 @@ public class ProductController {
         }
 
         //Sortowania poprzez kategorie oraz przeznaczenie wiekowe
-        if (listOfAgesChecked == null && listOfCategoryChecked !=null) {
+        if (listOfAgesChecked == null && listOfCategoryChecked != null) {
             list = list.stream()
                     .filter(p -> listOfCategoryChecked.contains(p.getId_category().getId_category()))
                     .collect(Collectors.toList());
         }
-        if (listOfAgesChecked !=null && listOfCategoryChecked == null) {
+        if (listOfAgesChecked != null && listOfCategoryChecked == null) {
             list = list.stream()
                     .filter(p -> listOfAgesChecked.contains(p.getAge()))
                     .collect(Collectors.toList());
@@ -297,5 +321,45 @@ public class ProductController {
         model.addAttribute("price_max", price_max);
 
         return "product/products";
+    }
+
+    void showCategoryLi(String drop_category, String drop_age, Model model){
+        int next_value_category=pierwsza;
+        int next_value_age=druga;
+
+        if(drop_category==null){
+            next_value_category=pierwsza;
+        }
+        if(drop_age==null){
+            next_value_age=druga;
+        }
+
+        if(drop_category!=null){
+            next_value_category +=1;
+        }
+        if(drop_age!=null){
+            next_value_age +=1;
+        }
+
+        if(next_value_category%2==0){
+            model.addAttribute("hidden_category",true);
+        }
+        else if(next_value_category%2!=0)
+        {
+            model.addAttribute("hidden_category", false);
+        }
+        if(next_value_age%2==0){
+            model.addAttribute("hidden_age", true);
+        }
+        else if(next_value_age%2!=0)
+        {
+            model.addAttribute("hidden_age", false);
+        }
+
+        model.addAttribute("value_category", next_value_category);
+        model.addAttribute("value_age", next_value_age);
+
+        pierwsza = next_value_category;
+        druga = next_value_age;
     }
 }

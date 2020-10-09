@@ -6,9 +6,7 @@ import com.shop.shop.Service.Interface.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -71,8 +69,28 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getListOfProductsByAgeContaining(String age) {
-        return productRepository.findAllByAgeContaining(age);
+    public List<Product> getListOfProductsByAgeContaining(int nowy_poczatek, int nowy_koniec) {
+        List<Product> proponowaneNowe = new ArrayList<>();
+
+        for(int i=nowy_poczatek; i<=nowy_koniec; i++)
+        {
+            String pomoc = String.valueOf(i);
+            proponowaneNowe = cosik(productRepository.findAllByAgeContaining(pomoc));
+        }
+
+        Set<Product> productSet1 = new HashSet<>();
+
+        if(proponowaneNowe!=null){
+            proponowaneNowe.removeIf(yourInt -> !productSet1.add(yourInt));
+        }
+
+        return proponowaneNowe;
+    }
+    List<Product> proponowane = new ArrayList<>();
+    public List<Product> cosik(List<Product> cosiktam){
+        proponowane.addAll(cosiktam);
+
+        return proponowane;
     }
 
     @Override
@@ -104,6 +122,12 @@ public class ProductServiceImpl implements ProductService {
 
         for(Object[] obj: productRepository.findAllAges()){
             String age = String.valueOf(obj[0]);
+            if(age.contains("24-36")){
+                age = "2-3 lata";
+            }
+            if(age.contains("36-48")){
+                age = "3-4 lata";
+            }
             listOfAges.add(age);
         }
 
