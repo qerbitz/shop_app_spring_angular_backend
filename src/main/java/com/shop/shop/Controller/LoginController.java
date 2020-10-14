@@ -12,5 +12,10 @@ public class LoginController {
         return "login/login_form";
     }
 
+    @PostMapping("/showLoginPage")
+    public String showLoginPagePost(){
+        return "login/login_form";
+    }
+
 
 }

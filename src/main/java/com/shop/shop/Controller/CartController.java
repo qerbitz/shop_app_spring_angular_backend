@@ -91,7 +91,7 @@ public class CartController {
 
         for (int i=0; i<cartItems.size(); i++) {
             if(productService.changeQuantityOfProduct(product, 1)==true){
-                System.out.println("Jest git");
+                System.out.println("Jest ok");
                 if (product.getId_product() == cartItems.get(i).getProduct().getId_product()) {
                     CartItem cartItem = cartItems.get(i);
                     cartItem.setQuantity(cartItem.getQuantity()+1);
@@ -168,6 +168,6 @@ public class CartController {
         redirectAttributes.addAttribute("listOfAgesChecked", listOfAgesChecked);
         redirectAttributes.addAttribute("price_min", price_min);
         redirectAttributes.addAttribute("price_max", price_max);
-        //redirectAttributes.addAttribute("id_product", id_product);
+        redirectAttributes.addAttribute("id_product", id_product);
     }
 }

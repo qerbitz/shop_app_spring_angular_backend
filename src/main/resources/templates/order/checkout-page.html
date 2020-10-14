@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	<title>luv2shop - Full Stack eCommerce: Angular and Spring Boot</title>
+	<title>Sklep</title>
 
 	<!-- Bootstrap CSS and Font Awesome -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -70,7 +70,7 @@
 						<input type="hidden" th:field="*{cart.id_cart}" />
 
 						<div class="form-area">
-							<h3>Customer</h3>
+							<h3>Podstawowe informacje</h3>
 							<div class="row">
 								<div class="col-md-6">
 									<div class="input-space">
@@ -121,7 +121,7 @@
 						</div>
 
 
-						<div class="form-area">
+						<!--<div class="form-area">
 							<h3>Credit Card</h3>
 							<div class="row">
 								<div class="col-md-12">
@@ -167,7 +167,7 @@
 									</div>
 								</div>
 							</div>
-						</div>
+						</div>-->
 
 						<div class="form-area">
 							<h3>Produkty</h3>
@@ -176,11 +176,9 @@
 								<td></td>
 								<td class="col-md-1" style="text-align: center" th:text="${item.getProduct().getPrice()}"></td>
 
-								<b>Total Quantity: 2</b>
-								<h4>Shipping: FREE</h4>
 							<td th:text="${total}"></td>
 							</tr>
-							<B>Total Price: $19.99</B>
+							<B></B>
 						</div>
 						<div class="text-center">
 							<button type="submit" class="btn btn-info" >Kontynuj</button>

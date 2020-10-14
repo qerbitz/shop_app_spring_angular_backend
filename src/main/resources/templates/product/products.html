@@ -140,10 +140,11 @@
 									<a href="product-detail.html">
 										<h1 th:text="${product.name}"></h1>
 									</a>
-									<h2>Duis aute irure dolor in reprehenderit in voluptate </h2>
+									<h2 th:text="${product.age}"></h2>
 									<div class="price" td th:text="${product.price} + ' zł'"></td>></div>
 									<a th:href="@{/cart/add/{id_product}(id_product=${product.id_product},price_min=${price_min},price_max=${price_max},
-												listOffAgesChecked=${agesCheckedList}, listOffCategoryChecked=${categoryCheckedListint})}" class="primary-btn">Dodaj do koszyka</a>
+												listOffAgesChecked=${agesCheckedList}, listOffCategoryChecked=${categoryCheckedListint})}" class="primary-btn" onclick="badAlert()">Dodaj do koszyka</a>
+
 								</div>
 							</div>
 

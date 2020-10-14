@@ -47,7 +47,8 @@ public class ProductController {
                              @RequestParam(value = "price_max", required = false) String price_max,
                              @RequestParam(required = false) String drop_category,
                              @RequestParam(required = false) String drop_age,
-                             Model model) throws ParseException {
+                             @RequestParam(value = "id_product", required = false) String id_product,
+                             Model model) throws Exception {
 
         List<Category> categoryCheckedList = new ArrayList<>();
 
@@ -106,12 +107,23 @@ public class ProductController {
 
         showCategoryLi(drop_category,drop_age, model);
 
+
+        List<Integer> listRecommended = weka.Apriori(id_product);
+
+       /* List<Product> listRecommendedProducts = new ArrayList<>();
+        for (int i = 0; i < listRecommended.size(); i++) {
+            listRecommendedProducts.add(productService.getProductById(listRecommended.get(i)));
+        }
+
+        model.addAttribute("recommendedList", listRecommendedProducts);*/
+
         return "product/products";
     }
 
     @GetMapping("/test")
-        public String test() {
+        public String test(Model model) {
         List<Product> proponowaneNowe = new ArrayList<>();
+        List<Product> proponowaneNowe2 = new ArrayList<>();
 
         Order order = orderService.getOrderById(26);
 
@@ -138,15 +150,19 @@ public class ProductController {
 
         System.out.println(nowy_poczatek+"-"+nowy_koniec);
 
-        proponowaneNowe = productService.getListOfProductsByAgeContaining(nowy_poczatek, nowy_koniec);
+        List<Product> proponowane = new ArrayList<>();
+        proponowaneNowe = productService.getListOfProductsByAgeContaining(nowy_poczatek, nowy_koniec, order, proponowane);
 
-        for(int i=0; i< proponowaneNowe.size(); i++){
-            if(proponowaneNowe.get(i).getAge().length()<=8){
-                System.out.println(proponowaneNowe.get(i).getName());
+        for(int i=0; i<proponowaneNowe.size(); i++){
+            //System.out.println(proponowaneNowe.get(i).getAge().length());
+            if(proponowaneNowe.get(i).getAge().length()<9){
+                proponowaneNowe2.add(proponowaneNowe.get(i));
             }
         }
 
+        model.addAttribute("productList", proponowaneNowe2);
         return "product/products";
+
     }
 
 

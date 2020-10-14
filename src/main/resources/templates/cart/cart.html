@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>luv2shop - Full Stack eCommerce: Angular and Spring Boot</title>
+    <title>Sklep</title>
 
     <!-- Bootstrap CSS and Font Awesome -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -96,7 +96,7 @@
                                         </select>
                                     </div>
                                     <p th:text="'Cena: ' + ${item.getProduct().getPrice()+ 'zł'}"></p>
-                                    <a th:href="@{/cart/remove/{id_product}(id_product=${item.getProduct().getId_product()})}" onclick="refreshPage()" class="primary-btn">Remove</a>
+                                    <a th:href="@{/cart/remove/{id_product}(id_product=${item.getProduct().getId_product()})}" onclick="refreshPage()" class="primary-btn">Usun</a>
                                 </td>
                             </tr>
                             <tr>
@@ -104,7 +104,7 @@
                                 <td><p>Suma produktów <b th:text="${quantity}"></b></p>
                                     <p></p></br>
                                     <p>Laczna kwota <b th:text="${total}"></b></p><br>
-                                    <a th:href="@{/order/showUserDetails}" class="primary-btn">Checkout</a>
+                                    <a th:href="@{/order/showUserDetails}" class="primary-btn">Zamow</a>
                                 </td>
                             </tr>
 

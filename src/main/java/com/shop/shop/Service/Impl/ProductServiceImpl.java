@@ -1,5 +1,7 @@
 package com.shop.shop.Service.Impl;
 
+import com.shop.shop.Entity.Category;
+import com.shop.shop.Entity.Order;
 import com.shop.shop.Entity.Product;
 import com.shop.shop.Repositories.ProductRepository;
 import com.shop.shop.Service.Interface.ProductService;
@@ -69,52 +71,58 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getListOfProductsByAgeContaining(int nowy_poczatek, int nowy_koniec) {
+    public List<Product> getListOfProductsByAgeContaining(int nowy_poczatek, int nowy_koniec, Order order, List<Product> proponowane) {
         List<Product> proponowaneNowe = new ArrayList<>();
+        List<Product> tescik = new ArrayList<>();
 
-        for(int i=nowy_poczatek; i<=nowy_koniec; i++)
-        {
-            String pomoc = String.valueOf(i);
-            proponowaneNowe = cosik(productRepository.findAllByAgeContaining(pomoc));
-        }
 
         Set<Product> productSet1 = new HashSet<>();
 
-        if(proponowaneNowe!=null){
-            proponowaneNowe.removeIf(yourInt -> !productSet1.add(yourInt));
+        //Wyszukiwanie wszystkich produktów z podanego przedzialu wiekowego
+        for(int i=nowy_poczatek; i<=nowy_koniec; i++)
+        {
+            String pomoc = String.valueOf(i);
+            proponowaneNowe = findLoop(productRepository.findAllByAgeContaining(pomoc), proponowane);
         }
 
-        return proponowaneNowe;
+        for(int i=0; i<proponowaneNowe.size(); i++){
+            int freq = Collections.frequency(proponowaneNowe, proponowaneNowe.get(i));
+            if(freq>1)
+            tescik.add(proponowaneNowe.get(i));
+
+            System.out.println(proponowaneNowe.get(i).getName());
+        }
+
+
+        if(!tescik.isEmpty()){
+            //Usuwanie powtarzalnosci
+            tescik.removeIf(yourInt -> !productSet1.add(yourInt));
+            //Filtrowanie ze względu na kategorie
+            List<Product> filteredlist = tescik.stream()
+                    .filter(p -> p.getId_category().getName() == order.getCart().getCartItems().get(0).getProduct().getId_category().getName())
+                    .collect(Collectors.toList());
+
+            return filteredlist;
+        }
+        else{
+            //Usuwanie powtarzalnosci
+            if(!proponowaneNowe.isEmpty()){
+                proponowaneNowe.removeIf(yourInt -> !productSet1.add(yourInt));
+            }
+            //Filtrowanie ze względu na kategorie
+            List<Product> filteredlist = proponowaneNowe.stream()
+                    .filter(p -> p.getId_category().getName() == order.getCart().getCartItems().get(0).getProduct().getId_category().getName())
+                    .collect(Collectors.toList());
+            
+            return filteredlist;
+        }
     }
-    List<Product> proponowane = new ArrayList<>();
-    public List<Product> cosik(List<Product> cosiktam){
+    public List<Product> findLoop(List<Product> cosiktam, List<Product> proponowane){
         proponowane.addAll(cosiktam);
 
         return proponowane;
     }
 
-    @Override
-    public List<Product> findByCriteria(Map<String, List<String>> filterParams,  List<Product> products) {
-
-        List<String> categoryCriteria = filterParams.get("category").stream().map(f -> f.toLowerCase()).collect(Collectors.toList());
-        List<String> ageCriteria = filterParams.get("age").stream().map(f -> f.toLowerCase()).collect(Collectors.toList());
-        //List<String> priceCriteria = filterParams.get("price").stream().map(f -> f.toLowerCase()).collect(Collectors.toList());
-        //List<String> sizeCriteria = filterParams.get("size").stream().map(f -> f.toLowerCase()).collect(Collectors.toList());
-
-        List<String> finalCategoryCriteria = categoryCriteria;
-        List<Product> list = products.stream()
-                 .filter(p -> ageCriteria.contains(p.getAge().toLowerCase()))
-                 .filter(p -> categoryCriteria.contains(p.getId_category().getName().toLowerCase()))
-                 //.filter(p -> priceCriteria.c)
-                .collect(Collectors.toList());
-
-        if (list.isEmpty()) {
-            //throw new IllegalArgumentException("Did not find elements");
-            System.out.println("chuja");
-        }
-
-        return list;
-    }
 
     @Override
     public List<String> getListOfAges() {

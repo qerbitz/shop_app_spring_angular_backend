@@ -19,8 +19,6 @@ public class Weka {
 
         List<Integer> id_products_list = new ArrayList<>();
 
-        StringBuilder recommendedProduct = new StringBuilder();
-
         Instances data = BasicTools.loadData("src/main/resources/Apriori.arff");
         data.setClassIndex(data.numAttributes() - 1);
 
@@ -28,7 +26,7 @@ public class Weka {
         //Opcje liczenia regul asocjacyjnych
         //-N ->Liczba regul do policzenia (standardowo: 10)
         //-C ->Minmalna ufnosc reguly (standardowo: 0.9).
-        String[] options = Utils.splitOptions("-N 40 -C 0.6");
+        String[] options = Utils.splitOptions("-N 100 -C 0.1");
         Apriori apriori = new Apriori();
         apriori.setOptions(options);
         apriori.buildAssociations(data); //Generowanie regul asocjacyjnych
@@ -70,6 +68,7 @@ public class Weka {
 
             int id_product1 = 0;
             int id_product2 = 0;
+
 
             if (first.matches(".product.*=" + product_name + ".*")) {
 

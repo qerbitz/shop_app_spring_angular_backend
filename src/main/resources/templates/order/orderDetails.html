@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>luv2shop - Full Stack eCommerce: Angular and Spring Boot</title>
+    <title>Sklep</title>
 
     <!-- Bootstrap CSS and Font Awesome -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -54,7 +54,7 @@
                         </form>
                         <div class="cart-area d-n">
                             <a th:href="@{/cart/}">
-                                <div class="total" th:text="${total}"> <span th:text="${quantity}"> </span> </div> <i class="fa fa-shopping-cart"
+                                <div class="total" th:text="${total}"> <span th:text="${quantity}" > </span> </div> <i class="fa fa-shopping-cart"
                                                                                                                       aria-hidden="true"></i>
                             </a>
                         </div>
@@ -87,7 +87,7 @@
                             </td>
                             <td>
                                 <div class="items">
-                                    <label>Quantity</label> <select>
+                                    <label>Ilosc</label> <select>
                                     <option th:text="${item.getQuantity()}"></option>
                                 </select>
                                 </div>
@@ -98,7 +98,7 @@
                             <td colspan="2"></td>
                             <td><p>Suma produktów <b th:text="${quantity}"></b></p>
                                 <p></p></br>
-                                <p>Laczna kwota <b th:text="${total}"></b></p><br>
+                                <p>Laczna kwota <b th:text="${total} + ' zł'"> </b></p><br>
                                 <a th:href="@{/order/allOrders}" class="primary-btn">Wróć</a>
                             </td>
                         </tr>
