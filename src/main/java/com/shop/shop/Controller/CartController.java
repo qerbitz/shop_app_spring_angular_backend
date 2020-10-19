@@ -11,7 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -36,11 +36,13 @@ public class CartController {
 
     Weka weka = new Weka();
 
+
+
     @RequestMapping
     public String get() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getUserByUsername(authentication.getName());
+        User user = userService.getUserByUsername("seminarium2");
         int cartId = user.getCart().getId_cart();
         return "redirect:/cart/"+cartId;
     }
@@ -50,7 +52,7 @@ public class CartController {
     public String getCart(@PathVariable(value = "cartId") int cartId, Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getUserByUsername(authentication.getName());
+        User user = userService.getUserByUsername("seminarium2");
 
         if(cartId!=user.getCart().getId_cart())
         {
@@ -70,7 +72,7 @@ public class CartController {
         return cartService.getCartById(cartId);
     }
 
-    @GetMapping("/add/{id_product}")
+    @RequestMapping(value = "/add/{id_product}", method=RequestMethod.GET)
     public String addItem (
             @RequestParam(value = "listOffCategoryChecked", required = false) List<Integer> listOfCategoryChecked,
             @RequestParam(value = "listOffAgesChecked", required = false) List<String> listOfAgesChecked,
@@ -79,10 +81,18 @@ public class CartController {
             @PathVariable(value = "id_product") String id_product,
                            RedirectAttributes redirectAttributes) throws Exception {
 
+
+        List<Integer> listRecommended = weka.Apriori(id_product);
+
+        List<Product> listRecommendedProducts = new ArrayList<>();
+        for (int i = 0; i < listRecommended.size(); i++) {
+            listRecommendedProducts.add(productService.getProductById(listRecommended.get(i)));
+        }
+
         int ajdi = Integer.parseInt(id_product);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        User user = userService.getUserByUsername(authentication.getName());
+        User user = userService.getUserByUsername("seminarium2");
         Cart cart = user.getCart();
 
         Product product = productService.getProductById(ajdi);
@@ -116,16 +126,6 @@ public class CartController {
         cartItem.setTotal_price(product.getPrice()*cartItem.getQuantity());
         cartItem.setCart(cart);
         cartItemService.addCartItem(cartItem);
-
-        List<Integer> listRecommended = weka.Apriori(id_product);
-        System.out.println(listRecommended);
-
-        if(productService.changeQuantityOfProduct(product, 1)==true){
-            System.out.println("Jest git");
-        }
-        else {
-            System.out.println("Brak towaru");
-        }
 
         redirect(listOfCategoryChecked,listOfAgesChecked,price_min,price_max,redirectAttributes, id_product);
         return "redirect:/product/productList";

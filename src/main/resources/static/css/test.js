@@ -2,8 +2,17 @@ $('.button').on('click', function (e) {
     $('.hidden').toggle();
 });
 
+// Get the modal
+var modal = document.getElementById("myModal");
 
-function badAlert() {
-    alert("Produkt aktualnie niedostępny.");
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
 }
+
+
+
 

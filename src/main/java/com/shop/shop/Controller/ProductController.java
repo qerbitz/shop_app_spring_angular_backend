@@ -10,6 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.script.Invocable;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import java.io.FileReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -182,7 +189,13 @@ public class ProductController {
         model.addAttribute("agesList", productService.getListOfAges());
         model.addAttribute("productList", productService.getListOfProducts());
         model.addAttribute("categoryList", categoryService.getListOfCategories());
+
         model.addAttribute("recommendedList", listRecommendedProducts);
+        model.addAttribute("id_product", id_product);
+        if(id_product!=null){
+            model.addAttribute("purchased_product", productService.getProductById(Integer.parseInt(id_product)));
+        }
+
         model.addAttribute("hidden_category",true);
         model.addAttribute("value_category", 0);
 

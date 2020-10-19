@@ -24,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests()
+            /*http.authorizeRequests()
                     .antMatchers("/cart/**").authenticated()
                     .antMatchers("/order/**").authenticated()
                     .and()
@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
                     .and()
-                    .exceptionHandling().accessDeniedPage("/login/showLoginPage");
+                    .exceptionHandling().accessDeniedPage("/login/showLoginPage");*/
     }
 
 
