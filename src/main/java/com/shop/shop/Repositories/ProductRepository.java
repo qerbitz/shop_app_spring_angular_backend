@@ -52,11 +52,16 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     )
     List<Object[]> findAllBySaleDesc();
 
+    @Query(value="SELECT * FROM product p, size_age sa" +
+            " where p.size_age=sa.id_size_age" +
+            " and sa.age like :age",
+            nativeQuery = true)
+    List<Product> findAllByAge(String age);
 
-    List<Product> findAllByAgeContaining(String age);
-
-    @Query(value="select distinct age from product",
+    @Query(value="select distinct age from size_age",
             nativeQuery = true)
     List<Object[]> findAllAges();
+
+    List<Product> findAllByGenderContaining(String gender);
 
 }

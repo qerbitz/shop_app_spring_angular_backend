@@ -18,7 +18,7 @@
 </head>
 
 <body>
-<p th:text="${id_product}"></p>
+<!--<p th:text="${id_product}"></p>-->
 <title>test</title>
 	<div class="page-wrapper">
 
@@ -30,13 +30,15 @@
 						<form method="post" th:action="@{/product/filter}"
 							  th:object="${categoryList}" id="getforma">
 
-							<label for="price_min">Cena od:</label><br>
-							<input type="number" id="price_min" th:name="price_min" th:value="${price_min}" onfocusout="this.form.submit()"><br>
+							<!--<label for="price_min" >Cena od:</label><br>-->
+							<input type="number" id="price_min" th:name="price_min" th:value="${price_min}" onfocusout="this.form.submit()" style="width: 100px; background-color: #0da8e4; text-align: center;" placeholder="Cena od: "><br>
 
-							<label for="price_max" >Cena do:</label><br>
-							<input type="number" id="price_max" th:name="price_max" th:value="${price_max}" onfocusout="this.form.submit()">
+							<br>
+							<!--<label for="price_max" >Cena do:</label><br>-->
+							<input type="number" id="price_max" th:name="price_max" th:value="${price_max}" onfocusout="this.form.submit()" style="width: 100px; background-color: #0da8e4; text-align: center; " placeholder="Cena od: ">
 
 							<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+							<br><br>
 							<button class="btn btn-secondary dropdown-toggle" name="drop_category" th:value="${value_category}" style="width: 100px; background-color: #0da8e4">Kategorie</button>
 
 							<li th:hidden="${hidden_category}" th:each="category: ${categoryList}">
@@ -49,6 +51,13 @@
 							<li th:hidden="${hidden_age}" th:each="age: ${agesList}">
 								<input type="checkbox" th:value="${age}"  th:name="listOfAgesChecked" th:checked="${agesCheckedList?.contains(age)}" onclick="this.form.submit()"/>
 								<label th:text="${age}"></label>
+							</li>
+
+							<br><br>
+							<button class="btn btn-secondary dropdown-toggle" name="drop_gender" th:value="${value_gender}" style="width: 100px; background-color: #0da8e4">Płeć</button>
+							<li th:hidden="${hidden_gender}" th:each="gender: ${genderList}">
+								<input type="checkbox" th:value="${gender}"  th:name="listOfGenderChecked" th:checked="${genderCheckedList?.contains(gender)}" onclick="this.form.submit()"/>
+								<label th:text="${gender}"></label>
 							</li>
 						</form>
 					</ul>
@@ -79,13 +88,14 @@
 								</a>
 							</div>
 							<li class="dropdown">
-								<a href="javascript:void(0)" class="dropbtn"><img src="/images/nouser.png" height="3px"></a>
+								<a href="javascript:void(0)" class="dropbtn"><img src="/images/nouser.png" height="1px"></a>
 								<div class="dropdown-content">
 									<a th:href="@{/order/allOrders}">Twoje zamowienia</a>
-									<form th:action="@{/logout}" method="post">
-										<a onclick="this.form.submit()">Wyloguj sie</a>
+									<a href="javascript: document.logoutForm.submit()" role="menuitem">Wyloguj sie</a>
+
+									<form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+										<input hidden type="submit" value="Sign Out"/>
 									</form>
-									<a type="submit" value="Wyloguj" th:href="@{/logout}">Wyloguj się</a>
 									</ul>
 								</div>
 						</div>
@@ -114,12 +124,14 @@
 							<div class="col-md-3" th:each="product: ${productList}">
 								<div class="product-box">
 									<a href="product-detail.html">
-										<img src="/images/avatar.png" class="img-responsive">
+										<img th:src="${product.image}" class="img-responsive">
 									</a>
 									<a href="product-detail.html">
 										<h1 th:text="${product.name}"></h1>
+										<h2 th:text="'Kategoria: '+${product.getId_category().getName()}"></h2>
+										<h2 th:text="'Rozmiar: '+${product.getSize_age().getProduct_size()}"></h2>
+										<h2 th:text="'Wiek: '+${product.getSize_age().getProduct_age()}"></h2>
 									</a>
-									<h2 th:text="${product.age}"></h2>
 									<div class="price"  th:text="${product.price} + ' zł'"></td></div>
 
 									<a class="primary-btn" type="button"
@@ -129,10 +141,6 @@
 
 								</div>
 							</div>
-
-
-
-
 
 
 						</div>
@@ -171,7 +179,7 @@
 											</a>
 											<a>
 												<h1 th:text="${purchased_product.name}"></h1>
-												<h2 th:text="${purchased_product.age}"></h2>
+												<!--<h2 th:text="${purchased_product.age}"></h2>-->
 												<div class="price" th:text="${purchased_product.price}"></div>
 											</a>
 										</div>
@@ -181,28 +189,22 @@
 										</div>
 
 										<hr>
-										<h1>Sprawdź jeszcze</h1>
+										<h1 th:if="${not #lists.isEmpty(recommendedList)}">Sprawdź jeszcze</h1>
 
-										<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-											<ol class="carousel-indicators">
-												<li data-target="#carouselExampleIndicators" data-slide-to="0"></li>
-												<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-												<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-											</ol>
+										<div id="carouselExampleControls" class="carousel slide" data-ride="carousel" th:if="${not #lists.isEmpty(recommendedList)}">
 											<div class="carousel-inner">
-												<div class="carousel-item active" >
-													<img class="d-block w-70" src="/images/avatar.png" alt="First slide">
-												</div>
 												<div th:each="product: ${recommendedList}" class="carousel-item">
-													<img class="d-block w-70" src="/images/avatar.png" alt="Second slide">
-													<h1 th:text="${product.name}" align="center"></h1>
+													<a th:href="@{/product/productList}">
+														<img class="d-block w-70" src="/images/avatar.png" alt="Second slide">
+														<h1 th:text="${product.name}" align="center"></h1>
+													</a>
 												</div>
 											</div>
-											<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+											<a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
 												<span class="carousel-control-prev-icon" aria-hidden="true"></span>
 												<span class="sr-only">Previous</span>
 											</a>
-											<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+											<a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
 												<span class="carousel-control-next-icon" aria-hidden="true"></span>
 												<span class="sr-only">Next</span>
 											</a>

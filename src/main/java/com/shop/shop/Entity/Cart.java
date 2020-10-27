@@ -1,7 +1,6 @@
 package com.shop.shop.Entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
@@ -19,10 +18,6 @@ public class Cart {
     @OneToMany(mappedBy = "cart")
     private List<CartItem> cartItems;
 
-    @OneToOne
-    @JoinColumn(name = "username")
-    @JsonIgnore
-    private User user;
 
     private double grandTotal;
 
@@ -42,13 +37,7 @@ public class Cart {
         this.cartItems = cartItems;
     }
 
-    public User getUser() {
-        return user;
-    }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public double getGrandTotal() {
         return grandTotal;
@@ -63,7 +52,6 @@ public class Cart {
         return "Cart{" +
                 "id_cart=" + id_cart +
                 ", cartItems=" + cartItems +
-                ", user=" + user +
                 ", grandTotal=" + grandTotal +
                 '}';
     }

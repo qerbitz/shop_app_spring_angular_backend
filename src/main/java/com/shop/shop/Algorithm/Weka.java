@@ -23,15 +23,10 @@ public class Weka {
         data.setClassIndex(data.numAttributes() - 1);
 
 
-        //Opcje liczenia regul asocjacyjnych
-        //-N ->Liczba regul do policzenia (standardowo: 10)
-        //-C ->Minmalna ufnosc reguly (standardowo: 0.9).
         String[] options = Utils.splitOptions("-N 100 -C 0.1");
         Apriori apriori = new Apriori();
         apriori.setOptions(options);
         apriori.buildAssociations(data); //Generowanie regul asocjacyjnych
-
-        //System.out.println("Liczba regul=" + apriori.getNumRules());
 
         AssociationRules rules = apriori.getAssociationRules();
         List<AssociationRule> ruleList = rules.getRules();

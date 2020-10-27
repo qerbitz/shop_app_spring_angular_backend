@@ -67,7 +67,7 @@ public class OrderController {
         cartService.addCart(newCart);
         userService.updateUser(user);
 
-        appendToApriori(order);
+        //appendToApriori(order);
 
 
         return "redirect:/product/productList";

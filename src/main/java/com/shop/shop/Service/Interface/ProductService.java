@@ -1,13 +1,12 @@
 package com.shop.shop.Service.Interface;
 
-import com.shop.shop.Entity.Order;
 import com.shop.shop.Entity.Product;
 import java.util.List;
-import java.util.Map;
 
 
 public interface ProductService {
 
+    List<String> getListOfGenders();
 
     List<Product> getListOfProducts();
 
@@ -27,7 +26,7 @@ public interface ProductService {
 
     List<Product> getListOfProductByPriceBetween(int price_min, int price_max);
 
-    List<Product> getListOfProductsByAgeContaining(int nowy_poczatek, int nowy_koniec, Order order,List<Product> proponowane);
+    List<Product> getListOfProductsByAgeContaining(int nowy_poczatek, int nowy_koniec, List<Product> proponowane);
 
     List<String> getListOfAges();
 

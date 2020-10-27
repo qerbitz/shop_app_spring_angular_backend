@@ -1,9 +1,6 @@
 package com.shop.shop.Entity;
 
-import lombok.Data;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -18,35 +15,29 @@ public class Product {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "description")
-    private String description;
+    @Column(name = "gender")
+    private String gender;
 
     @Column(name = "price")
     private Double price;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_category" ,nullable = false)
+    @JoinColumn(name = "id_category", nullable = false)
     private Category id_category;
 
-    @Column(name = "quantity")
-    private Integer quantity;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "size_age", nullable = false)
+    private Size_Age size_age;
 
     @Column(name = "image")
     private String image;
 
-    @Column(name = "age")
-    private String age;
-
-    @Column(name = "size")
-    private String size;
+    @Column(name = "quantity")
+    private int quantity;
 
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<CartItem> cartItemList;
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
 
     public List<CartItem> getCartItemList() {
         return cartItemList;
@@ -56,41 +47,19 @@ public class Product {
         this.cartItemList = cartItemList;
     }
 
-    public Product() {
-    }
-
-    public Product(int id_product, String name, int quantity) {
+    public Product(int id_product, String name, String gender, Double price, Category id_category, Size_Age size_age, String image, int quantity, List<CartItem> cartItemList) {
         this.id_product = id_product;
         this.name = name;
-        this.quantity = quantity;
-    }
-
-    public Product(int id_product, String name, String description, Double price, Category id_category, Integer quantity, String image, String age, String size, List<CartItem> cartItemList) {
-        this.id_product = id_product;
-        this.name = name;
-        this.description = description;
+        this.gender = gender;
         this.price = price;
         this.id_category = id_category;
-        this.quantity = quantity;
+        this.size_age = size_age;
         this.image = image;
-        this.age = age;
-        this.size = size;
+        this.quantity = quantity;
         this.cartItemList = cartItemList;
     }
-    public String getAge() {
-        return age;
-    }
 
-    public void setAge(String age) {
-        this.age = age;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
+    public Product() {
     }
 
     public int getId_product() {
@@ -109,12 +78,12 @@ public class Product {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getGender() {
+        return gender;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setGender(String description) {
+        this.gender = description;
     }
 
     public Double getPrice() {
@@ -133,12 +102,12 @@ public class Product {
         this.id_category = id_category;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public Size_Age getSize_age() {
+        return size_age;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setSize_age(Size_Age size_age) {
+        this.size_age = size_age;
     }
 
     public String getImage() {
@@ -147,5 +116,13 @@ public class Product {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

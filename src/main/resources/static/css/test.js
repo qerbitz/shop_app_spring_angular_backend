@@ -13,6 +13,9 @@ span.onclick = function() {
     modal.style.display = "none";
 }
 
+$(document).ready(function () {
+    $('#carouselExampleControls').find('.carousel-item').first().addClass('active');
+});
 
 
 

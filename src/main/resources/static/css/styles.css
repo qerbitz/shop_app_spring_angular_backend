@@ -4,6 +4,36 @@
  * ----------------------------
  */
 
+.dropdown img{
+    max-width:90%;
+    height:auto;
+}
+
+.carousel-item a{
+ display: inline;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    height: 100px;
+    width: 100px;
+    outline: black;
+    background-size: 100%, 100%;
+    border-radius: 50%;
+}
+
+.carousel-control-next-icon:after
+{
+    content: '>';
+    font-size: 55px;
+    color: #0da8e4;
+}
+
+.carousel-control-prev-icon:after {
+    content: '<';
+    font-size: 55px;
+    color: #0da8e4;
+}
 
 .categories__slider.owl-carousel .owl-nav button.owl-next {
     left: auto;
@@ -182,7 +212,7 @@ h1,h2,h3,h4,h5,h6{
 }
 
 h1{
-    font-size:16px;
+    font-size:13px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -369,7 +399,7 @@ input.au-input.au-input-xl{
 
 .cart-area i{
     font-size:22px;
-    float:left;
+    float:right;
     margin-top:16px;
     color:#fff;
     margin-left:15px
@@ -1163,7 +1193,7 @@ footer ul li{
         display:none
     }
     .cart-area i{
-        font-size:18px;
+        font-size:20px;
         float:left;
         margin-top:16px;
         color:#03a9f4;
@@ -1174,9 +1204,9 @@ footer ul li{
         background:#fff;
         padding:0 10px;
         color:#000;
-        border-top-right-radius:20px;
-        border-bottom-right-radius:20px;
-        margin-left:6px
+        border-top-right-radius:30px;
+        border-bottom-right-radius:30px;
+        margin-left:10px
     }
     .total{
         background:#205b8d;

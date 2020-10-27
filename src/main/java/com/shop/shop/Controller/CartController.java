@@ -42,7 +42,7 @@ public class CartController {
     public String get() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getUserByUsername("seminarium2");
+        User user = userService.getUserByUsername(authentication.getName());
         int cartId = user.getCart().getId_cart();
         return "redirect:/cart/"+cartId;
     }
@@ -52,7 +52,7 @@ public class CartController {
     public String getCart(@PathVariable(value = "cartId") int cartId, Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getUserByUsername("seminarium2");
+        User user = userService.getUserByUsername(authentication.getName());
 
         if(cartId!=user.getCart().getId_cart())
         {
@@ -92,7 +92,7 @@ public class CartController {
         int ajdi = Integer.parseInt(id_product);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        User user = userService.getUserByUsername("seminarium2");
+        User user = userService.getUserByUsername(authentication.getName());
         Cart cart = user.getCart();
 
         Product product = productService.getProductById(ajdi);
