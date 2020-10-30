@@ -10,5 +10,5 @@ public interface CartService {
 
     int getQuantityofCart(int cartId);
 
-    Double getTotalPrice(int cartId);
+    String getTotalPrice(int cartId);
 }

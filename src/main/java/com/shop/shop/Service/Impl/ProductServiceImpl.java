@@ -77,53 +77,53 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getListOfProductsByAgeContaining(int nowy_poczatek, int nowy_koniec, List<Product> proponowane) {
+    public List<Product> getListOfProductsByAgeContaining(int nowy_poczatek, int nowy_koniec, List<Product> proponowane, String season) {
         List<Product> proponowaneNowe = new ArrayList<>();
 
         Set<Product> productSet1 = new HashSet<>();
 
         //Pomiedzy 2 a 4 mscem
         if (isBetween(2, 4, nowy_poczatek) || isBetween(2, 4, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAge("2-4 msc"), proponowane);
+            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("2-4 msc", season), proponowane);
         }
         //Pomiedzy 4 a 6 mscem
         if (isBetween(4, 6, nowy_poczatek) || isBetween(4, 6, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAge("4-6 msc"), proponowane);
+            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("4-6 msc", season), proponowane);
         }
         //Pomiedzy 6 a 9 mscem
         if (isBetween(6, 9, nowy_poczatek) || isBetween(6, 9, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAge("6-9 msc"), proponowane);
+            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("6-9 msc", season), proponowane);
         }
         //Pomiedzy 9 a 12 mscem
         if (isBetween(9, 12, nowy_poczatek) || isBetween(9, 12, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAge("9-12 msc"), proponowane);
+            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("9-12 msc", season), proponowane);
         }
         //Pomiedzy 1 a 1,5 rokiem
         if (isBetween(12, 18, nowy_poczatek) && isBetween(12, 18, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAge("12-18 msc"), proponowane);
+            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("12-18 msc", season), proponowane);
         }
         //Pomiedzy 1,5 a 2 rokiem
         if (isBetween(18, 24, nowy_poczatek) && isBetween(18, 24, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAge("18-24 msc"), proponowane);
+            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("18-24 msc", season), proponowane);
         }
         //Pomiedzy 2 a 3 rokiem
         if (isBetween(24, 36, nowy_poczatek) && isBetween(24, 36, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAge("24-36"), proponowane);
+            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("24-36", season), proponowane);
         }
         //Pomiedzy 3 a 4 rokiem
         if (isBetween(36, 48, nowy_poczatek) && isBetween(36, 48, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAge("36-48"), proponowane);
+            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("36-48", season), proponowane);
         }
         //Pomiedzy 4 a 5 rokiem
         if (isBetween(48, 60, nowy_poczatek) && isBetween(48, 60, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAge("48-60"), proponowane);
+            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("48-60", season), proponowane);
         }
         //Pomiedzy 5 a 6 rokiem
         if (isBetween(60, 72, nowy_poczatek) && isBetween(60, 72, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAge("60-72"), proponowane);
+            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("60-72", season), proponowane);
         }
 
-         if(!proponowaneNowe.isEmpty()) {
+        if (!proponowaneNowe.isEmpty()) {
             proponowaneNowe.removeIf(yourInt -> !productSet1.add(yourInt));
         }
 
@@ -172,7 +172,7 @@ public class ProductServiceImpl implements ProductService {
             product.setQuantity(product.getQuantity() - quantity);
             productRepository.save(product);
             return true;
-              } else {
+        } else {
             return false;
         }
     }

@@ -25,7 +25,7 @@
     <aside class="menu-sidebar d-none d-lg-block">
         <div class="logo">
             <a th:href="@{/product/productList}">
-                <img src="/images/avatar.png" alt="Strona glowna" class="avatar">
+                <img src="/images/homepage.png" alt="Strona glowna" style="height: 80px">
             </a>
         </div>
         <div class="menu-sidebar-content js-scrollbar1">
@@ -52,11 +52,22 @@
                             </button>
                         </form>
                         <div class="cart-area d-n">
-                           <!--- <a th:href="@{/cart/}">
-                                <div class="total" th:text="${total}"> <span th:text="${quantity}"> </span> </div> <i class="fa fa-shopping-cart"
-                                                                                                                      aria-hidden="true"></i>
-                            </a>-->
-                        </div>
+                        <a th:href="@{/cart/}">
+                            <div class="total" th:text="${total}"> <span th:text="${quantity}"> </span> </div> <i class="fa fa-shopping-cart"
+                                                                                                                  aria-hidden="true"></i>
+                        </a>
+                    </div>
+                        <li class="dropdown">
+                            <a href="javascript:void(0)" class="dropbtn"><img src="/images/nouser.png" height="1px"></a>
+                            <div class="dropdown-content">
+                                <a th:href="@{/order/allOrders}">Twoje zamowienia</a>
+                                <a href="javascript: document.logoutForm.submit()" role="menuitem">Wyloguj sie</a>
+
+                                <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+                                    <input hidden type="submit" value="Sign Out"/>
+                                </form>
+                                </ul>
+                            </div>
                     </div>
                     <div class="account-wrap"></div>
                 </div>
@@ -79,7 +90,7 @@
                         <tr th:each="order: ${orders_list}">
                             <td th:text="${order.id_order}">
                             <td>
-                                <p th:text="${order.getOrderDate()}"></p>
+                                <p th:text="${order.getOrderDate().toString().substring(0,10)}"></p>
                             </td>
                             <td th:text="${order.getStatus()}">
 

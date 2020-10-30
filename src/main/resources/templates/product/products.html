@@ -1,5 +1,5 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
 	<meta charset="utf-8">
@@ -18,12 +18,17 @@
 </head>
 
 <body>
-<!--<p th:text="${id_product}"></p>-->
+<p th:text="${id_product}"></p>
 <title>test</title>
 	<div class="page-wrapper">
 
 		<!-- MENU SIDEBAR-->
 		<aside class="menu-sidebar d-none d-lg-block">
+			<div class="logo">
+				<a th:href="@{/product/productList}">
+					<img src="/images/homepage.png" alt="Strona glowna" style="height: 80px">
+				</a>
+			</div>
 			<div class="menu-sidebar-content js-scrollbar1">
 				<nav class="navbar-sidebar">
 					<ul class="list-unstyled navbar-list">
@@ -90,8 +95,10 @@
 							<li class="dropdown">
 								<a href="javascript:void(0)" class="dropbtn"><img src="/images/nouser.png" height="1px"></a>
 								<div class="dropdown-content">
-									<a th:href="@{/order/allOrders}">Twoje zamowienia</a>
-									<a href="javascript: document.logoutForm.submit()" role="menuitem">Wyloguj sie</a>
+									<a sec:authorize="isAuthenticated()" th:href="@{/order/allOrders}">Twoje zamowienia</a>
+
+									<a th:href="@{/login/showLoginPage}" sec:authorize="isAnonymous()" href="javascript: document.logoutForm.submit()" role="menuitem">Zaloguj się</a>
+									<a sec:authorize="isAuthenticated()" href="javascript: document.logoutForm.submit()" role="menuitem">Wyloguj sie</a>
 
 									<form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
 										<input hidden type="submit" value="Sign Out"/>
@@ -127,7 +134,7 @@
 										<img th:src="${product.image}" class="img-responsive">
 									</a>
 									<a href="product-detail.html">
-										<h1 th:text="${product.name}"></h1>
+										<h1 th:text="${product.getName()}"></h1>
 										<h2 th:text="'Kategoria: '+${product.getId_category().getName()}"></h2>
 										<h2 th:text="'Rozmiar: '+${product.getSize_age().getProduct_size()}"></h2>
 										<h2 th:text="'Wiek: '+${product.getSize_age().getProduct_age()}"></h2>
@@ -136,8 +143,7 @@
 
 									<a class="primary-btn" type="button"
 									   th:href="@{/cart/add/{id_product}(id_product=${product.id_product},price_min=${price_min},price_max=${price_max},
-											listOffAgesChecked=${agesCheckedList}, listOffCategoryChecked=${categoryCheckedListint})}"
-									   onClick="GFG_click(this.id, this.name, this.value);">Dodaj do koszyka</a>
+											listOffAgesChecked=${agesCheckedList}, listOffCategoryChecked=${categoryCheckedListint})}">Dodaj do koszyka</a>
 
 								</div>
 							</div>
@@ -178,9 +184,9 @@
 												<img src="/images/avatar.png" class="img-responsive">
 											</a>
 											<a>
-												<h1 th:text="${purchased_product.name}"></h1>
+												<h1 th:if="${purchased_product!=null}" th:text="${purchased_product.getName()}"></h1>
 												<!--<h2 th:text="${purchased_product.age}"></h2>-->
-												<div class="price" th:text="${purchased_product.price}"></div>
+												<div class="price" th:if="${purchased_product!=null}" th:text="${purchased_product.getPrice()}"></div>
 											</a>
 										</div>
 										<div class="submity">

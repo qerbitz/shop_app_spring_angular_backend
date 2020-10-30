@@ -94,49 +94,47 @@ public class ProductController {
         //Sortowania poprzez kategorie oraz przeznaczenie wiekowe
 
         //100
-        if (listOfCategoryCheckedint != null && listOfAgesChecked == null && listOfGenderChecked==null) {
+        if (listOfCategoryCheckedint != null && listOfAgesChecked == null && listOfGenderChecked == null) {
             list = list.stream()
                     .filter(p -> listOfCategoryCheckedint.contains(p.getId_category().getId_category()))
                     .collect(Collectors.toList());
         }
         //010
-        if (listOfCategoryCheckedint == null  && listOfAgesChecked != null && listOfGenderChecked==null) {
+        if (listOfCategoryCheckedint == null && listOfAgesChecked != null && listOfGenderChecked == null) {
             list = list.stream()
                     .filter(p -> listOfAgesChecked.contains(p.getSize_age().getProduct_age()))
                     .collect(Collectors.toList());
         }
         //001
-        if (listOfCategoryCheckedint == null && listOfAgesChecked == null && listOfGenderChecked!=null) {
+        if (listOfCategoryCheckedint == null && listOfAgesChecked == null && listOfGenderChecked != null) {
 
-            if(listOfGenderChecked.size()>1){
+            if (listOfGenderChecked.size() > 1) {
                 list = productRepository.findAllByGenderContaining("a");
-            }
-            else{
-                for(int i=0; i<list.size(); i++){
-                    for(int j=0; j<listOfGenderChecked.size(); j++){
+            } else {
+                for (int i = 0; i < list.size(); i++) {
+                    for (int j = 0; j < listOfGenderChecked.size(); j++) {
                         list = productRepository.findAllByGenderContaining(listOfGenderChecked.get(j));
                     }
                 }
             }
         }
         //110
-        if (listOfCategoryCheckedint != null && listOfAgesChecked != null && listOfGenderChecked==null) {
+        if (listOfCategoryCheckedint != null && listOfAgesChecked != null && listOfGenderChecked == null) {
             list = list.stream()
                     .filter(p -> listOfCategoryCheckedint.contains(p.getId_category().getId_category()))
                     .filter(p -> listOfAgesChecked.contains(p.getSize_age().getProduct_age()))
                     .collect(Collectors.toList());
         }
         //101
-        if (listOfCategoryCheckedint != null && listOfAgesChecked == null && listOfGenderChecked!=null) {
+        if (listOfCategoryCheckedint != null && listOfAgesChecked == null && listOfGenderChecked != null) {
 
             List<Product> help_List = list;
 
-            if(listOfGenderChecked.size()>1){
+            if (listOfGenderChecked.size() > 1) {
                 help_List = productRepository.findAllByGenderContaining("a");
-            }
-            else{
-                for(int i=0; i<list.size(); i++){
-                    for(int j=0; j<listOfGenderChecked.size(); j++){
+            } else {
+                for (int i = 0; i < list.size(); i++) {
+                    for (int j = 0; j < listOfGenderChecked.size(); j++) {
                         help_List = productRepository.findAllByGenderContaining(listOfGenderChecked.get(j));
                     }
                 }
@@ -149,16 +147,15 @@ public class ProductController {
             list = help_List;
         }
         //111
-        if (listOfCategoryCheckedint != null && listOfAgesChecked != null && listOfGenderChecked!=null) {
+        if (listOfCategoryCheckedint != null && listOfAgesChecked != null && listOfGenderChecked != null) {
 
             List<Product> help_List = list;
 
-            if(listOfGenderChecked.size()>1){
+            if (listOfGenderChecked.size() > 1) {
                 help_List = productRepository.findAllByGenderContaining("a");
-            }
-            else{
-                for(int i=0; i<list.size(); i++){
-                    for(int j=0; j<listOfGenderChecked.size(); j++){
+            } else {
+                for (int i = 0; i < list.size(); i++) {
+                    for (int j = 0; j < listOfGenderChecked.size(); j++) {
                         help_List = productRepository.findAllByGenderContaining(listOfGenderChecked.get(j));
                     }
                 }
@@ -186,7 +183,7 @@ public class ProductController {
         model.addAttribute("price_min", price_min);
         model.addAttribute("price_max", price_max);
 
-        showCategoryLi(drop_category,drop_age, drop_gender, model);
+        showCategoryLi(drop_category, drop_age, drop_gender, model);
 
         return "product/products";
     }
@@ -197,11 +194,13 @@ public class ProductController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        List<Integer> listRecommended = weka.Apriori(id_product);
+        List<Integer> listRecommended = weka.Apriori("11");
 
         List<Product> listRecommendedProducts = new ArrayList<>();
-        for (int i = 0; i < listRecommended.size(); i++) {
-            listRecommendedProducts.add(productService.getProductById(listRecommended.get(i)));
+        if (listRecommended != null) {
+            for (int i = 0; i < listRecommended.size(); i++) {
+                listRecommendedProducts.add(productService.getProductById(listRecommended.get(i)));
+            }
         }
 
         //model.addAttribute("agesList", productService.getListOfAges());
@@ -210,17 +209,17 @@ public class ProductController {
 
         model.addAttribute("recommendedList", listRecommendedProducts);
         model.addAttribute("id_product", id_product);
-        if(id_product!=null){
+        if (id_product != null) {
             model.addAttribute("purchased_product", productService.getProductById(Integer.parseInt(id_product)));
         }
 
-        model.addAttribute("hidden_category",true);
+        model.addAttribute("hidden_category", true);
         model.addAttribute("value_category", 0);
 
-        model.addAttribute("hidden_age",true);
+        model.addAttribute("hidden_age", true);
         model.addAttribute("value_age", 0);
 
-        model.addAttribute("hidden_gender",true);
+        model.addAttribute("hidden_gender", true);
         model.addAttribute("value_gender", 0);
 
 
@@ -230,7 +229,8 @@ public class ProductController {
             User user = userService.getUserByUsername(authentication.getName());
             int cartId = user.getCart().getId_cart();
             model.addAttribute("quantity", cartService.getQuantityofCart(cartId));
-            model.addAttribute("total", String.valueOf(cartService.getTotalPrice(cartId))+"0 zł");
+            model.addAttribute("total", cartService.getTotalPrice(user.getCart().getId_cart()));
+
             return "product/products";
         }
 
@@ -373,56 +373,49 @@ public class ProductController {
         model.addAttribute("price_max", price_max);
 
 
-
         return "product/products";
     }
 
-    void showCategoryLi(String drop_category, String drop_age, String drop_gender, Model model){
-        int next_value_category=pierwsza;
-        int next_value_age=druga;
-        int next_value_gender=trzecia;
+    void showCategoryLi(String drop_category, String drop_age, String drop_gender, Model model) {
+        int next_value_category = pierwsza;
+        int next_value_age = druga;
+        int next_value_gender = trzecia;
 
-        if(drop_category==null){
-            next_value_category=pierwsza;
+        if (drop_category == null) {
+            next_value_category = pierwsza;
         }
-        if(drop_age==null){
-            next_value_age=druga;
+        if (drop_age == null) {
+            next_value_age = druga;
         }
-        if(drop_gender==null){
-            next_value_gender=trzecia;
-        }
-
-        if(drop_category!=null){
-            next_value_category +=1;
-        }
-        if(drop_age!=null){
-            next_value_age +=1;
-        }
-        if(drop_gender!=null){
-            next_value_gender +=1;
+        if (drop_gender == null) {
+            next_value_gender = trzecia;
         }
 
-        if(next_value_category%2==0){
-            model.addAttribute("hidden_category",true);
+        if (drop_category != null) {
+            next_value_category += 1;
         }
-        else if(next_value_category%2!=0)
-        {
+        if (drop_age != null) {
+            next_value_age += 1;
+        }
+        if (drop_gender != null) {
+            next_value_gender += 1;
+        }
+
+        if (next_value_category % 2 == 0) {
+            model.addAttribute("hidden_category", true);
+        } else if (next_value_category % 2 != 0) {
             model.addAttribute("hidden_category", false);
         }
 
-        if(next_value_age%2==0){
+        if (next_value_age % 2 == 0) {
             model.addAttribute("hidden_age", true);
-        }
-        else if(next_value_age%2!=0)
-        {
+        } else if (next_value_age % 2 != 0) {
             model.addAttribute("hidden_age", false);
         }
 
-        if(next_value_gender%2==0){
+        if (next_value_gender % 2 == 0) {
             model.addAttribute("hidden_gender", true);
-        }
-        else if(next_value_gender%2!=0)
-        {
+        } else if (next_value_gender % 2 != 0) {
             model.addAttribute("hidden_gender", false);
         }
 
@@ -434,7 +427,6 @@ public class ProductController {
         druga = next_value_age;
         trzecia = next_value_gender;
     }
-
 
 
 }

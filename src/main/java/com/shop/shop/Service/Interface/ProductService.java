@@ -26,7 +26,7 @@ public interface ProductService {
 
     List<Product> getListOfProductByPriceBetween(int price_min, int price_max);
 
-    List<Product> getListOfProductsByAgeContaining(int nowy_poczatek, int nowy_koniec, List<Product> proponowane);
+    List<Product> getListOfProductsByAgeContaining(int nowy_poczatek, int nowy_koniec, List<Product> proponowane, String season);
 
     List<String> getListOfAges();
 

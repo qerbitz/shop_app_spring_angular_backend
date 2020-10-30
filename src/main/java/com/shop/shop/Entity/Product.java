@@ -35,6 +35,9 @@ public class Product {
     @Column(name = "quantity")
     private int quantity;
 
+    @Column(name = "season")
+    private String season;
+
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<CartItem> cartItemList;
@@ -47,7 +50,7 @@ public class Product {
         this.cartItemList = cartItemList;
     }
 
-    public Product(int id_product, String name, String gender, Double price, Category id_category, Size_Age size_age, String image, int quantity, List<CartItem> cartItemList) {
+    public Product(int id_product, String name, String gender, Double price, Category id_category, Size_Age size_age, String image, int quantity, String season, List<CartItem> cartItemList) {
         this.id_product = id_product;
         this.name = name;
         this.gender = gender;
@@ -56,6 +59,7 @@ public class Product {
         this.size_age = size_age;
         this.image = image;
         this.quantity = quantity;
+        this.season = season;
         this.cartItemList = cartItemList;
     }
 
@@ -124,5 +128,13 @@ public class Product {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getSeason() {
+        return season;
+    }
+
+    public void setSeason(String season) {
+        this.season = season;
     }
 }

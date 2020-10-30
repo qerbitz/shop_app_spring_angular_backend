@@ -26,7 +26,7 @@
         <aside class="menu-sidebar d-none d-lg-block">
             <div class="logo">
                 <a th:href="@{/product/productList}">
-                    <img src="/images/avatar.png" alt="Strona glowna" class="avatar">
+                    <img src="/images/homepage.png" alt="Strona glowna" style="height: 80px">
                 </a>
             </div>
             <div class="menu-sidebar-content js-scrollbar1">
@@ -58,6 +58,17 @@
                                                                                                                           aria-hidden="true"></i>
                                 </a>
                             </div>
+                            <li class="dropdown">
+                                <a href="javascript:void(0)" class="dropbtn"><img src="/images/nouser.png" height="1px"></a>
+                                <div class="dropdown-content">
+                                    <a th:href="@{/order/allOrders}">Twoje zamowienia</a>
+                                    <a href="javascript: document.logoutForm.submit()" role="menuitem">Wyloguj sie</a>
+
+                                    <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+                                        <input hidden type="submit" value="Sign Out"/>
+                                    </form>
+                                    </ul>
+                                </div>
                         </div>
                         <div class="account-wrap"></div>
                     </div>
@@ -71,8 +82,8 @@
                     <div class="container-fluid">
                         <table class="table table-bordered">
                             <tr>
-                                <th width="20%">Product Image</th>
-                                <th width="50%">Product Detail</th>
+                                <th width="20%">Zdj</th>
+                                <th width="50%">Szczegóły</th>
                                 <th width="30%"></th>
                             </tr>
 
@@ -81,30 +92,31 @@
                                         width="150px"></td>
                                 <td>
 
-                                    <p th:text="${item.getProduct().getName()}"></p>
-                                    <p th:text="${item.getProduct().getId_category().getName()}"></p>
-                                    <p th:text="${item.getProduct().getSize_age().getProduct_size()}"></p>
-                                    <p th:text="${item.getProduct().getPrice()}"></p>
+                                    <p th:text="'Produkt: '+${item.getProduct().getName()}"></p>
+                                    <p th:text="'Kategoria: '+${item.getProduct().getId_category().getName()}"></p>
+                                    <p th:text="'Rozmiar: '+${item.getProduct().getSize_age().getProduct_size()}"></p>
+                                    <p th:text="'Sezon: '+${item.getProduct().getSeason()}"></p>
                                 </td>
                                 <td>
                                     <div class="items">
-                                        <label>Quantity</label> <select>
-                                            <option th:text="${item.getQuantity()}">1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                        </select>
+                                        <label>Quantity</label>
+                                        <form class="form-header" method="post" th:action="@{/cart/changeQuantity/{id_product}(id_product=${item.getProduct().getId_product()})}">
+                                            <select id="new_quantity" name="new_quantity" onchange="this.form.submit()">
+                                                <option th:each="i : ${#numbers.sequence(1, 10)}" th:value="${i}" th:text="${i}" th:selected="${i==item.getQuantity()}"></option>
+                                            </select>
+                                        </form>
                                     </div>
                                     <p th:text="'Cena: ' + ${item.getProduct().getPrice()+ 'zł'}"></p>
                                     <a th:href="@{/cart/remove/{id_product}(id_product=${item.getProduct().getId_product()})}" onclick="refreshPage()" class="primary-btn">Usun</a>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr th:if="${not #lists.isEmpty(cart)}">
                                 <td colspan="2"></td>
                                 <td><p>Suma produktów <b th:text="${quantity}"></b></p>
                                     <p></p></br>
-                                    <p>Laczna kwota <b th:text="${total}"></b></p><br>
+                                    <p>Laczna kwota <b th:text="${total}+' zł'"></b></p><br>
                                     <a th:href="@{/order/showUserDetails}" class="primary-btn">Zamow</a>
+                                    <a th:href="@{/cart/clear/{cartId}(cartId=${cartId})}" class="primary-btn">Wyczysc koszyk</a>
                                 </td>
                             </tr>
 

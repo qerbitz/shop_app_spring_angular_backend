@@ -43,6 +43,7 @@ public class OrderController {
         model.addAttribute("user", user);
         model.addAttribute("total", cartService.getTotalPrice(user.getCart().getId_cart()));
         model.addAttribute("cart", cartService.getCartById(user.getCart().getId_cart()).getCartItems());
+        model.addAttribute("total", cartService.getTotalPrice(user.getCart().getId_cart()));
 
 
         return "order/checkout-page";
@@ -74,17 +75,20 @@ public class OrderController {
     }
 
     @GetMapping("/allOrders")
-    public String allOrders(Model theModel){
+    public String allOrders(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getUserByUsername(authentication.getName());
 
-        theModel.addAttribute("orders_list",orderService.getAllOrdersByUser(userService.getUserByUsername(user.getUsername())));
+        model.addAttribute("orders_list",orderService.getAllOrdersByUser(userService.getUserByUsername(user.getUsername())));
+        model.addAttribute("total", cartService.getTotalPrice(user.getCart().getId_cart()));
         return "order/ordersList";
     }
 
     @GetMapping("/detailsOrder/{cartId}")
     public String detailsOrder(@PathVariable(value = "cartId") int cartId, @RequestParam(value = "orderId") int orderId, Model model, RedirectAttributes redirectAttributes){
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getUserByUsername(authentication.getName());
 
         if(cartId!=orderService.getOrderById(orderId).getCart().getId_cart())
         {
@@ -94,9 +98,8 @@ public class OrderController {
         }
 
         model.addAttribute("quantity", cartService.getQuantityofCart(cartId));
-        model.addAttribute("total", cartService.getTotalPrice(cartId));
         model.addAttribute("cart", cartService.getCartById(cartId).getCartItems());
-
+        model.addAttribute("total", cartService.getTotalPrice(user.getCart().getId_cart()));
         return "order/orderDetails";
     }
 

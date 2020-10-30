@@ -6,6 +6,8 @@ import com.shop.shop.Service.Interface.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
+
 @Service
 public class CartServiceImpl implements CartService {
 
@@ -35,14 +37,15 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Double getTotalPrice(int cartId) {
+    public String getTotalPrice(int cartId) {
 
         if(cartRepository.getTotalPrice(cartId)==null)
         {
-            return 0.0;
+            return "0 zł";
         }else
         {
-            return cartRepository.getTotalPrice(cartId);
+            String total = new DecimalFormat("#0.00").format(cartRepository.getTotalPrice(cartId))+" zł";
+            return total;
         }
     }
 }

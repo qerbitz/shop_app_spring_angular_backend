@@ -54,9 +54,10 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query(value="SELECT * FROM product p, size_age sa" +
             " where p.size_age=sa.id_size_age" +
-            " and sa.age like :age",
+            " and sa.age like :age" +
+            " and p.season like :season",
             nativeQuery = true)
-    List<Product> findAllByAge(String age);
+    List<Product> findAllByAgeAndSeasonContaining(String age, String season);
 
     @Query(value="select distinct age from size_age",
             nativeQuery = true)
