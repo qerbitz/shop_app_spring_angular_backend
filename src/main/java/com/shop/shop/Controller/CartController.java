@@ -108,7 +108,7 @@ public class CartController {
 
         for (int i = 0; i < cartItems.size(); i++) {
             if (productService.changeQuantityOfProduct(product, 1) == true) {
-                System.out.println("Jest ok");
+                //System.out.println("Jest ok");
                 if (product.getId_product() == cartItems.get(i).getProduct().getId_product()) {
                     CartItem cartItem = cartItems.get(i);
                     cartItem.setQuantity(cartItem.getQuantity() + 1);
@@ -119,7 +119,7 @@ public class CartController {
                     return "redirect:/product/productList";
                 }
             } else {
-                System.out.println("Brak towaru");
+                //System.out.println("Brak towaru");
 
                 redirect(listOfCategoryChecked, listOfAgesChecked, price_min, price_max, redirectAttributes, id_product);
                 return "redirect:/product/productList";

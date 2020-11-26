@@ -80,42 +80,62 @@
         <div class="main-content">
             <div class="section-content section-content-p30">
                 <div class="container-fluid">
-                    <table class="table table-bordered">
-                        <tr>
-                            <th width="20%">Zdj</th>
-                            <th width="50%">Szczegóły</th>
-                            <th width="30%"></th>
-                        </tr>
 
-                        <tr th:each="item: ${cart}">
-                            <td><img src="/images/avatar.png" class="img-responsive"
-                                     width="150px"></td>
-                            <td>
+                    <div class="submity">
+                    <a class="primary-btn" type="button"
+                       th:href="@{/recommended/test/(orderId=${actual+1})}" style="float: right; width: 200px"> < </a>
 
-                                <p th:text="'Produkt: '+${item.getProduct().getName()}"></p>
-                                <p th:text="'Kategoria: '+${item.getProduct().getId_category().getName()}"></p>
-                                <p th:text="'Rozmiar: '+${item.getProduct().getSize_age().getProduct_size()}"></p>
-                                <p th:text="'Sezon: '+${item.getProduct().getSeason()}"></p>
-                            </td>
-                            <td>
-                                <div class="items">
-                                    <label>Ilosc</label> <select>
-                                    <option th:text="${item.getQuantity()}"></option>
-                                </select>
-                                </div>
-                                <p th:text="'Cena: ' + ${item.getProduct().getPrice()+ 'zł'}"></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"></td>
-                            <td><p>Suma produktów <b th:text="${quantity}"></b></p>
-                                <p></p></br>
-                                <p>Laczna kwota <b th:text="${total_order}"> </b></p><br>
-                                <a th:href="@{/order/allOrders}" class="primary-btn">Wróć</a>
-                            </td>
-                        </tr>
+                    <h1 th:text="'Zamowienie nr: '+${order.getId_order()}" style="font-size: 16px"></h1>
 
-                    </table>
+                    <a class="primary-btn" type="button"
+                       th:href="@{/recommended/test/(orderId=${{actual}}-1)}"  style="float: left; width: 200px">  > </a>
+                    <br>
+                    </div>>
+
+                    <div class="row">
+                        <div class="col-md-2" th:each="item: ${cart}">
+                            <div class="product-box">
+                                <a href="product-detail.html">
+                                    <h1 th:text="${item.getProduct().getName()}"></h1>
+                                    <h2 th:text="'Kategoria: '+${item.getProduct().getId_category().getName()}"></h2>
+                                    <h2 th:text="'Rozmiar: '+${item.getProduct().getSize_age().getProduct_size()}"></h2>
+                                    <h2 th:text="'Wiek: '+${item.getProduct().getSize_age().getProduct_age()}"></h2>
+                                    <h2 th:text="'Sezon: '+${item.getProduct().getSeason()}"></h2>
+                                </a>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <hr>
+                    <h1 style="font-size: 16px">Sprawdź również produkty dopasowane do twojego zamówienia</h1>
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-3" th:each="product: ${recommendedList}">
+                            <div class="product-box">
+                                <a href="product-detail.html">
+                                    <img th:src="${product.image}" class="img-responsive">
+                                </a>
+                                <a href="product-detail.html">
+                                    <h1 th:text="${product.getName()}"></h1>
+                                    <h2 th:text="'Kategoria: '+${product.getId_category().getName()}"></h2>
+                                    <h2 th:text="'Rozmiar: '+${product.getSize_age().getProduct_size()}"></h2>
+                                    <h2 th:text="'Wiek: '+${product.getSize_age().getProduct_age()}"></h2>
+                                </a>
+                                <div class="price"  th:text="${product.price} + ' zł'"></td></div>
+
+                                <a class="primary-btn" type="button"
+                                   th:href="@{/cart/add/{id_product}(id_product=${product.id_product})}">Dodaj do koszyka</a>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
 
                 </div>
             </div>

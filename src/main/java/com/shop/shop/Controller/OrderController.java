@@ -43,7 +43,6 @@ public class OrderController {
         model.addAttribute("user", user);
         model.addAttribute("total", cartService.getTotalPrice(user.getCart().getId_cart()));
         model.addAttribute("cart", cartService.getCartById(user.getCart().getId_cart()).getCartItems());
-        model.addAttribute("total", cartService.getTotalPrice(user.getCart().getId_cart()));
 
 
         return "order/checkout-page";
@@ -68,7 +67,7 @@ public class OrderController {
         cartService.addCart(newCart);
         userService.updateUser(user);
 
-        //appendToApriori(order);
+        appendToApriori(order);
 
 
         return "redirect:/product/productList";
@@ -100,6 +99,7 @@ public class OrderController {
         model.addAttribute("quantity", cartService.getQuantityofCart(cartId));
         model.addAttribute("cart", cartService.getCartById(cartId).getCartItems());
         model.addAttribute("total", cartService.getTotalPrice(user.getCart().getId_cart()));
+        model.addAttribute("total_order", cartService.getTotalPrice(cartId));
         return "order/orderDetails";
     }
 
@@ -123,15 +123,19 @@ public class OrderController {
                 word = word + product.getProduct().getId_product() + ", ";
         }
 
-        while(last.length()!=word.length()-2){  //Dopasowanie dlugosci nowego zamowienia do dlugosci wszystkich reguł asocjacyjnych
+        String[] last_line = last.split(",");
+        String[] new_order = word.split(",");
+
+        while(last_line .length!=new_order.length){  //Dopasowanie dlugosci nowego zamowienia do dlugosci wszystkich reguł asocjacyjnych
             word = word + "?, ";
+            new_order = word.split(",");
         }
 
         Writer output = null;
         try {
             output = new BufferedWriter(new FileWriter("src/main/resources/Apriori.arff", true));
             output.append("\n");
-            output.append(word.substring(0,word.length()-2));
+            output.append(word+"?");
             output.close();
         } catch (IOException e) {
             e.printStackTrace();

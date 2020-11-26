@@ -2,21 +2,28 @@ package com.shop.shop.Controller;
 
 import com.shop.shop.Entity.Order;
 import com.shop.shop.Entity.Product;
+import com.shop.shop.Entity.User;
+import com.shop.shop.Service.Interface.CartService;
 import com.shop.shop.Service.Interface.OrderService;
 import com.shop.shop.Service.Interface.ProductService;
+import com.shop.shop.Service.Interface.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/product")
+@RequestMapping("/recommended")
 public class RecommendedController {
 
     @Autowired
@@ -25,18 +32,64 @@ public class RecommendedController {
     @Autowired
     ProductService productService;
 
-    @RequestMapping("/test")
-    public String test(Model model) {
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    CartService cartService;
+
+    @GetMapping("/test")
+    public String test(
+            @RequestParam(value = "orderId", required = false) String orderId,
+            Model model) {
+
+        int id_order=0;
+
+
+        System.out.println(orderId);
+        if(orderId!=null){
+                id_order= Integer.parseInt(orderId);
+        }
+
+
+        //Pobranie autentykacji
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getUserByUsername("seminarium3");
+
+        Date actual_date = java.sql.Date.valueOf(LocalDate.now());
+
+
+        if(user.getLast_log()==null){
+            return "redirect:/product/productList";
+        }
+
+        //Obliczanie czasu od ostatniego zalogowania(Jezeli ponizej miesiaca nie ma proponowania dla zamowien)
+        long diff_last_log = Math.abs(actual_date.getTime() - user.getLast_log().getTime());
+        long diff_last_log_month = diff_last_log/ (24 * 60 * 60 * 1000) / 30;
+
+
+        System.out.println(diff_last_log_month);
+
+        if(diff_last_log_month<1){
+            return "redirect:/product/productList";
+        }
+
         List<Product> recommendedNewList = new ArrayList<>();
         List<Product> recommendedNewListAllYear = new ArrayList<>();
 
-        Order order = orderService.getOrderById(3);
+        List<Order> list_of_user_orders = orderService.getAllOrdersByUser(user);
 
-        for (int i = 0; i < order.getCart().getCartItems().size(); i++) {
-            System.out.println("Produkt: " + order.getCart().getCartItems().get(i).getProduct().getName() + " ,Rozmiar: " + order.getCart().getCartItems().get(i).getProduct().getSize_age().getProduct_size() + " ,Wiek: " + order.getCart().getCartItems().get(i).getProduct().getSize_age().getProduct_age());
+        //Sprawdzamy czy nie wykracza poza zamowienia
+        if(id_order>=list_of_user_orders.size()){
+                id_order=0;
+        }
+        //Jezeli cofamy
+        if(id_order==-1){
+            id_order=list_of_user_orders.size()-1;
         }
 
-        Date actual_date = java.sql.Date.valueOf(LocalDate.now());
+        Order order = list_of_user_orders.get(id_order);
+
 
         long diff = Math.abs(actual_date.getTime() - order.getOrderDate().getTime());
         long diff_months = diff / (24 * 60 * 60 * 1000) / 30;
@@ -49,9 +102,14 @@ public class RecommendedController {
             String dawny_rozmiar = order.getCart().getCartItems().get(i).getProduct().getSize_age().getProduct_age();
             String nowy_rozmiar = String.valueOf(diff_months);
 
-            int ile_dodac = Integer.parseInt(nowy_rozmiar);
-            int new_beggining = Integer.parseInt(dawny_rozmiar.substring(0, 1)) + ile_dodac;
-            int new_end = Integer.parseInt(dawny_rozmiar.substring(2, 3)) + ile_dodac;
+            System.out.println("Dawny rozmiar:" +dawny_rozmiar);
+
+            String[] old_size_beggining = dawny_rozmiar.split("-");
+            String[] old_size_end = old_size_beggining[1].split(" msc");
+
+            int month_add = Integer.parseInt(nowy_rozmiar);
+            int new_beggining = Integer.parseInt(old_size_beggining[0]) + month_add;
+            int new_end = Integer.parseInt(old_size_end[0]) + month_add;
 
             System.out.println("Nowy szukany przedział wiekowy: " + new_beggining + "-" + new_end + " msc");
             String season = "";
@@ -83,30 +141,24 @@ public class RecommendedController {
         }
 
 
-        /*List<Product> filteredlist = new ArrayList<>();
-        for(int j=0; j<order.getCart().getCartItems().size(); j++){
-            List<Product> filteredlist2 = new ArrayList<>();
-            int finalJ = j;
-            filteredlist2 = recommendedNewList.stream()
-                    .filter(p -> p.getId_category().getName() == order.getCart().getCartItems().get(finalJ).getProduct().getId_category().getName())
-                    .collect(Collectors.toList());
-            filteredlist.addAll(filteredlist2);
-        }*/
 
-
-       /* for (int i=0; i<filteredlist.size(); i++){
-            System.out.println(filteredlist.get(i).getName()+ " " +filteredlist.get(i).getSize_age().getProduct_age()+ " "+filteredlist.get(i).getSize_age().getId_size_age()+ " Sezon: "+ filteredlist.get(i).getSeason());
-        }*/
-
-        for (int i = 0; i < recommendedNewList.size(); i++) {
-            System.out.println(recommendedNewList.get(i).getName() + " " + recommendedNewList.get(i).getSize_age().getProduct_age() + " " + recommendedNewList.get(i).getSize_age().getId_size_age() + " Sezon: " + recommendedNewList.get(i).getSeason());
-        }
-
-        return "index";
+        //Total dla kwoty w koszyku
+        model.addAttribute("total", cartService.getTotalPrice(user.getCart().getId_cart()));
+        //Lista rekomendowanych produktów
+        model.addAttribute("recommendedList", recommendedNewList);
+        //Lista aktualnego zamowienia
+        model.addAttribute("cart", list_of_user_orders.get(id_order).getCart().getCartItems());
+        //Wyswietlanie nr zamowienia
+        model.addAttribute("order", order);
+        //Wszystkie zamowienia uzytkownika
+        model.addAttribute("actual", id_order);
+        return "recommendation/recommendation";
 
     }
 
     public static boolean isBetween(int a, int b, int c) {
         return b > a ? c >= a && c <= b : c >= b && c < a;
     }
+
+
 }

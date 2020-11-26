@@ -23,7 +23,7 @@ public class Weka {
         data.setClassIndex(data.numAttributes() - 1);
 
 
-        String[] options = Utils.splitOptions("-N 100 -C 0.5");
+        String[] options = Utils.splitOptions("-N 100000 -C 0.1");
         Apriori apriori = new Apriori();
         apriori.setOptions(options);
         apriori.buildAssociations(data); //Generowanie regul asocjacyjnych
@@ -78,6 +78,9 @@ public class Weka {
 
                     //Dla poprzednika
                     for (int k = 0; k < firstRule.length; k++) {
+                        if (firstRule[k].length() == 14) {
+                            id_product1 = Integer.parseInt(firstRule[k].substring(firstRule[k].length() - 3, firstRule[k].length() - 1));
+                        }
                         if (firstRule[k].length() == 13) {
                             id_product1 = Integer.parseInt(firstRule[k].substring(firstRule[k].length() - 3, firstRule[k].length() - 1));
                         }
@@ -91,6 +94,9 @@ public class Weka {
 
                     //Dla nastepnika
                     for (int p = 0; p < secondRule.length; p++) {
+                        if (secondRule[p].length() == 14) {
+                            id_product2 = Integer.parseInt(secondRule[p].substring(secondRule[p].length() - 3, secondRule[p].length() - 1));
+                        }
                         if (secondRule[p].length() == 13) {
                             id_product2 = Integer.parseInt(secondRule[p].substring(secondRule[p].length() - 3, secondRule[p].length() - 1));
                         }
@@ -109,6 +115,9 @@ public class Weka {
 
                     //Dla poprzednika
                     for (int k = 0; k < firstRule.length; k++) {
+                        if (firstRule[k].length() == 14) {
+                            id_product1 = Integer.parseInt(firstRule[k].substring(firstRule[k].length() - 3, firstRule[k].length() - 1));
+                        }
                         if (firstRule[k].length() == 13) {
                             id_product1 = Integer.parseInt(firstRule[k].substring(firstRule[k].length() - 3, firstRule[k].length() - 1));
                         }
@@ -122,6 +131,9 @@ public class Weka {
 
                     //Dla nastepnika
                     for (int p = 0; p < secondRule.length; p++) {
+                        if (secondRule[p].length() == 14) {
+                            id_product2 = Integer.parseInt(secondRule[p].substring(secondRule[p].length() - 3, secondRule[p].length() - 1));
+                        }
                         if (secondRule[p].length() == 13) {
                             id_product2 = Integer.parseInt(secondRule[p].substring(secondRule[p].length() - 3, secondRule[p].length() - 1));
                         }
@@ -134,10 +146,6 @@ public class Weka {
                     }
                 }
             }
-
-
-
-
             //System.out.println(poprzednikText + "=>" + nastepnikText);
         }
 
@@ -149,11 +157,6 @@ public class Weka {
             }
         }
 
-        //if (id_products_list != null) {
-         //   for (int z = 0; z < id_products_list.size(); z++) {
-         //       System.out.println(id_products_list.get(z));
-         //   }
-        //}
 
         return id_products_list;
     }

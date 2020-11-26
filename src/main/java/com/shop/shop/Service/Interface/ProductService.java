@@ -30,6 +30,8 @@ public interface ProductService {
 
     List<String> getListOfAges();
 
+    List<String> getListOfSeasons();
+
     Product getProductById(int id);
 
     boolean changeQuantityOfProduct(Product product, int quantity);

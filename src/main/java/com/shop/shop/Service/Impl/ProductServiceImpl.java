@@ -99,27 +99,27 @@ public class ProductServiceImpl implements ProductService {
             proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("9-12 msc", season), proponowane);
         }
         //Pomiedzy 1 a 1,5 rokiem
-        if (isBetween(12, 18, nowy_poczatek) && isBetween(12, 18, nowy_koniec)) {
+        if (isBetween(12, 18, nowy_poczatek) || isBetween(12, 18, nowy_koniec)) {
             proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("12-18 msc", season), proponowane);
         }
         //Pomiedzy 1,5 a 2 rokiem
-        if (isBetween(18, 24, nowy_poczatek) && isBetween(18, 24, nowy_koniec)) {
+        if (isBetween(18, 24, nowy_poczatek) || isBetween(18, 24, nowy_koniec)) {
             proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("18-24 msc", season), proponowane);
         }
         //Pomiedzy 2 a 3 rokiem
-        if (isBetween(24, 36, nowy_poczatek) && isBetween(24, 36, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("24-36", season), proponowane);
+        if (isBetween(24, 36, nowy_poczatek) || isBetween(24, 36, nowy_koniec)) {
+            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("24-36 msc", season), proponowane);
         }
         //Pomiedzy 3 a 4 rokiem
-        if (isBetween(36, 48, nowy_poczatek) && isBetween(36, 48, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("36-48", season), proponowane);
+        if (isBetween(36, 48, nowy_poczatek) || isBetween(36, 48, nowy_koniec)) {
+            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("36-48 msc", season), proponowane);
         }
         //Pomiedzy 4 a 5 rokiem
-        if (isBetween(48, 60, nowy_poczatek) && isBetween(48, 60, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("48-60", season), proponowane);
+        if (isBetween(48, 60, nowy_poczatek) || isBetween(48, 60, nowy_koniec)) {
+            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("48-60 msc", season), proponowane);
         }
         //Pomiedzy 5 a 6 rokiem
-        if (isBetween(60, 72, nowy_poczatek) && isBetween(60, 72, nowy_koniec)) {
+        if (isBetween(60, 72, nowy_poczatek) || isBetween(60, 72, nowy_koniec)) {
             proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("60-72", season), proponowane);
         }
 
@@ -155,6 +155,17 @@ public class ProductServiceImpl implements ProductService {
         }
 
         return listOfAges;
+    }
+
+    @Override
+    public List<String> getListOfSeasons() {
+        List<String> listofSeasons = new ArrayList<>();
+
+        for(Object[] obj : productRepository.findAllSeasons()){
+            String season = String.valueOf(obj[0]);
+            listofSeasons.add(season);
+        }
+        return listofSeasons;
     }
 
 

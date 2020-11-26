@@ -1,7 +1,7 @@
 package com.shop.shop.Entity;
 
 import javax.validation.constraints.NotNull;
-
+import java.util.Date;
 import javax.persistence.*;
 
 @Entity
@@ -31,6 +31,9 @@ public class User {
     @Column(name = "enabled")
     private int enabled;
 
+    @Column(name = "last_log")
+    private Date last_log;
+
     @OneToOne
     @JoinColumn(name = "id_cart", nullable = false)
     private Cart cart;
@@ -40,7 +43,7 @@ public class User {
     private Adress adress;
 
 
-    public User(@NotNull String username, String password, String name, String surname, String phone, String e_mail, int enabled, Cart cart, Adress adress) {
+    public User(@NotNull String username, String password, String name, String surname, String phone, String e_mail, int enabled, Date last_log, Cart cart, Adress adress) {
         this.username = username;
         this.password = password;
         this.name = name;
@@ -48,6 +51,7 @@ public class User {
         this.phone = phone;
         this.e_mail = e_mail;
         this.enabled = enabled;
+        this.last_log = last_log;
         this.cart = cart;
         this.adress = adress;
     }
@@ -129,6 +133,14 @@ public class User {
 
     public void setAdress(Adress adress) {
         this.adress = adress;
+    }
+
+    public Date getLast_log() {
+        return last_log;
+    }
+
+    public void setLast_log(Date last_log) {
+        this.last_log = last_log;
     }
 
     @Override

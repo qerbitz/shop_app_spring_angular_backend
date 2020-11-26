@@ -64,6 +64,13 @@
 								<input type="checkbox" th:value="${gender}"  th:name="listOfGenderChecked" th:checked="${genderCheckedList?.contains(gender)}" onclick="this.form.submit()"/>
 								<label th:text="${gender}"></label>
 							</li>
+
+							<br><br>
+							<button class="btn btn-secondary dropdown-toggle" name="drop_season" th:value="${value_season}" style="width: 100px; background-color: #0da8e4">Sezon</button>
+							<li th:hidden="${hidden_season}" th:each="season: ${seasonList}">
+								<input type="checkbox" th:value="${season}"  th:name="listOfSeasonChecked" th:checked="${seasonCheckedList?.contains(season)}" onclick="this.form.submit()"/>
+								<label th:text="${season}"></label>
+							</li>
 						</form>
 					</ul>
 

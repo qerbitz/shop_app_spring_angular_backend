@@ -114,7 +114,7 @@
                                 <td colspan="2"></td>
                                 <td><p>Suma produktów <b th:text="${quantity}"></b></p>
                                     <p></p></br>
-                                    <p>Laczna kwota <b th:text="${total}+' zł'"></b></p><br>
+                                    <p>Laczna kwota <b th:text="${total}"></b></p><br>
                                     <a th:href="@{/order/showUserDetails}" class="primary-btn">Zamow</a>
                                     <a th:href="@{/cart/clear/{cartId}(cartId=${cartId})}" class="primary-btn">Wyczysc koszyk</a>
                                 </td>

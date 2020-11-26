@@ -65,4 +65,11 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     List<Product> findAllByGenderContaining(String gender);
 
+    List<Product> findAllBySeasonContaining(String season);
+
+    @Query(value="select distinct season from product" +
+           " order by season asc",
+            nativeQuery = true)
+    List<Object[]> findAllSeasons();
+
 }
