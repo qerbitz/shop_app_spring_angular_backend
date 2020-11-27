@@ -350,10 +350,26 @@ aside.menu-sidebar.d-none.d-lg-block.clr{
     padding:6px 0
 }
 
-.arrows i{
-    font-size:30px;
-    padding:4px 4px
+div.xdd {
+    font-size:16px;
+    display: flex;
+    align-items: center;
+    justify-content: center
 }
+
+div.xdd i{
+    font-size:40px;
+    padding:4px 4px;
+}
+
+div.xdd h1{
+    font-size:16px;
+}
+
+div.container4 {
+    height: 50px;
+    position: relative }
+
 
 section{
     position:relative

@@ -81,16 +81,14 @@
             <div class="section-content section-content-p30">
                 <div class="container-fluid">
 
-                    <div class="submity">
-                    <a class="primary-btn" type="button"
-                       th:href="@{/recommended/test/(orderId=${actual+1})}" style="float: right; width: 200px"> < </a>
-
-                    <h1 th:text="'Zamowienie nr: '+${order.getId_order()}" style="font-size: 16px"></h1>
-
-                    <a class="primary-btn" type="button"
-                       th:href="@{/recommended/test/(orderId=${{actual}}-1)}"  style="float: left; width: 200px">  > </a>
+                    <div class=container4>
+                        <div class="xdd">
+                            <a th:href="@{/product/recommended/(orderId=${{actual}}-1)}"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+                            <h1 th:text="' Zamowienie nr: '+${order.getId_order()}"></h1>
+                            <a th:href="@{/product/recommended/(orderId=${actual+1})}"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
                     <br>
-                    </div>>
 
                     <div class="row">
                         <div class="col-md-2" th:each="item: ${cart}">

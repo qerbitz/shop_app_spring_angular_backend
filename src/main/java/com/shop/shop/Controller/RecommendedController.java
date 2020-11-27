@@ -13,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -23,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping("/recommended")
+@RequestMapping("/product")
 public class RecommendedController {
 
     @Autowired
@@ -38,7 +37,7 @@ public class RecommendedController {
     @Autowired
     CartService cartService;
 
-    @GetMapping("/test")
+    @GetMapping("/recommended")
     public String test(
             @RequestParam(value = "orderId", required = false) String orderId,
             Model model) {
@@ -46,7 +45,7 @@ public class RecommendedController {
         int id_order=0;
 
 
-        System.out.println(orderId);
+        //System.out.println(orderId);
         if(orderId!=null){
                 id_order= Integer.parseInt(orderId);
         }
@@ -54,7 +53,7 @@ public class RecommendedController {
 
         //Pobranie autentykacji
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getUserByUsername("seminarium3");
+        User user = userService.getUserByUsername("seminarium2");
 
         Date actual_date = java.sql.Date.valueOf(LocalDate.now());
 
@@ -68,7 +67,7 @@ public class RecommendedController {
         long diff_last_log_month = diff_last_log/ (24 * 60 * 60 * 1000) / 30;
 
 
-        System.out.println(diff_last_log_month);
+        //System.out.println(diff_last_log_month);
 
         if(diff_last_log_month<1){
             return "redirect:/product/productList";
