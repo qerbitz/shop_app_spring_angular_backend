@@ -149,10 +149,12 @@ public class ProductController {
 
 
         //czyszczenie kategorii
-        pierwsza=0;
-        druga=0;
-        trzecia=0;
-        czwarta=0;
+        if(listOfAgesChecked==null || listOfCategoryCheckedint==null || listOfGenderChecked==null || listOfSeasonChecked==null){
+            pierwsza=0;
+            druga=0;
+            trzecia=0;
+            czwarta=0;
+        }
 
 
         //pobranie autentykacji
@@ -229,11 +231,8 @@ public class ProductController {
 
 
             List<Product> listProductss = pages.getContent();
-            System.out.println(listProductss.size());
 
             model.addAttribute("productList", listProductss);
-
-
 
         }else{
             List<Product> listProducts = page.getContent();
@@ -244,8 +243,6 @@ public class ProductController {
             model.addAttribute("pageItems", page.getNumberOfElements());
             model.addAttribute("productList", listProducts);
         }
-
-
 
 
         model.addAttribute("recommendedList", listRecommendedProducts);

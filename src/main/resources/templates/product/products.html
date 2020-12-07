@@ -165,7 +165,8 @@
 									<a th:if="${currentPage >1 && currentPage != totalPages}">Wyswietlono [[${pageItems * currentPage - pageItems}]] - [[${pageItems * currentPage}]] z [[${totalItems}]]</a>
 									<a th:if="${currentPage == totalPages}">Wyswietlono [[${totalItems - pageItems}]] - [[${totalItems}]] z [[${totalItems}]]</a>
 
-									<a th:if="${currentPage > 1}" th:href="@{/product/productList/1}">Początek</a>
+									<a th:if="${currentPage > 1}" th:href="@{/product/productList/{pageNum}(pageNum = 1, price_min=${price_min},price_max=${price_max},
+											listOffAgesChecked=${agesCheckedList}, listOffCategoryChecked=${categoryCheckedListint}, listOffSeasonChecked=${seasonCheckedList}, listOffGenderChecked=${genderCheckedList})}">Początek</a>
 									<span th:unless="${currentPage > 1}">Początek</span>
 
 									<a th:if="${currentPage > 1}" th:href="@{/product/productList/{pageNum}(pageNum = ${currentPage - 1}, price_min=${price_min},price_max=${price_max},
@@ -173,7 +174,8 @@
 
 
 									<span th:each="i: ${#numbers.sequence(1, totalPages)}">
-    								<a th:if="${currentPage != i}" th:href="@{'/product/productList/' + ${i}}">[[${i}]]</a>
+    								<a th:if="${currentPage != i}" th:href="@{/product/productList/{pageNum}(pageNum = ${i}, price_min=${price_min},price_max=${price_max},
+											listOffAgesChecked=${agesCheckedList}, listOffCategoryChecked=${categoryCheckedListint}, listOffSeasonChecked=${seasonCheckedList}, listOffGenderChecked=${genderCheckedList})}">[[${i}]]</a>
     								<span th:unless="${currentPage != i}">[[${i}]]</span>
     								&nbsp;&nbsp;
 									</span>
@@ -181,7 +183,8 @@
 									<a th:if="${currentPage < totalPages}" th:href="@{/product/productList/{pageNum}(pageNum = ${currentPage + 1}, price_min=${price_min},price_max=${price_max},
 											listOffAgesChecked=${agesCheckedList}, listOffCategoryChecked=${categoryCheckedListint}, listOffSeasonChecked=${seasonCheckedList}, listOffGenderChecked=${genderCheckedList})}">Nastepna</a>
 
-									<a th:if="${currentPage < totalPages}" th:href="@{'/product/productList/' + ${totalPages}}">Ostatnia</a>
+									<a th:if="${currentPage < totalPages}" th:href="@{/product/productList/{pageNum}(pageNum = ${totalPages}, price_min=${price_min},price_max=${price_max},
+											listOffAgesChecked=${agesCheckedList}, listOffCategoryChecked=${categoryCheckedListint}, listOffSeasonChecked=${seasonCheckedList}, listOffGenderChecked=${genderCheckedList})}">Ostatnia</a>
 									<span th:unless="${currentPage < totalPages}">Ostatnia</span>
 								</div>
 								<div class="col-md-3">
