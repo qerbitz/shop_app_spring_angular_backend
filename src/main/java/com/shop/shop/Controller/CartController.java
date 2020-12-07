@@ -116,13 +116,13 @@ public class CartController {
                     cartItemService.addCartItem(cartItem);
 
                     redirect(listOfCategoryChecked, listOfAgesChecked, price_min, price_max, redirectAttributes, id_product);
-                    return "redirect:/product/productList";
+                    return "redirect:/product/productList/1";
                 }
             } else {
                 //System.out.println("Brak towaru");
 
                 redirect(listOfCategoryChecked, listOfAgesChecked, price_min, price_max, redirectAttributes, id_product);
-                return "redirect:/product/productList";
+                return "redirect:/product/productList/1";
             }
         }
 
@@ -136,7 +136,7 @@ public class CartController {
         System.out.println(Integer.parseInt(id_product));
 
         redirect(listOfCategoryChecked, listOfAgesChecked, price_min, price_max, redirectAttributes, id_product);
-        return "redirect:/product/productList";
+        return "redirect:/product/productList/1";
     }
 
     @GetMapping("/remove/{id_product}")

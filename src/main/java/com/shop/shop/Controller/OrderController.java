@@ -70,7 +70,7 @@ public class OrderController {
         appendToApriori(order);
 
 
-        return "redirect:/product/productList";
+        return "redirect:/product/productList/1";
     }
 
     @GetMapping("/allOrders")

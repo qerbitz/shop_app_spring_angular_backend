@@ -1,10 +1,12 @@
 package com.shop.shop.Service.Impl;
 
-import com.shop.shop.Entity.Category;
 import com.shop.shop.Entity.Product;
 import com.shop.shop.Repositories.ProductRepository;
 import com.shop.shop.Service.Interface.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -196,6 +198,13 @@ public class ProductServiceImpl implements ProductService {
         proponowane.addAll(cosiktam);
 
         return proponowane;
+    }
+
+    public Page<Product> listAll(int pageNum, int pageSize) {
+
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
+
+        return productRepository.findAll(pageable);
     }
 
 

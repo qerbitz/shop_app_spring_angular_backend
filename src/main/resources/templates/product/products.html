@@ -25,14 +25,14 @@
 		<!-- MENU SIDEBAR-->
 		<aside class="menu-sidebar d-none d-lg-block">
 			<div class="logo">
-				<a th:href="@{/product/productList}">
+				<a th:href="@{/product/productList/1}">
 					<img src="/images/homepage.png" alt="Strona glowna" style="height: 80px">
 				</a>
 			</div>
 			<div class="menu-sidebar-content js-scrollbar1">
 				<nav class="navbar-sidebar">
 					<ul class="list-unstyled navbar-list">
-						<form method="post" th:action="@{/product/filter}"
+						<form method="post" th:action="@{/product/productList/1}"
 							  th:object="${categoryList}" id="getforma">
 
 							<!--<label for="price_min" >Cena od:</label><br>-->
@@ -160,19 +160,46 @@
 
 						<div class="footer-pagination">
 							<div class="row">
-								<div class="col-md-6"></div>
+								<div class="sortowanie">
+									<a th:if="${currentPage == 1}">Wyswietlono 1 - [[${pageItems}]] z [[${totalItems}]]</a>
+									<a th:if="${currentPage >1 && currentPage != totalPages}">Wyswietlono [[${pageItems * currentPage - pageItems}]] - [[${pageItems * currentPage}]] z [[${totalItems}]]</a>
+									<a th:if="${currentPage == totalPages}">Wyswietlono [[${totalItems - pageItems}]] - [[${totalItems}]] z [[${totalItems}]]</a>
+
+									<a th:if="${currentPage > 1}" th:href="@{/product/productList/1}">Początek</a>
+									<span th:unless="${currentPage > 1}">Początek</span>
+
+									<a th:if="${currentPage > 1}" th:href="@{/product/productList/{pageNum}(pageNum = ${currentPage - 1}, price_min=${price_min},price_max=${price_max},
+											listOffAgesChecked=${agesCheckedList}, listOffCategoryChecked=${categoryCheckedListint}, listOffSeasonChecked=${seasonCheckedList}, listOffGenderChecked=${genderCheckedList})}">Poprzednia</a>
+
+
+									<span th:each="i: ${#numbers.sequence(1, totalPages)}">
+    								<a th:if="${currentPage != i}" th:href="@{'/product/productList/' + ${i}}">[[${i}]]</a>
+    								<span th:unless="${currentPage != i}">[[${i}]]</span>
+    								&nbsp;&nbsp;
+									</span>
+
+									<a th:if="${currentPage < totalPages}" th:href="@{/product/productList/{pageNum}(pageNum = ${currentPage + 1}, price_min=${price_min},price_max=${price_max},
+											listOffAgesChecked=${agesCheckedList}, listOffCategoryChecked=${categoryCheckedListint}, listOffSeasonChecked=${seasonCheckedList}, listOffGenderChecked=${genderCheckedList})}">Nastepna</a>
+
+									<a th:if="${currentPage < totalPages}" th:href="@{'/product/productList/' + ${totalPages}}">Ostatnia</a>
+									<span th:unless="${currentPage < totalPages}">Ostatnia</span>
+								</div>
 								<div class="col-md-3">
 									<div class="items">
-										 <form class="form-header" method="post" th:action="@{/product/products_sort}">
-											 <label>Wyświetlaj</label><select name="amount_option" id="amount_option" onchange="this.form.submit()">
-												<option th:value=10>10</option>
+										 <form class="form-header" method="post" th:action="@{/product/productList/1(price_min=${price_min},price_max=${price_max})}">
+											 <label>Wyświetlaj</label><select name="pageSize" id="pageSize" onchange="this.form.submit()">
+											 <option></option>
+												<option th:value=8>8</option>
+												<option th:value=16>16</option>
 												<option th:value=25>25</option>
-												<option th:value=50>50</option>
-												<option th:value=100>100</option>
 											</select>
 										</form>
 									</div>
 								</div>
+							</div>
+
+
+
 
 
 								<!-- The Modal -->
@@ -180,7 +207,7 @@
 
 									<!-- Modal content -->
 									<div class="modal-content">
-										<span class="close"><a th:href="@{/product/productList}">&times;</a></span>
+										<span class="close"><a th:href="@{/product/productList/1}">&times;</a></span>
 										<h1>Produkt został dodany do koszyka pomyślnie!</h1>
 										<div class="product-box-propose">
 											<a>
@@ -203,7 +230,7 @@
 										<div id="carouselExampleControls" class="carousel slide" data-ride="carousel" th:if="${not #lists.isEmpty(recommendedList)}">
 											<div class="carousel-inner">
 												<div th:each="product: ${recommendedList}" class="carousel-item">
-													<a th:href="@{/product/productList}">
+													<a th:href="@{/product/productList/1}">
 														<img class="d-block w-70" src="/images/avatar.png" alt="Second slide">
 														<h1 th:text="${product.name}" align="center"></h1>
 													</a>

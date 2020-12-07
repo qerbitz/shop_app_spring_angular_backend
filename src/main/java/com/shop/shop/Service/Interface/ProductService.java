@@ -1,6 +1,8 @@
 package com.shop.shop.Service.Interface;
 
 import com.shop.shop.Entity.Product;
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 
@@ -31,6 +33,8 @@ public interface ProductService {
     List<String> getListOfAges();
 
     List<String> getListOfSeasons();
+
+    Page<Product> listAll(int pageNum, int pageSize);
 
     Product getProductById(int id);
 

@@ -59,7 +59,7 @@ public class RecommendedController {
 
 
         if(user.getLast_log()==null){
-            return "redirect:/product/productList";
+            return "redirect:/product/productList/1";
         }
 
         //Obliczanie czasu od ostatniego zalogowania(Jezeli ponizej miesiaca nie ma proponowania dla zamowien)
@@ -70,7 +70,7 @@ public class RecommendedController {
         //System.out.println(diff_last_log_month);
 
         if(diff_last_log_month<1){
-            return "redirect:/product/productList";
+            return "redirect:/product/productList/1";
         }
 
         List<Product> recommendedNewList = new ArrayList<>();
