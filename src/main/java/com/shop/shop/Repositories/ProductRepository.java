@@ -72,4 +72,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             nativeQuery = true)
     List<Object[]> findAllSeasons();
 
+    @Query(value="SELECT distinct size FROM size_age where category=:category_id",
+            nativeQuery = true)
+    List<Object[]> findAllSizesByCategoryId(int category_id);
+
 }

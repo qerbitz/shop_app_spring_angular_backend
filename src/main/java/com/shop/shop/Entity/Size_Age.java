@@ -17,10 +17,15 @@ public class Size_Age {
     @Column(name = "age")
     private String product_age;
 
-    public Size_Age(int id_size_age, String product_size, String product_age) {
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "category", nullable = false)
+    private Category id_category;
+
+    public Size_Age(int id_size_age, String product_size, String product_age, Category id_category) {
         this.id_size_age = id_size_age;
         this.product_size = product_size;
         this.product_age = product_age;
+        this.id_category = id_category;
     }
 
     public Size_Age() {
@@ -48,5 +53,13 @@ public class Size_Age {
 
     public void setProduct_age(String product_age) {
         this.product_age = product_age;
+    }
+
+    public Category getId_category() {
+        return id_category;
+    }
+
+    public void setId_category(Category id_category) {
+        this.id_category = id_category;
     }
 }

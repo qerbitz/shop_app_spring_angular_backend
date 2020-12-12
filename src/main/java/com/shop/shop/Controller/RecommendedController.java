@@ -2,19 +2,15 @@ package com.shop.shop.Controller;
 
 import com.shop.shop.Entity.Order;
 import com.shop.shop.Entity.Product;
+import com.shop.shop.Entity.Size_Age;
 import com.shop.shop.Entity.User;
-import com.shop.shop.Service.Interface.CartService;
-import com.shop.shop.Service.Interface.OrderService;
-import com.shop.shop.Service.Interface.ProductService;
-import com.shop.shop.Service.Interface.UserService;
+import com.shop.shop.Service.Interface.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,6 +26,9 @@ public class RecommendedController {
 
     @Autowired
     ProductService productService;
+
+    @Autowired
+    CategoryService categoryService;
 
     @Autowired
     UserService userService;
@@ -155,8 +154,134 @@ public class RecommendedController {
 
     }
 
+    @GetMapping("/similiar")
+    public String similiarProducts(Model model){
+
+
+        add_to_model(model);
+
+        return "product/index";
+    }
+
+    @PostMapping("/similiar")
+    public String similiarProducts(@RequestParam(value = "category", required = false, defaultValue = "0") int category,
+                                   @RequestParam(value = "size", required = false, defaultValue = "") String size,
+                                   @RequestParam(value = "gender", required = false, defaultValue = "") String gender,
+                                   @RequestParam(value = "season", required = false, defaultValue = "") String season,
+                                   Model model) {
+
+
+        int i = 0;
+        int suma = 0;
+
+        System.out.println(category);
+
+        Size_Age size_age = new Size_Age();
+        size_age.setProduct_size(size);
+
+        Product product = new Product();
+        product.setId_category(categoryService.getCategoryById(category));
+        product.setSeason(season);
+        product.setGender(gender);
+        product.setSize_age(size_age);
+
+        List<Product> all_products_list= productService.getListOfProducts();
+        List<Product> similiar_products_list = new ArrayList<>();
+        List<Double> wspolczynnik = new ArrayList<>();
+
+
+
+        for(int j=0; j<all_products_list.size(); j++){
+
+            //Sprawdzanie sezonu
+            if(product.getSeason().equals(all_products_list.get(j).getSeason())){
+                i++;
+                suma++;
+                System.out.println("sezon ok");
+            }
+            else {
+                suma++;
+            }
+            //Sprawdzanie rozmiaru
+            if(product.getSize_age().getProduct_size().equals(all_products_list.get(j).getSize_age().getProduct_size())){
+                i++;
+                suma++;
+                System.out.println("Rozmiar ok");
+            }
+            else {
+                suma++;
+            }
+            //Sprawdzanie Kategorii
+            if(category!=0){
+                if(product.getId_category().getName().equals(all_products_list.get(j).getId_category().getName())){
+                    i++;
+                    suma++;
+                    System.out.println("kategoria ok");
+                }
+            }
+            else {
+                suma++;
+            }
+            //Sprawdzanie Plci
+            if(product.getGender().equals(all_products_list.get(j).getGender())){
+                i++;
+                suma++;
+                System.out.println("plec ok");
+            }
+            else {
+                suma++;
+            }
+
+
+            double a = i;
+            double b = suma;
+
+            System.out.println(a/b);
+            System.out.println("//////////////////////////////////////////////////////////");
+
+
+            wspolczynnik.add(a/b);
+
+            System.out.println(all_products_list.get(j).getName()+" "+wspolczynnik.get(j));
+
+
+            if(wspolczynnik.get(j)==1.0){
+                similiar_products_list.add(all_products_list.get(j));
+            }
+
+
+            i=0;
+            suma=0;
+
+
+            a=0;
+            b=0;
+        }
+
+
+        System.out.println("'''''''''''''''''''''''''''''''''''''");
+
+
+
+        if(category!=0){
+            model.addAttribute("sizesList", productService.getListOfSizesBy(category));
+        }
+        add_to_model(model);
+        model.addAttribute("productList",similiar_products_list);
+
+        return "product/index";
+    }
+
     public static boolean isBetween(int a, int b, int c) {
         return b > a ? c >= a && c <= b : c >= b && c < a;
+    }
+
+    public void add_to_model(Model model){
+        model.addAttribute("categoryList", categoryService.getListOfCategories());
+        //model.addAttribute("agesList", productService.getListOfAges());
+        model.addAttribute("genderList", productService.getListOfGenders());
+        model.addAttribute("seasonList", productService.getListOfSeasons());
+        model.addAttribute("producentList",productService.getListOfProducents());
     }
 
 

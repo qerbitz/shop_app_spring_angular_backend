@@ -86,7 +86,7 @@
 				<div class="section-content section-content-p30">
 					<div class="container-fluid">
 						<div class="header-wrap">
-							<form class="form-header" method="post" th:action="@{/product/products_search}" id="getform">
+							<form class="form-header" method="post" th:action="@{/product/products_search/1}" id="getform">
 								<input class="au-input au-input-xl" type="text" name="value" id="value" th:object="${user}"
 									placeholder="Szukaj produktów ..." form="getform"/>
 								<button class="au-btn-submit" type="submit" form="getform">
@@ -123,7 +123,7 @@
 			<div class="main-content">
 				<div class="section-content section-content-p30">
 					<div class="container-fluid">
-						<form class="form-header" method="post" th:action="@{/product/products_sort}">
+						<!--<form class="form-header" method="post" th:action="@{/product/products_sort}">
 							<select name="option" id="option" onchange="this.form.submit()">
 								<option> - </option>
 								<option th:value=1>Cena: od najniższej</option>
@@ -132,9 +132,10 @@
 								<option th:value=4>Nazwa: Od Z do A</option>
 								<option th:value=5>Najpopularniejsze</option>
 							</select>
-						</form>
+						</form>-->
 
 						<div class="row">
+							<a th:href="@{/product/similiar}" th:if="${productList.isEmpty()}"><h1>Nie widzisz szukanego produktu, wyszukaj produkty podobne<br><br><br></h1></a>
 							<div class="col-md-3" th:each="product: ${productList}">
 								<div class="product-box">
 									<a href="product-detail.html">
@@ -142,6 +143,7 @@
 									</a>
 									<a href="product-detail.html">
 										<h1 th:text="${product.getName()}"></h1>
+										<h2 th:text="'Producent: '+${product.getProducent().getName()}"></h2>
 										<h2 th:text="'Kategoria: '+${product.getId_category().getName()}"></h2>
 										<h2 th:text="'Rozmiar: '+${product.getSize_age().getProduct_size()}"></h2>
 										<h2 th:text="'Wiek: '+${product.getSize_age().getProduct_age()}"></h2>
@@ -201,10 +203,6 @@
 								</div>
 							</div>
 
-
-
-
-
 								<!-- The Modal -->
 								<div id="myModal" class="modal">
 
@@ -223,8 +221,8 @@
 											</a>
 										</div>
 										<div class="submity">
-										<a class="primary-btn"  type="button" th:href="@{/product/productList}" style="float: left; width: 200px">Kontynuuj zakupy</a>
-										<a class="primary-btn"  type="button" th:href="@{/cart/}" style="float: right; width:200px">Przejdz do koszyka</a>
+											<a class="primary-btn"  type="button" th:href="@{/product/productList/1}" style="float: left; width: 200px">Kontynuuj zakupy</a>
+											<a class="primary-btn"  type="button" th:href="@{/cart/}" style="float: right; width:200px">Przejdz do koszyka</a>
 										</div>
 
 										<hr>
@@ -288,6 +286,7 @@
 	if(myval!=null){
 		modal.style.display = "block";
 	}
+
 
 
 	// Get the <span> element that closes the modal

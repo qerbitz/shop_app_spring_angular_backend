@@ -1,6 +1,8 @@
 package com.shop.shop.Service.Impl;
 
+import com.shop.shop.Entity.Producent;
 import com.shop.shop.Entity.Product;
+import com.shop.shop.Repositories.ProducentRepository;
 import com.shop.shop.Repositories.ProductRepository;
 import com.shop.shop.Service.Interface.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,23 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     ProductRepository productRepository;
 
+    @Autowired
+    ProducentRepository producentRepository;
+
+    @Override
+    public List<String> getListOfSizesBy(int category_id) {
+
+        List<String> sizesList = new ArrayList<>();
+
+        for (Object[] obj : productRepository.findAllSizesByCategoryId(category_id)) {
+            String size = String.valueOf(obj[0]);
+
+            sizesList.add(size);
+        }
+
+        return sizesList;
+    }
+
     @Override
     public List<String> getListOfGenders() {
         List<String> genderList = new ArrayList<>();
@@ -28,6 +47,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getListOfProducts() {
         return productRepository.findAll();
+    }
+
+    @Override
+    public List<Producent> getListOfProducents() {
+        return producentRepository.findAll();
     }
 
     @Override

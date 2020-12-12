@@ -1,5 +1,6 @@
 package com.shop.shop.Service.Interface;
 
+import com.shop.shop.Entity.Producent;
 import com.shop.shop.Entity.Product;
 import org.springframework.data.domain.Page;
 
@@ -8,9 +9,13 @@ import java.util.List;
 
 public interface ProductService {
 
+    List<String> getListOfSizesBy(int category_id);
+
     List<String> getListOfGenders();
 
     List<Product> getListOfProducts();
+
+    List<Producent> getListOfProducents();
 
     List<Product> getListOfProductsByName(String name);
 

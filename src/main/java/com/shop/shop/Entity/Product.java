@@ -26,6 +26,10 @@ public class Product {
     private Category id_category;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_producent", nullable = false)
+    private Producent producent;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "size_age", nullable = false)
     private Size_Age size_age;
 
@@ -38,29 +42,17 @@ public class Product {
     @Column(name = "season")
     private String season;
 
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<CartItem> cartItemList;
-
-    public List<CartItem> getCartItemList() {
-        return cartItemList;
-    }
-
-    public void setCartItemList(List<CartItem> cartItemList) {
-        this.cartItemList = cartItemList;
-    }
-
-    public Product(int id_product, String name, String gender, Double price, Category id_category, Size_Age size_age, String image, int quantity, String season, List<CartItem> cartItemList) {
+    public Product(int id_product, String name, String gender, Double price, Category id_category, Producent producent, Size_Age size_age, String image, int quantity, String season) {
         this.id_product = id_product;
         this.name = name;
         this.gender = gender;
         this.price = price;
         this.id_category = id_category;
+        this.producent = producent;
         this.size_age = size_age;
         this.image = image;
         this.quantity = quantity;
         this.season = season;
-        this.cartItemList = cartItemList;
     }
 
     public Product() {
@@ -136,5 +128,13 @@ public class Product {
 
     public void setSeason(String season) {
         this.season = season;
+    }
+
+    public Producent getProducent() {
+        return producent;
+    }
+
+    public void setProducent(Producent producent) {
+        this.producent = producent;
     }
 }

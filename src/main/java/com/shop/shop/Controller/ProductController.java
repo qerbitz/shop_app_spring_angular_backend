@@ -154,6 +154,18 @@ public class ProductController {
             druga=0;
             trzecia=0;
             czwarta=0;
+
+            model.addAttribute("hidden_category", true);
+            model.addAttribute("value_category", 0);
+
+            model.addAttribute("hidden_age", true);
+            model.addAttribute("value_age", 0);
+
+            model.addAttribute("hidden_gender", true);
+            model.addAttribute("value_gender", 0);
+
+            model.addAttribute("hidden_season", true);
+            model.addAttribute("value_season", 0);
         }
 
 
@@ -251,17 +263,7 @@ public class ProductController {
             model.addAttribute("purchased_product", productService.getProductById(Integer.parseInt(id_product)));
         }
 
-        model.addAttribute("hidden_category", true);
-        model.addAttribute("value_category", 0);
 
-        model.addAttribute("hidden_age", true);
-        model.addAttribute("value_age", 0);
-
-        model.addAttribute("hidden_gender", true);
-        model.addAttribute("value_gender", 0);
-
-        model.addAttribute("hidden_season", true);
-        model.addAttribute("value_season", 0);
 
         List<Category> categoryCheckedList = new ArrayList<>();
 
@@ -281,6 +283,7 @@ public class ProductController {
 
 
 
+
         if (authentication.getName().equals("anonymousUser")) {
             return "product/products";
         } else {
@@ -297,18 +300,49 @@ public class ProductController {
     }
 
 
-    @PostMapping("/products_search")
-    public String products_search(@RequestParam("value") String value, Model model) {
+    @PostMapping("/products_search/{pageNum}")
+    public String products_search(@RequestParam("value") String value,
+                                  @PathVariable(name = "pageNum") int pageNum,
+                                  Model model) {
+
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        List<Category> categoryCheckedList = new ArrayList<>();
+        List<Product> listProducts = productService.getListOfProductsByName(value);
 
-        model.addAttribute("productList", productService.getListOfProductsByName(value));
+        //model.addAttribute("productList", productService.getListOfProductsByName(value));
         model.addAttribute("categoryList", categoryService.getListOfCategories());
-        model.addAttribute("categoryCheckedList", categoryCheckedList);
 
-        model.addAttribute("id_product", null);
+        Pageable pageable ;
+
+        pageable = PageRequest.of(pageNum - 1, Integer.parseInt(help1));
+
+        int start = (int) pageable.getOffset();
+        int end = (start + pageable.getPageSize()) > listProducts.size() ? listProducts.size() : (start + pageable.getPageSize());
+        Page<Product> pages = new PageImpl<Product>(listProducts.subList(start, end), pageable, listProducts.size());
+
+
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("totalPages", pages.getTotalPages());
+        model.addAttribute("totalItems", pages.getTotalElements());
+        model.addAttribute("pageItems", pages.getNumberOfElements());
+
+        List<Product> listProductss = pages.getContent();
+
+        model.addAttribute("productList",listProductss);
+
+
+        model.addAttribute("hidden_category", true);
+        model.addAttribute("value_category", 0);
+
+        model.addAttribute("hidden_age", true);
+        model.addAttribute("value_age", 0);
+
+        model.addAttribute("hidden_gender", true);
+        model.addAttribute("value_gender", 0);
+
+        model.addAttribute("hidden_season", true);
+        model.addAttribute("value_season", 0);
 
 
         if (authentication.getName().equals("anonymousUser")) {
@@ -719,7 +753,6 @@ public class ProductController {
                         .collect(Collectors.toList());
             }
         }
-
 
         return list;
     }
