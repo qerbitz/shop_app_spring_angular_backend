@@ -82,6 +82,7 @@ public class CartController {
             @RequestParam(value = "listOffAgesChecked", required = false) List<String> listOfAgesChecked,
             @RequestParam(value = "price_min", required = false) String price_min,
             @RequestParam(value = "price_max", required = false) String price_max,
+           // @RequestParam(value = "quantity", required = false) int quantity,
             @PathVariable(value = "id_product") String id_product,
             RedirectAttributes redirectAttributes) throws Exception {
 
@@ -128,10 +129,17 @@ public class CartController {
 
         CartItem cartItem = new CartItem();
         cartItem.setProduct(product);
-        cartItem.setQuantity(1);
+        //if(quantity==null){
+            cartItem.setQuantity(1);
+        //}
+       // else
+       // {
+        //    cartItem.setQuantity(Integer.parseInt(quantity));
+        //}
         cartItem.setTotal_price(product.getPrice() * cartItem.getQuantity());
         cartItem.setCart(cart);
         cartItemService.addCartItem(cartItem);
+
 
         System.out.println(Integer.parseInt(id_product));
 

@@ -40,7 +40,7 @@
 
 							<br>
 							<!--<label for="price_max" >Cena do:</label><br>-->
-							<input type="number" id="price_max" th:name="price_max" th:value="${price_max}" onfocusout="this.form.submit()" style="width: 100px; background-color: #0da8e4; text-align: center; " placeholder="Cena od: ">
+							<input type="number" id="price_max" th:name="price_max" th:value="${price_max}" onfocusout="this.form.submit()" style="width: 100px; background-color: #0da8e4; text-align: center; " placeholder="Cena do: ">
 
 							<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 							<br><br>
@@ -152,7 +152,8 @@
 
 									<a class="primary-btn" type="button"
 									   th:href="@{/cart/add/{id_product}(id_product=${product.id_product},price_min=${price_min},price_max=${price_max},
-											listOffAgesChecked=${agesCheckedList}, listOffCategoryChecked=${categoryCheckedListint})}">Dodaj do koszyka</a>
+											listOffAgesChecked=${agesCheckedList}, listOffCategoryChecked=${categoryCheckedListint})}"><i
+											class="fas fa-shopping-cart pr-2" ></i>Dodaj do koszyka</a>
 
 								</div>
 							</div>
@@ -231,7 +232,7 @@
 										<div id="carouselExampleControls" class="carousel slide" data-ride="carousel" th:if="${not #lists.isEmpty(recommendedList)}">
 											<div class="carousel-inner">
 												<div th:each="product: ${recommendedList}" class="carousel-item">
-													<a th:href="@{/product/productList/1}">
+													<a th:href="@{/product/viewProduct/{productId}(productId=${product.id_product})}">
 														<img class="d-block w-70" src="/images/avatar.png" alt="Second slide">
 														<h1 th:text="${product.name}" align="center"></h1>
 													</a>

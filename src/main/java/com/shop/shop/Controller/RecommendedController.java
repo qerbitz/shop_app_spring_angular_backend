@@ -47,7 +47,7 @@ public class RecommendedController {
 
         //Pobranie autentykacji
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getUserByUsername("seminarium2");
+        User user = userService.getUserByUsername(authentication.getName());
 
         Date actual_date = java.sql.Date.valueOf(LocalDate.now());
 
@@ -61,7 +61,7 @@ public class RecommendedController {
         long diff_last_log_month = diff_last_log/ (24 * 60 * 60 * 1000) / 30;
 
 
-        //System.out.println(diff_last_log_month);
+        System.out.println(diff_last_log_month);
 
         if(diff_last_log_month<1){
             return "redirect:/product/productList/1";
@@ -164,9 +164,13 @@ public class RecommendedController {
                                    @RequestParam(value = "size", required = false, defaultValue = "") String size,
                                    @RequestParam(value = "gender", required = false, defaultValue = "") String gender,
                                    @RequestParam(value = "season", required = false, defaultValue = "") String season,
+                                   @RequestParam(value = "price_min", required = false, defaultValue = "0") String price_min,
+                                   @RequestParam(value = "price_max", required = false, defaultValue = "9999999") String price_max,
                                    Model model) {
 
 
+        int price_min_int = Integer.parseInt(price_min);
+        int price_max_int = Integer.parseInt(price_max);
 
         if(category!=0){
             model.addAttribute("sizesList", productService.getListOfSizesBy(category));
@@ -195,6 +199,9 @@ public class RecommendedController {
 
 
         for(int j=0; j<all_products_list.size(); j++){
+
+            //Konwersja ceny do int
+            int product_price_int = all_products_list.get(j).getPrice().intValue();
 
             //Sprawdzanie sezonu
             if(product.getSeason().equals(all_products_list.get(j).getSeason())){
@@ -234,6 +241,15 @@ public class RecommendedController {
             else {
                 suma++;
             }
+            //Sprawdzanie Ceny
+            if(isBetween(price_min_int, price_max_int, product_price_int)){
+                i++;
+                suma++;
+                System.out.println(all_products_list.get(j).getName()+" cena ok");
+            }
+            else{
+                suma++;
+            }
 
 
             double a = i;
@@ -258,18 +274,22 @@ public class RecommendedController {
 
         Collections.sort(similarity_list);
 
-         for(int k=0; k<similarity_list.size(); k++){
-             System.out.println(similarity_list.get(k).getProduct().getName()+" "+similarity_list.get(k).getSimilarity());
-             similiar_products_list.add(similarity_list.get(k).getProduct());
-             if(similarity_list.get(k).getSimilarity()==0.0){
-                 similarity_list.remove(k);
-             }
-         }
 
+        //Jesli wspolczynnik = 0 || <0.5
+        Iterator<Similarity> iterator_list = similarity_list.iterator();
+        while (iterator_list.hasNext()) {
+            Similarity s = iterator_list.next();
 
+            if(s.getSimilarity()==0.0 || s.getSimilarity()<0.5){
+                iterator_list.remove();
+            }
+        }
 
-
-
+        //Dodawanie do listy produktów
+        for(int z=0; z<similarity_list.size(); z++){
+            similiar_products_list.add(similarity_list.get(z).getProduct());
+            System.out.println(similarity_list.get(z).getProduct().getName()+" "+similarity_list.get(z).getSimilarity());
+        }
 
 
         if(category!=0){

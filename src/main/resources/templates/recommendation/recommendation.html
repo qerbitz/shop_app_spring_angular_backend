@@ -113,10 +113,10 @@
                     <div class="row">
                         <div class="col-md-3" th:each="product: ${recommendedList}">
                             <div class="product-box">
-                                <a href="product-detail.html">
+                                <a th:href="@{/product/viewProduct/{productId}(productId=${product.id_product})}">
                                     <img th:src="${product.image}" class="img-responsive">
                                 </a>
-                                <a href="product-detail.html">
+                                <a th:href="@{/product/viewProduct/{productId}(productId=${product.id_product})}">
                                     <h1 th:text="${product.getName()}"></h1>
                                     <h2 th:text="'Kategoria: '+${product.getId_category().getName()}"></h2>
                                     <h2 th:text="'Rozmiar: '+${product.getSize_age().getProduct_size()}"></h2>
