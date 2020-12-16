@@ -1,0 +1,262 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" media="all">
+
+    <!-- Main CSS-->
+    <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet" />
+
+</head>
+
+<body>
+<div class="page-wrapper">
+
+    <!-- MENU SIDEBAR-->
+    <aside class="menu-sidebar d-none d-lg-block">
+        <div class="logo">
+            <a th:href="@{/product/productList/1}">
+                <img src="/images/homepage.png" alt="Strona glowna" style="height: 80px">
+            </a>
+        </div>
+        <div class="menu-sidebar-content js-scrollbar1">
+            <nav class="navbar-sidebar">
+            </nav>
+        </div>
+    </aside>
+    <!-- END MENU SIDEBAR-->
+
+    <!-- PAGE CONTAINER-->
+    <div class="page-container">
+        <!-- HEADER DESKTOP-->
+        <header class="header-desktop">
+            <div class="section-content section-content-p30">
+                <div class="container-fluid">
+                    <div class="header-wrap">
+                        <form class="form-header" method="post" th:action="@{/product/products_search/1}" id="getform">
+                            <input class="au-input au-input-xl" type="text" name="value" id="value" th:object="${user}"
+                                   placeholder="Szukaj produktów ..." form="getform"/>
+                            <button class="au-btn-submit" type="submit" form="getform">
+                                Szukaj
+                            </button>
+                        </form>
+                        <div class="cart-area d-n">
+                            <a th:href="@{/cart/}">
+                                <div class="total" th:text="${total}"> <span th:text="${quantity}"> </span> </div> <i class="fa fa-shopping-cart"
+                                                                                                                      aria-hidden="true"></i>
+                            </a>
+                        </div>
+                        <li class="dropdown">
+                            <a href="javascript:void(0)" class="dropbtn"><img src="/images/nouser.png" height="1px"></a>
+                            <div class="dropdown-content">
+                                <a sec:authorize="isAuthenticated()" th:href="@{/order/allOrders}">Twoje zamowienia</a>
+
+                                <a th:href="@{/login/showLoginPage}" sec:authorize="isAnonymous()" href="javascript: document.logoutForm.submit()" role="menuitem">Zaloguj się</a>
+                                <a sec:authorize="isAuthenticated()" href="javascript: document.logoutForm.submit()" role="menuitem">Wyloguj sie</a>
+
+                                <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+                                    <input hidden type="submit" value="Sign Out"/>
+                                </form>
+                                </ul>
+                            </div>
+                    </div>
+                    <div class="account-wrap"></div>
+                </div>
+            </div>
+        </header>
+        <!-- END HEADER DESKTOP-->
+
+        <!-- MAIN CONTENT-->
+        <div class="main-content">
+            <div class="section-content section-content-p30">
+                <div class="container-fluid">
+
+                    <!--Section: Block Content-->
+                    <section class="mb-5">
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4 mb-md-0">
+
+                                <div id="mdb-lightbox-ui"></div>
+
+                                <div class="mdb-lightbox">
+
+                                    <div class="row product-gallery mx-1">
+
+                                        <div class="col-5 mb-0">
+                                            <figure class="view overlay rounded z-depth-1 main-img">
+                                                <a href="\garniturek_czarny.jpg"
+                                                   data-size="710x823">
+                                                    <img src="\garniturek_czarny.jpg"
+                                                         class="img-fluid z-depth-1">
+                                                </a>
+                                            </figure>
+                                            <figure class="view overlay rounded z-depth-1" style="visibility: hidden;">
+                                                <a href="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/13a.jpg"
+                                                   data-size="710x823">
+                                                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/13a.jpg"
+                                                         class="img-fluid z-depth-1">
+                                                </a>
+                                            </figure>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <div class="view overlay rounded z-depth-1 gallery-item">
+                                                        <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/14a.jpg"
+                                                             class="img-fluid">
+                                                        <div class="mask rgba-white-slight"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="view overlay rounded z-depth-1 gallery-item">
+                                                        <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/15a.jpg"
+                                                             class="img-fluid">
+                                                        <div class="mask rgba-white-slight"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+
+                                <h5 th:text="${product.getName()}"></h5>
+                                <p><span class="mr-1"><strong th:text="${product.getPrice()}"></strong></span></p>
+                                <p class="pt-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, sapiente illo. Sit
+                                    error voluptas repellat rerum quidem, soluta enim perferendis voluptates laboriosam. Distinctio,
+                                    officia quis dolore quos sapiente tempore alias.</p>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-borderless mb-0">
+                                        <tbody>
+                                        <tr>
+                                            <th class="pl-0 w-25" scope="row"><strong>Kategoria</strong></th>
+                                            <td th:text="${product.getId_category().getName()}"></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="pl-0 w-25" scope="row"><strong>Wiek</strong></th>
+                                            <td th:text="${product.getSize_age().getProduct_age()}"></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="pl-0 w-25" scope="row"><strong>Sezon</strong></th>
+                                            <td th:text="${product.getSeason()}"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <hr>
+                                <div class="table-responsive mb-2">
+                                    <table class="table table-sm table-borderless">
+                                        <tbody>
+                                        <tr>
+                                            <td class="pl-0 pb-0 w-25">Quantity</td>
+                                            <td class="pb-0">Select size</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="pl-0">
+                                                <div class="def-number-input number-input safari_only mb-0">
+                                                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+                                                            class="minus"></button>
+                                                    <input class="quantity" min="0" name="quantity" value="1" type="number">
+                                                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+                                                            class="plus"></button>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <form class="form-header" method="post" th:action="@{/product/viewProduct/3}">
+                                                <div class="mt-1" th:each="products: ${AvaliableOtherSizes}">
+                                                    <div class="form-check form-check-inline pl-0">
+                                                        <a onclick="this.form.submit()"><input type="radio" class="form-check-input" id="rozmiar" th:name="rozmiar" th:value="${products.getId_product()}" onclick="this.form.submit()" th:checked="${products.getSize_age().getProduct_size()==product.getSize_age().getProduct_size()}"></a>
+                                                        <label class="form-check-label small text-uppercase card-link-secondary"
+                                                               for="rozmiar" th:text="${products.getSize_age().getProduct_size()}" ></label>
+                                                    </div>
+                                                </div>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <button type="button" class="btn btn-primary btn-md mr-1 mb-2">Buy now</button>
+                                <button type="button" class="btn btn-light btn-md mr-1 mb-2"><i
+                                        class="fas fa-shopping-cart pr-2"></i>Add to cart</button>
+                            </div>
+                        </div>
+
+                    </section>
+                    <!--Section: Block Content-->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- END PAGE CONTAINER-->
+
+
+<footer class="footer spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="footer__about">
+                    <ul>
+                        <li>Address: 60-49 Road 11378 New York</li>
+                        <li>Phone: 123 456 789</li>
+                        <li>Email: qerbitz@gmail.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
+                <div class="footer__widget">
+                    <ul>
+
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">About Our Shop</a></li>
+                        <li><a href="#">Secure Shopping</a></li>
+                    </ul>
+
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-12">
+                <div class="footer__widget">
+                    <p>Zapraszamy również</p>
+                    <div class="footer__widget__social">
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <a href="#"><i class="fa fa-instagram"></i></a>
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="footer__copyright">
+                    <div class="footer__copyright__text"><p>
+                        Copyright &copy;<script>document.write(new Date().getFullYear());</script> Krzysztof Pleśniak </a></p></div>
+                    <div class="footer__copyright__payment"><img src="img/payment-item.png" alt=""></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>
+<!-- end document-->

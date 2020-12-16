@@ -138,10 +138,10 @@
 							<a th:href="@{/product/similiar}" th:if="${productList.isEmpty()}"><h1>Nie widzisz szukanego produktu, wyszukaj produkty podobne<br><br><br></h1></a>
 							<div class="col-md-3" th:each="product: ${productList}">
 								<div class="product-box">
-									<a href="product-detail.html">
+									<a th:href="@{/product/viewProduct/{productId}(productId=${product.id_product})}">
 										<img th:src="${product.image}" class="img-responsive">
 									</a>
-									<a href="product-detail.html">
+									<a th:href="@{/product/viewProduct/{productId}(productId=${product.id_product})}">
 										<h1 th:text="${product.getName()}"></h1>
 										<h2 th:text="'Producent: '+${product.getProducent().getName()}"></h2>
 										<h2 th:text="'Kategoria: '+${product.getId_category().getName()}"></h2>

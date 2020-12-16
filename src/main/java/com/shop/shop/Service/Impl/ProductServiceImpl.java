@@ -23,13 +23,36 @@ public class ProductServiceImpl implements ProductService {
     ProducentRepository producentRepository;
 
     @Override
+    public List<Product> getListofAvaliableProductsByName(String name) {
+
+        List<Product> AvaliableOtherSizes = new ArrayList<>();
+
+
+        for(Object[] obj: productRepository.findAvaliableProductsByName(name)){
+            int ajdi = Integer.parseInt(String.valueOf(obj[0]));
+            //String size = String.valueOf(obj[1]);
+
+            AvaliableOtherSizes.add(productRepository.getOne(ajdi));
+        }
+
+        for(int i=0;i<AvaliableOtherSizes.size();i++){
+            for(int j=AvaliableOtherSizes.size()-1; j>0; j--){
+                if(AvaliableOtherSizes.get(i).getSize_age().getProduct_size()==AvaliableOtherSizes.get(j).getSize_age().getProduct_size()){
+                    AvaliableOtherSizes.remove(i);
+                }
+            }
+        }
+
+        return AvaliableOtherSizes;
+    }
+
+    @Override
     public List<String> getListOfSizesBy(int category_id) {
 
         List<String> sizesList = new ArrayList<>();
 
         for (Object[] obj : productRepository.findAllSizesByCategoryId(category_id)) {
             String size = String.valueOf(obj[0]);
-
             sizesList.add(size);
         }
 

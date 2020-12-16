@@ -58,6 +58,7 @@ public class Product {
     public Product() {
     }
 
+
     public int getId_product() {
         return id_product;
     }

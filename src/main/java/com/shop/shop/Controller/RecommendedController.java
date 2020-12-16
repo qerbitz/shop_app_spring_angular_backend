@@ -1,9 +1,6 @@
 package com.shop.shop.Controller;
 
-import com.shop.shop.Entity.Order;
-import com.shop.shop.Entity.Product;
-import com.shop.shop.Entity.Size_Age;
-import com.shop.shop.Entity.User;
+import com.shop.shop.Entity.*;
 import com.shop.shop.Service.Interface.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -13,9 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/product")
@@ -160,6 +155,7 @@ public class RecommendedController {
 
         add_to_model(model);
 
+        model.addAttribute("chosen_category",0);
         return "product/index";
     }
 
@@ -171,10 +167,16 @@ public class RecommendedController {
                                    Model model) {
 
 
+
+        if(category!=0){
+            model.addAttribute("sizesList", productService.getListOfSizesBy(category));
+            model.addAttribute("chosen_category", category);
+        }
+
+
+
         int i = 0;
         int suma = 0;
-
-        System.out.println(category);
 
         Size_Age size_age = new Size_Age();
         size_age.setProduct_size(size);
@@ -187,7 +189,8 @@ public class RecommendedController {
 
         List<Product> all_products_list= productService.getListOfProducts();
         List<Product> similiar_products_list = new ArrayList<>();
-        List<Double> wspolczynnik = new ArrayList<>();
+        List<Similarity> similarity_list = new ArrayList<>();
+
 
 
 
@@ -197,7 +200,7 @@ public class RecommendedController {
             if(product.getSeason().equals(all_products_list.get(j).getSeason())){
                 i++;
                 suma++;
-                System.out.println("sezon ok");
+                System.out.println(all_products_list.get(j).getName()+" sezon ok");
             }
             else {
                 suma++;
@@ -206,7 +209,7 @@ public class RecommendedController {
             if(product.getSize_age().getProduct_size().equals(all_products_list.get(j).getSize_age().getProduct_size())){
                 i++;
                 suma++;
-                System.out.println("Rozmiar ok");
+                System.out.println(all_products_list.get(j).getName()+" Rozmiar ok");
             }
             else {
                 suma++;
@@ -216,7 +219,7 @@ public class RecommendedController {
                 if(product.getId_category().getName().equals(all_products_list.get(j).getId_category().getName())){
                     i++;
                     suma++;
-                    System.out.println("kategoria ok");
+                    System.out.println(all_products_list.get(j).getName()+" kategoria ok");
                 }
             }
             else {
@@ -226,7 +229,7 @@ public class RecommendedController {
             if(product.getGender().equals(all_products_list.get(j).getGender())){
                 i++;
                 suma++;
-                System.out.println("plec ok");
+                System.out.println(all_products_list.get(j).getName()+" plec ok");
             }
             else {
                 suma++;
@@ -236,30 +239,36 @@ public class RecommendedController {
             double a = i;
             double b = suma;
 
-            System.out.println(a/b);
-            System.out.println("//////////////////////////////////////////////////////////");
 
 
-            wspolczynnik.add(a/b);
+            Similarity similarity1 = new Similarity();
+            similarity1.setProduct(all_products_list.get(j));
+            similarity1.setSimilarity(a/b);
 
-            System.out.println(all_products_list.get(j).getName()+" "+wspolczynnik.get(j));
-
-
-            if(wspolczynnik.get(j)==1.0){
-                similiar_products_list.add(all_products_list.get(j));
-            }
-
-
+            similarity_list.add(similarity1);
             i=0;
             suma=0;
 
 
             a=0;
             b=0;
+
+            System.out.println("//////////////////////////////////////");
         }
 
+        Collections.sort(similarity_list);
 
-        System.out.println("'''''''''''''''''''''''''''''''''''''");
+         for(int k=0; k<similarity_list.size(); k++){
+             System.out.println(similarity_list.get(k).getProduct().getName()+" "+similarity_list.get(k).getSimilarity());
+             similiar_products_list.add(similarity_list.get(k).getProduct());
+             if(similarity_list.get(k).getSimilarity()==0.0){
+                 similarity_list.remove(k);
+             }
+         }
+
+
+
+
 
 
 
@@ -267,7 +276,12 @@ public class RecommendedController {
             model.addAttribute("sizesList", productService.getListOfSizesBy(category));
         }
         add_to_model(model);
-        model.addAttribute("productList",similiar_products_list);
+        if(similiar_products_list.size()>12){
+            model.addAttribute("productList",similiar_products_list.subList(0,12));
+        }
+        else{
+            model.addAttribute("productList",similiar_products_list);
+        }
 
         return "product/index";
     }

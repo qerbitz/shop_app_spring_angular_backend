@@ -76,4 +76,12 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             nativeQuery = true)
     List<Object[]> findAllSizesByCategoryId(int category_id);
 
+
+    @Query(value="select p.id_product, sa.size" +
+            " from  product p, size_age sa" +
+            " where p.name = :name" +
+            " and sa.id_size_age = p.size_age",
+            nativeQuery = true)
+    List<Object[]> findAvaliableProductsByName(String name);
+
 }

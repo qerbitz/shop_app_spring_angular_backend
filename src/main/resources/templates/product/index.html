@@ -93,7 +93,8 @@
 
                             <select name="category" id="category" onchange="this.form.submit()">
                                 <option value="" disabled selected>Kategoria</option>
-                                <option th:each="category : ${categoryList}" th:value="${category.getId_category()}" th:text="${category.getName()}"></option>
+                                <option th:if="${chosen_category==0}" th:each="category : ${categoryList}" th:value="${category.getId_category()}" th:text="${category.getName()}"></option>
+                                <option th:if="${chosen_category!=0}" th:selected="${chosen_category==category.getId_category()}" th:each="category : ${categoryList}" th:value="${category.getId_category()}" th:text="${category.getName()}"></option>
                             </select><br><br>
 
                             <select  name="size" id="size">

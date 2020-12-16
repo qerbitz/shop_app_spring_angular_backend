@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface ProductService {
 
+    List<Product> getListofAvaliableProductsByName(String name);
+
     List<String> getListOfSizesBy(int category_id);
 
     List<String> getListOfGenders();

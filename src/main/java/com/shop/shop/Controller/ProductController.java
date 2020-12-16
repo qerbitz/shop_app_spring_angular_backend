@@ -397,11 +397,37 @@ public class ProductController {
     }
 
     @GetMapping("/viewProduct/{productId}")
-    public String viewProduct(@PathVariable int productId, Model model) {
+    public String viewProduct(@PathVariable int productId,
+                              @RequestParam(value = "rozmiar", required = false) String rozmiar,Model model) {
         Product product = productService.getProductById(productId);
         model.addAttribute("product", product);
 
-        return "product/viewProduct";
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+
+        model.addAttribute("AvaliableOtherSizes", productService.getListofAvaliableProductsByName(product.getName()));
+
+        if (authentication.getName().equals("anonymousUser")) {
+            return "product/product_detail";
+        } else {
+            User user = userService.getUserByUsername(authentication.getName());
+            int cartId = user.getCart().getId_cart();
+            model.addAttribute("quantity", cartService.getQuantityofCart(cartId));
+            model.addAttribute("total", cartService.getTotalPrice(cartId));
+            return "product/product_detail";
+        }
+
+    }
+
+    @PostMapping("/viewProduct/{productId}")
+    public String viewProductPost(@PathVariable int productId,
+                                  @RequestParam("rozmiar") String rozmiar) {
+        int id_product = Integer.parseInt(rozmiar);
+
+
+        return "redirect:/product/viewProduct/"+id_product;
+
     }
 
     void showCategoryLi(String drop_category, String drop_age, String drop_gender, String drop_season, Model model) {

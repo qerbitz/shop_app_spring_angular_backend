@@ -17,5 +17,12 @@ $(document).ready(function () {
     $('#carouselExampleControls').find('.carousel-item').first().addClass('active');
 });
 
+$(document).ready(function () {
+    // MDB Lightbox Init
+    $(function () {
+        $("#mdb-lightbox-ui").load("mdb-addons/mdb-lightbox-ui.html");
+    });
+});
+
 
 
