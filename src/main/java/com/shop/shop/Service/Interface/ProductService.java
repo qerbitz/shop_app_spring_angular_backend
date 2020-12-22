@@ -13,6 +13,8 @@ public interface ProductService {
 
     List<String> getListOfSizesBy(int category_id);
 
+    String getAgeOfSize(String size);
+
     List<String> getListOfGenders();
 
     List<Product> getListOfProducts();
@@ -35,7 +37,7 @@ public interface ProductService {
 
     List<Product> getListOfProductByPriceBetween(int price_min, int price_max);
 
-    List<Product> getListOfProductsByAgeContaining(int nowy_poczatek, int nowy_koniec, List<Product> proponowane, String season);
+    List<Product> getListOfProductsByAgeContaining(int nowy_poczatek, int nowy_koniec, List<Product> proponowane, String season, String gender);
 
     List<String> getListOfAges();
 
@@ -44,6 +46,8 @@ public interface ProductService {
     Page<Product> listAll(int pageNum, int pageSize);
 
     Product getProductById(int id);
+
+    Producent getProducentById(int id);
 
     boolean changeQuantityOfProduct(Product product, int quantity);
 

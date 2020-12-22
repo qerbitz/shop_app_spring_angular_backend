@@ -86,6 +86,7 @@
                         <form method="post" th:action="@{/product/similiar}" >
 
 
+                            <br><br>
                             <select name="producent" id="producent" >
                                 <option value="" disabled selected>Producent</option>
                                 <option th:each="producent : ${producentList}" th:value="${producent.getId_producent()}" th:text="${producent.getName()}"></option>
@@ -124,7 +125,7 @@
                             <button class="primary-btn" type="submit">Szukaj</button>
                         </form>
                     </div>
-
+                    <h2 th:if="${productList!=null && productList.isEmpty()}" style=" text-align: center;">Brak produktow zbliżonych do twoich preferencji!</h2>
                     <div class="row">
                         <div class="col-md-3" th:each="product: ${productList}">
                             <div class="product-box">

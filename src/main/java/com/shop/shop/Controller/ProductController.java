@@ -72,6 +72,23 @@ public class ProductController {
 
         List<Category> categoryCheckedList = new ArrayList<>();
 
+        if(listOfAgesChecked!=null){
+            for(int i=0; i<listOfAgesChecked.size(); i++){
+                if(listOfAgesChecked.get(i).equals("2-3 lat")){
+                    listOfAgesChecked.set(i ,"24-36 msc");
+                }
+                if(listOfAgesChecked.get(i).equals("3-4 lat")){
+                    listOfAgesChecked.set(i ,"36-48 msc");
+                }
+                if(listOfAgesChecked.get(i).equals("4-5 lat")){
+                    listOfAgesChecked.set(i ,"48-60 msc");
+                }
+                if(listOfAgesChecked.get(i).equals("5-6 lat")){
+                    listOfAgesChecked.set(i ,"60-72 msc");
+                }
+            }
+        }
+
 
 
         if (listOfCategoryCheckedint != null) {
@@ -100,6 +117,24 @@ public class ProductController {
         int start = (int) pageable.getOffset();
         int end = (start + pageable.getPageSize()) > listProducts.size() ? listProducts.size() : (start + pageable.getPageSize());
         Page<Product> pages = new PageImpl<Product>(listProducts.subList(start, end), pageable, listProducts.size());
+
+
+        if(listOfAgesChecked!=null){
+            for(int i=0; i<listOfAgesChecked.size(); i++){
+                if(listOfAgesChecked.get(i).equals("24-36 msc")){
+                    listOfAgesChecked.set(i ,"2-3 lata");
+                }
+                if(listOfAgesChecked.get(i).equals("36-48 msc")){
+                    listOfAgesChecked.set(i ,"3-4 lata");
+                }
+                if(listOfAgesChecked.get(i).equals("48-60 msc")){
+                    listOfAgesChecked.set(i ,"4-5 lat");
+                }
+                if(listOfAgesChecked.get(i).equals("60-72 msc")){
+                    listOfAgesChecked.set(i ,"5-6 lat");
+                }
+            }
+        }
 
 
         model.addAttribute("currentPage", pageNum);

@@ -55,9 +55,10 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query(value="SELECT * FROM product p, size_age sa" +
             " where p.size_age=sa.id_size_age" +
             " and sa.age like :age" +
-            " and p.season like :season",
+            " and p.season like :season" +
+            " and p.gender like :gender",
             nativeQuery = true)
-    List<Product> findAllByAgeAndSeasonContaining(String age, String season);
+    List<Product> findAllByAgeAndSeasonContaining(String age, String season, String gender);
 
     @Query(value="select distinct age from size_age",
             nativeQuery = true)
@@ -84,4 +85,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             nativeQuery = true)
     List<Object[]> findAvaliableProductsByName(String name);
 
+    @Query(value="SELECT age FROM size_age where size = :size",
+            nativeQuery = true)
+    String getAgeOfSize(String size);
 }
