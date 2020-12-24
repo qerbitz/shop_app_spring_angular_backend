@@ -7,11 +7,11 @@
 
     <title>Sklep</title>
 
-    <!-- Bootstrap CSS and Font Awesome -->
+    <!-- Facebook/insta icons -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" media="all">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- Main CSS-->
     <link href="../../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet" />
@@ -88,7 +88,7 @@
                             </tr>
 
                             <tr th:each="item: ${cart}">
-                                <td><img src="/images/avatar.png" class="img-responsive"
+                                <td><img th:src="${item.getProduct().getImage()}" class="img-responsive"
                                         width="150px"></td>
                                 <td>
 
@@ -131,12 +131,50 @@
     <!-- END PAGE CONTAINER-->
 
 
-    <footer>
-        <ul>
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Contact Us</a></li>
-            <li><a href="#">Help</a></li>
-        </ul>
+    <footer class="footer spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="footer__about">
+                        <ul>
+                            <li>Address: al. Tadeusza Rejtana 16C, Rzeszów</li>
+                            <li>Phone: 123 456 789</li>
+                            <li>Email: qerbitz@gmail.com</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
+                    <div class="footer__widget">
+                        <ul>
+
+                            <li><a href="#">O nas</a></li>
+                            <li><a href="#">Regulamin</a></li>
+                            <li><a href="#">Rejestracja</a></li>
+                        </ul>
+
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <div class="footer__widget">
+                        <p>Zapraszamy również</p>
+                        <div class="footer__widget__social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="footer__copyright">
+                        <div class="footer__copyright__text"><p>
+                            Copyright &copy;<script>document.write(new Date().getFullYear());</script> Krzysztof Pleśniak </a></p></div>
+                        <div class="footer__copyright__payment"><img src="img/payment-item.png" alt=""></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </footer>
 
 </body>

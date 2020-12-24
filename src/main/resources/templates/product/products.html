@@ -5,15 +5,14 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-
-
+	<!-- Facebook/insta icons -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
 		  integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" media="all">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 	<!-- Main CSS-->
-	<link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet" />
+	<link href="../../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet" />
 
 </head>
 
@@ -213,7 +212,7 @@
 										<h1>Produkt został dodany do koszyka pomyślnie!</h1>
 										<div class="product-box-propose">
 											<a>
-												<img src="/images/avatar.png" class="img-responsive">
+												<img th:if="${purchased_product!=null}" th:src="${purchased_product.getImage()}" class="img-responsive">
 											</a>
 											<a>
 												<h1 th:if="${purchased_product!=null}" th:text="${purchased_product.getName()}"></h1>
@@ -268,13 +267,51 @@
 	<!-- END PAGE CONTAINER-->
 
 
-	<footer>
-		<ul>
-			<li><a href="#">About Us</a></li>
-			<li><a href="#">Contact Us</a></li>
-			<li><a href="#">Help</a></li>
-		</ul>
-	</footer>
+<footer class="footer spad">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-3 col-md-6 col-sm-6">
+				<div class="footer__about">
+					<ul>
+						<li>Address: al. Tadeusza Rejtana 16C, Rzeszów</li>
+						<li>Phone: 123 456 789</li>
+						<li>Email: qerbitz@gmail.com</li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
+				<div class="footer__widget">
+					<ul>
+
+						<li><a href="#">O nas</a></li>
+						<li><a href="#">Regulamin</a></li>
+						<li><a href="#">Rejestracja</a></li>
+					</ul>
+
+				</div>
+			</div>
+			<div class="col-lg-4 col-md-12">
+				<div class="footer__widget">
+					<p>Zapraszamy również</p>
+					<div class="footer__widget__social">
+						<a href="#"><i class="fa fa-facebook"></i></a>
+						<a href="#"><i class="fa fa-instagram"></i></a>
+						<a href="#"><i class="fa fa-twitter"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="footer__copyright">
+					<div class="footer__copyright__text"><p>
+						Copyright &copy;<script>document.write(new Date().getFullYear());</script> Krzysztof Pleśniak </a></p></div>
+					<div class="footer__copyright__payment"><img src="img/payment-item.png" alt=""></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
 
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="../static/css/test.js" th:src="@{/css/test.js}"></script>

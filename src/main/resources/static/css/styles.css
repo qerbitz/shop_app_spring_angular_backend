@@ -4,13 +4,20 @@
  * ----------------------------
  */
 
+input:checked + label {
+    color: blue;
+}
+
+input:checked {
+    background-color: #2196F3;
+}
+
 button.primary-btn{
     position: absolute;
     width: 14%;
 
 
 }
-
 
 .box {
     margin-top: 100px;
@@ -790,7 +797,7 @@ input.au-input.au-input-xl{
     margin-bottom:7px
 }
 .product-box h2{
-    font-size:15px;
+    font-size:14px;
     padding-bottom:0;
     font-weight:500;
     color:#585858
@@ -911,7 +918,7 @@ input.au-input.au-input-xl{
     background-color:transparent
 }
 .au-checkbox input:checked~.au-checkmark{
-    background-color:#fff
+    background-color: #2196F3;
 }
 .au-checkmark:after{
     content:"";
@@ -1334,7 +1341,7 @@ footer ul li{
 
 .footer {
     background: #F3F6FA;
-    padding-top: 20px;
+    padding-top: 10px;
     padding-bottom: 0;
     margin-left: 200px;
 }
@@ -1440,7 +1447,7 @@ footer ul li{
 }
 
 .footer__widget .footer__widget__social a:hover {
-    background: #7fad39;
+    background: #4f96e7;
     color: #ffffff;
     border-color: #ffffff;
 }
