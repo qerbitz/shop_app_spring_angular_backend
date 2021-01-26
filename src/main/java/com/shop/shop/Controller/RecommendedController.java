@@ -47,7 +47,7 @@ public class RecommendedController {
 
         //Pobranie autentykacji
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getUserByUsername("seminarium2");
+        User user = userService.getUserByUsername(authentication.getName());
 
         //Aktualna data pobranie
         Date actual_date = java.sql.Date.valueOf(LocalDate.now());
@@ -61,8 +61,6 @@ public class RecommendedController {
         //Obliczanie czasu od ostatniego zalogowania(Jezeli ponizej miesiaca nie ma proponowania dla zamowien)
         long diff_last_log = Math.abs(actual_date.getTime() - user.getLast_log().getTime());
         long diff_last_log_month = diff_last_log/ (24 * 60 * 60 * 1000) / 30;
-
-
 
         //Jezeli ostatnie logowanie ponizej miesiaca, zwroc strone glowna
         if(diff_last_log_month<1){

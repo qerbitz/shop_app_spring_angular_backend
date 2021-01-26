@@ -8,8 +8,18 @@ input:checked + label {
     color: blue;
 }
 
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+}
+
 input:checked {
     background-color: #2196F3;
+    content: "✅";
 }
 
 button.primary-btn{
@@ -900,7 +910,7 @@ input.au-input.au-input-xl{
 .au-checkbox input{
     position:absolute;
     opacity:0;
-    cursor:pointer
+    cursor:pointer;
 }
 .au-checkmark{
     position:absolute;
@@ -978,7 +988,7 @@ table.table.table-bordered th{
 }
 .items select{
     width:100px;
-    height:40px;
+    height:30px;
     border-radius:40px;
     padding-left:15px;
     margin-bottom:10px;
@@ -1470,5 +1480,9 @@ footer ul li{
     float: right;
 }
 
+
+.navbar-sidebar input::placeholder {
+    color: white;
+}
 
 

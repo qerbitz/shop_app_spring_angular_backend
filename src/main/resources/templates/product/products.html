@@ -25,7 +25,7 @@
 		<aside class="menu-sidebar d-none d-lg-block">
 			<div class="logo">
 				<a th:href="@{/product/productList/1}">
-					<img src="/images/homepage.png" alt="Strona glowna" style="height: 80px">
+					<img src="/images/logo.png" alt="Strona glowna" style="height: 80px">
 				</a>
 			</div>
 			<div class="menu-sidebar-content js-scrollbar1">
@@ -35,7 +35,7 @@
 							  th:object="${categoryList}" id="getforma">
 
 							<!--<label for="price_min" >Cena od:</label><br>-->
-							<input type="number" id="price_min" th:name="price_min" th:value="${price_min}" onfocusout="this.form.submit()" style="width: 100px; background-color: #0da8e4; text-align: center;" placeholder="Cena od: "><br>
+							<input type="number" id="price_min" th:name="price_min" th:value="${price_min}" onfocusout="this.form.submit()" style="width: 100px; background-color: #0da8e4; text-align: center; " placeholder="Cena od: "><br>
 
 							<br>
 							<!--<label for="price_max" >Cena do:</label><br>-->
@@ -152,7 +152,7 @@
 									<a class="primary-btn" type="button"
 									   th:href="@{/cart/add/{id_product}(id_product=${product.id_product},price_min=${price_min},price_max=${price_max},
 											listOffAgesChecked=${agesCheckedList}, listOffCategoryChecked=${categoryCheckedListint})}"><i
-											class="fas fa-shopping-cart pr-2" ></i>Dodaj do koszyka</a>
+											class="fa fa-shopping-cart"></i>  Dodaj do koszyka</a>
 
 								</div>
 							</div>
@@ -232,7 +232,7 @@
 											<div class="carousel-inner">
 												<div th:each="product: ${recommendedList}" class="carousel-item">
 													<a th:href="@{/product/viewProduct/{productId}(productId=${product.id_product})}">
-														<img class="d-block w-70" src="/images/avatar.png" alt="Second slide">
+														<img class="d-block w-70" th:src="${product.image}" alt="Second slide">
 														<h1 th:text="${product.name}" align="center"></h1>
 													</a>
 												</div>
@@ -273,7 +273,7 @@
 			<div class="col-lg-3 col-md-6 col-sm-6">
 				<div class="footer__about">
 					<ul>
-						<li>Address: al. Tadeusza Rejtana 16C, Rzeszów</li>
+						<li>Adres: al. Tadeusza Rejtana 16C, Rzeszów</li>
 						<li>Phone: 123 456 789</li>
 						<li>Email: qerbitz@gmail.com</li>
 					</ul>
@@ -283,8 +283,7 @@
 				<div class="footer__widget">
 					<ul>
 
-						<li><a href="#">O nas</a></li>
-						<li><a href="#">Regulamin</a></li>
+						<li><a href="#">Logowanie</a></li>
 						<li><a href="#">Rejestracja</a></li>
 					</ul>
 
@@ -305,7 +304,7 @@
 			<div class="col-lg-12">
 				<div class="footer__copyright">
 					<div class="footer__copyright__text"><p>
-						Copyright &copy;<script>document.write(new Date().getFullYear());</script> Krzysztof Pleśniak </a></p></div>
+						Copyright &copy; <script>document.write(new Date().getFullYear());</script> Krzysztof Pleśniak </a></p></div>
 					<div class="footer__copyright__payment"><img src="img/payment-item.png" alt=""></div>
 				</div>
 			</div>

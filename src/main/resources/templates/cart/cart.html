@@ -99,7 +99,7 @@
                                 </td>
                                 <td>
                                     <div class="items">
-                                        <label>Quantity</label>
+                                        <label>Ilosc</label>
                                         <form class="form-header" method="post" th:action="@{/cart/changeQuantity/{id_product}(id_product=${item.getProduct().getId_product()})}">
                                             <select id="new_quantity" name="new_quantity" onchange="this.form.submit()">
                                                 <option th:each="i : ${#numbers.sequence(1, 10)}" th:value="${i}" th:text="${i}" th:selected="${i==item.getQuantity()}"></option>
@@ -112,7 +112,7 @@
                             </tr>
                             <tr th:if="${not #lists.isEmpty(cart)}">
                                 <td colspan="2"></td>
-                                <td><p>Suma produktów <b th:text="${quantity}"></b></p>
+                                <td><p>Liczba produktów <b th:text="${quantity}"></b></p>
                                     <p></p></br>
                                     <p>Laczna kwota <b th:text="${total}"></b></p><br>
                                     <a th:href="@{/order/showUserDetails}" class="primary-btn">Zamow</a>
