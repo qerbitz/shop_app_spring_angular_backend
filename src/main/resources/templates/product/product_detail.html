@@ -25,7 +25,7 @@
     <aside class="menu-sidebar d-none d-lg-block">
         <div class="logo">
             <a th:href="@{/product/productList/1}">
-                <img src="/images/homepage.png" alt="Strona glowna" style="height: 80px">
+                <img src="/images/logo.png" alt="Strona glowna" style="height: 70px">
             </a>
         </div>
         <div class="menu-sidebar-content js-scrollbar1">
@@ -88,42 +88,38 @@
 
                                 <div id="mdb-lightbox-ui"></div>
 
-                                <div class="mdb-lightbox">
 
-                                    <div class="row product-gallery mx-1">
 
-                                        <div class="col-5 mb-0">
-                                            <figure class="view overlay rounded z-depth-1 main-img">
-                                                <a
-                                                   data-size="710x823">
-                                                    <img th:src="${product.getImage()}"
-                                                         class="img-fluid z-depth-1">
-                                                </a>
-                                            </figure>
-                                            <figure class="view overlay rounded z-depth-1" style="visibility: hidden;">
-                                                <a href="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/13a.jpg"
-                                                   data-size="710x823">
-                                                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/13a.jpg"
-                                                         class="img-fluid z-depth-1">
-                                                </a>
-                                            </figure>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="row">
-                                            </div>
-                                        </div>
-                                    </div>
 
+
+                                <div class="col-5 mb-0" style="margin-left: 20%; margin-right: 20%;">
+                                    <figure class="view overlay rounded z-depth-1 main-img">
+                                        <a href="\garniturek_czarny.jpg"
+                                           data-size="710x823">
+                                            <img th:src="${product.image}"
+                                                 class="img-fluid z-depth-1">
+                                        </a>
+                                    </figure>
+                                    <!--<figure class="view overlay rounded z-depth-1" style="visibility: hidden;">
+                                      <a href="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/13a.jpg"
+                                        data-size="710x823">
+                                        <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/13a.jpg"
+                                          class="img-fluid z-depth-1">
+                                      </a>
+                                    </figure>-->
                                 </div>
+                                <div class="col-12">
+                                    <div class="row">
+                                    </div>
+                                </div>
+
+
+
 
                             </div>
                             <div class="col-md-6">
 
-                                <h5 th:text="${product.getName()}"></h5>
-                                <p><span class="mr-1"><strong th:text="${product.getPrice()}"></strong></span></p>
-                                <p class="pt-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, sapiente illo. Sit
-                                    error voluptas repellat rerum quidem, soluta enim perferendis voluptates laboriosam. Distinctio,
-                                    officia quis dolore quos sapiente tempore alias.</p>
+                                <h5 th:text="${product.getName()}" style="font-size: 17px"></h5><br>
                                 <div class="table-responsive">
                                     <table class="table table-sm table-borderless mb-0">
                                         <tbody>
@@ -139,6 +135,14 @@
                                             <th class="pl-0 w-25" scope="row"><strong>Sezon</strong></th>
                                             <td th:text="${product.getSeason()}"></td>
                                         </tr>
+                                        <tr>
+                                            <th class="pl-0 w-25" scope="row"><strong>Płeć</strong></th>
+                                            <td th:text="${product.getGender()}"></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="pl-0 w-25" scope="row"><strong>Cena</strong></th>
+                                            <td th:text="${product.getPrice()} + ' zł'"></td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -147,8 +151,8 @@
                                     <table class="table table-sm table-borderless">
                                         <tbody>
                                         <tr>
-                                            <td class="pl-0 pb-0 w-25">Quantity</td>
-                                            <td class="pb-0">Select size</td>
+                                            <td class="pl-0 pb-0 w-25">Ilośc</td>
+                                            <td class="pb-0">Wybierz rozmiar</td>
                                         </tr>
                                         <tr>
                                             <td class="pl-0">
