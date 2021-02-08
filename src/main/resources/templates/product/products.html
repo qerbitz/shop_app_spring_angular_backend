@@ -31,8 +31,15 @@
 			<div class="menu-sidebar-content js-scrollbar1">
 				<nav class="navbar-sidebar">
 					<ul class="list-unstyled navbar-list">
+
+						<button class="btn btn-secondary" name="discount_button"  style="width: 100px; background-color: #0da8e4">
+							<a th:href="@{/product/discountList}">Promocje</a>
+						</button>
+						<br><br>
+
 						<form method="post" th:action="@{/product/productList/1}"
 							  th:object="${categoryList}" id="getforma">
+
 
 							<!--<label for="price_min" >Cena od:</label><br>-->
 							<input type="number" id="price_min" th:name="price_min" th:value="${price_min}" onfocusout="this.form.submit()" style="width: 100px; background-color: #0da8e4; text-align: center; " placeholder="Cena od: "><br>
@@ -45,12 +52,21 @@
 							<br><br>
 							<button class="btn btn-secondary dropdown-toggle" name="drop_category" th:value="${value_category}" style="width: 100px; background-color: #0da8e4">Kategorie</button>
 
-							<li th:hidden="${hidden_category}" th:each="category: ${categoryList}">
+							<li th:hidden="${hidden_category}" th:each="category: ${categoryList}" style="color: black;">
 								<input type="checkbox" th:value="${category.id_category}" th:name="listOfCategoryChecked" th:checked="${categoryCheckedList?.contains(category)}" onclick="this.form.submit()"/>
 								<label th:text="${category.name}"></label>
+
+								<ul th:if="${categoryCheckedList?.contains(category)}">
+									<li th:if="${size.getId_category().getId_category()==category.getId_category()}" th:each="size: ${sizesList}">
+										<input type="checkbox"  th:value="${size.getProduct_size()}" th:name="listOfSizesChecked" th:checked="${sizesCheckedList?.contains(size.getProduct_size())}" onclick="this.form.submit()"/>
+										<label th:text="${size.getProduct_size()}"></label><br>
+									</li>
+								</ul>
 							</li>
 
 							<br><br>
+
+							<!--  -->
 							<button class="btn btn-secondary dropdown-toggle" name="drop_age" th:value="${value_age}" style="width: 100px; background-color: #0da8e4">Wiek</button>
 							<li th:hidden="${hidden_age}" th:each="age: ${agesList}">
 								<input type="checkbox" th:value="${age}"  th:name="listOfAgesChecked" th:checked="${agesCheckedList?.contains(age)}" onclick="this.form.submit()"/>
@@ -136,7 +152,7 @@
 						<div class="row">
 							<a th:href="@{/product/similiar}" th:if="${productList.isEmpty()}"><h1>Nie widzisz szukanego produktu, wyszukaj produkty podobne<br><br><br></h1></a>
 							<div class="col-md-3" th:each="product: ${productList}">
-								<div class="product-box">
+								<div  class="product-box">
 									<a th:href="@{/product/viewProduct/{productId}(productId=${product.id_product})}">
 										<img th:src="${product.image}" class="img-responsive">
 									</a>
@@ -149,7 +165,7 @@
 									</a>
 									<div class="price"  th:text="${product.price} + ' zł'"></td></div>
 
-									<a class="primary-btn" type="button"
+									<a class="primary-btn" type="button" th:if="${product.quantity>0}"
 									   th:href="@{/cart/add/{id_product}(id_product=${product.id_product},price_min=${price_min},price_max=${price_max},
 											listOffAgesChecked=${agesCheckedList}, listOffCategoryChecked=${categoryCheckedListint})}"><i
 											class="fa fa-shopping-cart"></i>  Dodaj do koszyka</a>
@@ -283,8 +299,8 @@
 				<div class="footer__widget">
 					<ul>
 
-						<li><a href="#">Logowanie</a></li>
-						<li><a href="#">Rejestracja</a></li>
+						<li><a th:href="@{/login/showLoginPage}">Logowanie</a></li>
+						<li><a th:href="@{/registration/showRegistrationForm}" >Rejestracja</a></li>
 					</ul>
 
 				</div>

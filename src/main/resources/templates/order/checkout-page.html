@@ -1,5 +1,6 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
 	<meta charset="utf-8">
@@ -35,15 +36,15 @@
 		<!-- PAGE CONTAINER-->
 		<div class="page-new">
 			<!-- HEADER DESKTOP-->
-			<header class="header-desktop extra">
+			<header class="header-desktop">
 				<div class="section-content section-content-p30">
 					<div class="container-fluid">
 						<div class="header-wrap">
-							<form class="form-header" onsubmit="return false;" method="GET">
-								<input class="au-input au-input-xl" type="text" name="search"
-									placeholder="Search for data ..." />
-								<button class="au-btn-submit" type="submit">
-									Search
+							<form class="form-header" method="post" th:action="@{/product/products_search/1}" id="getform">
+								<input class="au-input au-input-xl" type="text" name="value" id="value" th:object="${user}"
+									   placeholder="Szukaj produktów ..." form="getform"/>
+								<button class="au-btn-submit" type="submit" form="getform">
+									Szukaj
 								</button>
 							</form>
 							<div class="cart-area d-n">
@@ -52,6 +53,19 @@
 																														  aria-hidden="true"></i>
 								</a>
 							</div>
+							<li class="dropdown">
+								<a href="javascript:void(0)" class="dropbtn"><img src="/images/nouser.png" height="1px"></a>
+								<div class="dropdown-content">
+									<a sec:authorize="isAuthenticated()" th:href="@{/order/allOrders}">Twoje zamowienia</a>
+
+									<a th:href="@{/login/showLoginPage}" sec:authorize="isAnonymous()" href="javascript: document.logoutForm.submit()" role="menuitem">Zaloguj się</a>
+									<a sec:authorize="isAuthenticated()" href="javascript: document.logoutForm.submit()" role="menuitem">Wyloguj sie</a>
+
+									<form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+										<input hidden type="submit" value="Sign Out"/>
+									</form>
+									</ul>
+								</div>
 						</div>
 						<div class="account-wrap"></div>
 					</div>

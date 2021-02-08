@@ -2,8 +2,11 @@ package com.shop.shop.Service.Impl;
 
 import com.shop.shop.Entity.Producent;
 import com.shop.shop.Entity.Product;
+import com.shop.shop.Entity.Purchased;
+import com.shop.shop.Entity.Size_Age;
 import com.shop.shop.Repositories.ProducentRepository;
 import com.shop.shop.Repositories.ProductRepository;
+import com.shop.shop.Repositories.Size_AgeRepository;
 import com.shop.shop.Service.Interface.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +24,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     ProducentRepository producentRepository;
+
+    @Autowired
+    Size_AgeRepository size_ageRepository;
 
     @Override
     public List<Product> getListofAvaliableProductsByName(String name) {
@@ -115,12 +121,18 @@ public class ProductServiceImpl implements ProductService {
 
     //Wyswietlanie produktow najpopularniejszych wobed sprzedazy malejaco
     @Override
-    public List<Product> getListOfProductsOrderBySaleDesc() {
-        List<Product> productList = new ArrayList<>();
+    public List<Purchased> getListOfProductsOrderBySaleDesc() {
+        List<Purchased> productList = new ArrayList<>();
 
         for (Object[] obj : productRepository.findAllBySaleDesc()) {
             String product = String.valueOf(obj[0]);
-            productList.add(productRepository.getOne(Integer.parseInt(product)));
+            String counter = String.valueOf(obj[1]);
+
+            Purchased purchased = new Purchased();
+            purchased.setProduct(productRepository.getOne(Integer.parseInt(product)));
+            purchased.setPurchased(Integer.parseInt(counter));
+
+            productList.add(purchased);
         }
         return productList;
     }
@@ -201,6 +213,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getListOfProductsWithDiscount() {
+        return productRepository.findAllByDiscountAvalaible();
+    }
+
+    @Override
     public List<String> getListOfAges() {
         List<String> listOfAges2 = new ArrayList<>();
 
@@ -234,6 +251,11 @@ public class ProductServiceImpl implements ProductService {
             listofSeasons.add(season);
         }
         return listofSeasons;
+    }
+
+    @Override
+    public List<Size_Age> getListOfSizeAges() {
+        return size_ageRepository.findAll();
     }
 
 

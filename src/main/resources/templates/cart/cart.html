@@ -47,9 +47,9 @@
                         <div class="header-wrap">
                             <form class="form-header" method="post" th:action="@{/product/products_search}" id="getform">
                                 <input class="au-input au-input-xl" type="text" name="value" id="value" th:object="${user}"
-                                       placeholder="Search for data ..." form="getform"/>
+                                       placeholder="Szukaj produktów ..." form="getform"/>
                                 <button class="au-btn-submit" type="submit" form="getform">
-                                    Search
+                                    Szukaj
                                 </button>
                             </form>
                             <div class="cart-area d-n">
@@ -137,7 +137,7 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <ul>
-                            <li>Address: al. Tadeusza Rejtana 16C, Rzeszów</li>
+                            <li>Adres: al. Tadeusza Rejtana 16C, Rzeszów</li>
                             <li>Phone: 123 456 789</li>
                             <li>Email: qerbitz@gmail.com</li>
                         </ul>
@@ -147,9 +147,8 @@
                     <div class="footer__widget">
                         <ul>
 
-                            <li><a href="#">O nas</a></li>
-                            <li><a href="#">Regulamin</a></li>
-                            <li><a href="#">Rejestracja</a></li>
+                            <li><a th:href="@{/login/showLoginPage}">Logowanie</a></li>
+                            <li><a th:href="@{/registration/showRegistrationForm}" >Rejestracja</a></li>
                         </ul>
 
                     </div>
@@ -169,7 +168,7 @@
                 <div class="col-lg-12">
                     <div class="footer__copyright">
                         <div class="footer__copyright__text"><p>
-                            Copyright &copy;<script>document.write(new Date().getFullYear());</script> Krzysztof Pleśniak </a></p></div>
+                            Copyright &copy; <script>document.write(new Date().getFullYear());</script> Krzysztof Pleśniak </a></p></div>
                         <div class="footer__copyright__payment"><img src="img/payment-item.png" alt=""></div>
                     </div>
                 </div>

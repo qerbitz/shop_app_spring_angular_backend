@@ -42,7 +42,11 @@ public class Product {
     @Column(name = "season")
     private String season;
 
-    public Product(int id_product, String name, String gender, Double price, Category id_category, Producent producent, Size_Age size_age, String image, int quantity, String season) {
+    @Column(name = "discount")
+    private Double discount;
+
+
+    public Product(int id_product, String name, String gender, Double price, Category id_category, Producent producent, Size_Age size_age, String image, int quantity, String season, Double discount) {
         this.id_product = id_product;
         this.name = name;
         this.gender = gender;
@@ -53,6 +57,7 @@ public class Product {
         this.image = image;
         this.quantity = quantity;
         this.season = season;
+        this.discount = discount;
     }
 
     public Product() {
@@ -137,5 +142,13 @@ public class Product {
 
     public void setProducent(Producent producent) {
         this.producent = producent;
+    }
+
+    public Double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Double discount) {
+        this.discount = discount;
     }
 }

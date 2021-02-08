@@ -41,13 +41,13 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     //Wyszukanie najpopularniejszych produktow(Najwiecej sprzedanych) od najpopularniejszego
     @Query(
-            value= "select p.id_product, p.name, count(*) as counter" +
-                    " from orders o, cart_item ct, cart c, product p" +
-                    " where o.id_cart=c.id_cart" +
-                    " and c.id_cart=ct.id_cart" +
-                    " and p.id_product=ct.id_product" +
-                    " group by p.name" +
-                    " order by counter desc",
+            value= "select p.id_product, count(*) as counter \n" +
+                    "from orders o, cart_item ct, cart c, product p\n" +
+                    "where o.id_cart=c.id_cart \n" +
+                    "and c.id_cart=ct.id_cart \n" +
+                    "and p.id_product=ct.id_product \n" +
+                    "group by p.id_product\n" +
+                    "order by counter desc",
             nativeQuery = true
     )
     List<Object[]> findAllBySaleDesc();
@@ -84,6 +84,11 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             " and sa.id_size_age = p.size_age",
             nativeQuery = true)
     List<Object[]> findAvaliableProductsByName(String name);
+
+    @Query(value="SELECT * FROM product" +
+            " where discount>0;",
+            nativeQuery = true)
+    List<Product> findAllByDiscountAvalaible();
 
     @Query(value="SELECT age FROM size_age where size = :size",
             nativeQuery = true)

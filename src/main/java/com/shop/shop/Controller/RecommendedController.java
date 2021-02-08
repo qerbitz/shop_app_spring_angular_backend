@@ -281,6 +281,7 @@ public class RecommendedController {
                 //System.out.println(all_products_list.get(j).getName()+" plec ok");
             }
             else {
+                i=0;
                 suma++;
             }
             //Sprawdzanie Ceny

@@ -47,7 +47,7 @@
                     <div class="header-wrap">
                         <form class="form-header" method="post" th:action="@{/product/products_search}" id="getform">
                             <input class="au-input au-input-xl" type="text" name="value" id="value" th:object="${user}"
-                                   placeholder="Search for data ..." form="getform"/>
+                                   placeholder="Szukaj produktów ..." form="getform"/>
                             <button class="au-btn-submit" type="submit" form="getform">
                                 Search
                             </button>
@@ -145,12 +145,49 @@
 <!-- END PAGE CONTAINER-->
 
 
-<footer>
-    <ul>
-        <li><a href="#">About Us</a></li>
-        <li><a href="#">Contact Us</a></li>
-        <li><a href="#">Help</a></li>
-    </ul>
+<footer class="footer spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="footer__about">
+                    <ul>
+                        <li>Adres: al. Tadeusza Rejtana 16C, Rzeszów</li>
+                        <li>Phone: 123 456 789</li>
+                        <li>Email: qerbitz@gmail.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
+                <div class="footer__widget">
+                    <ul>
+
+                        <li><a th:href="@{/login/showLoginPage}">Logowanie</a></li>
+                        <li><a th:href="@{/registration/showRegistrationForm}" >Rejestracja</a></li>
+                    </ul>
+
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-12">
+                <div class="footer__widget">
+                    <p>Zapraszamy również</p>
+                    <div class="footer__widget__social">
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <a href="#"><i class="fa fa-instagram"></i></a>
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="footer__copyright">
+                    <div class="footer__copyright__text"><p>
+                        Copyright &copy; <script>document.write(new Date().getFullYear());</script> Krzysztof Pleśniak </a></p></div>
+                    <div class="footer__copyright__payment"><img src="img/payment-item.png" alt=""></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </footer>
 
 </body>

@@ -5,8 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-
-
     <!-- Facebook/insta icons -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -19,6 +17,7 @@
 </head>
 
 <body>
+<p th:text="${id_product}"></p>
 <title>test</title>
 <div class="page-wrapper">
 
@@ -31,7 +30,59 @@
         </div>
         <div class="menu-sidebar-content js-scrollbar1">
             <nav class="navbar-sidebar">
+                <ul class="list-unstyled navbar-list">
 
+                    <form method="post" th:action="@{/product/productList/1}"
+                          th:object="${categoryList}" id="getforma">
+
+
+                        <!--<label for="price_min" >Cena od:</label><br>-->
+                        <input type="number" id="price_min" th:name="price_min" th:value="${price_min}" onfocusout="this.form.submit()" style="width: 100px; background-color: #0da8e4; text-align: center; " placeholder="Cena od: "><br>
+
+                        <br>
+                        <!--<label for="price_max" >Cena do:</label><br>-->
+                        <input type="number" id="price_max" th:name="price_max" th:value="${price_max}" onfocusout="this.form.submit()" style="width: 100px; background-color: #0da8e4; text-align: center; " placeholder="Cena do: ">
+
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+                        <br><br>
+                        <button class="btn btn-secondary dropdown-toggle" name="drop_category" th:value="${value_category}" style="width: 100px; background-color: #0da8e4">Kategorie</button>
+
+                        <li th:hidden="${hidden_category}" th:each="category: ${categoryList}" style="color: black;">
+                            <input type="checkbox" th:value="${category.id_category}" th:name="listOfCategoryChecked" th:checked="${categoryCheckedList?.contains(category)}" onclick="this.form.submit()"/>
+                            <label th:text="${category.name}"></label>
+
+                            <ul th:if="${categoryCheckedList?.contains(category)}">
+                                <li th:if="${size.getId_category().getId_category()==category.getId_category()}" th:each="size: ${sizesList}">
+                                    <input type="checkbox"  th:value="${size.getProduct_size()}" th:name="listOfSizesChecked" th:checked="${sizesCheckedList?.contains(size.getProduct_size())}" onclick="this.form.submit()"/>
+                                    <label th:text="${size.getProduct_size()}"></label><br>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <br><br>
+
+                        <!--  -->
+                        <button class="btn btn-secondary dropdown-toggle" name="drop_age" th:value="${value_age}" style="width: 100px; background-color: #0da8e4">Wiek</button>
+                        <li th:hidden="${hidden_age}" th:each="age: ${agesList}">
+                            <input type="checkbox" th:value="${age}"  th:name="listOfAgesChecked" th:checked="${agesCheckedList?.contains(age)}" onclick="this.form.submit()"/>
+                            <label th:text="${age}"></label>
+                        </li>
+
+                        <br><br>
+                        <button class="btn btn-secondary dropdown-toggle" name="drop_gender" th:value="${value_gender}" style="width: 100px; background-color: #0da8e4">Płeć</button>
+                        <li th:hidden="${hidden_gender}" th:each="gender: ${genderList}">
+                            <input type="checkbox" th:value="${gender}"  th:name="listOfGenderChecked" th:checked="${genderCheckedList?.contains(gender)}" onclick="this.form.submit()"/>
+                            <label th:text="${gender}"></label>
+                        </li>
+
+                        <br><br>
+                        <button class="btn btn-secondary dropdown-toggle" name="drop_season" th:value="${value_season}" style="width: 100px; background-color: #0da8e4">Sezon</button>
+                        <li th:hidden="${hidden_season}" th:each="season: ${seasonList}">
+                            <input type="checkbox" th:value="${season}"  th:name="listOfSeasonChecked" th:checked="${seasonCheckedList?.contains(season)}" onclick="this.form.submit()"/>
+                            <label th:text="${season}"></label>
+                        </li>
+                    </form>
+                </ul>
 
             </nav>
         </div>
@@ -83,63 +134,24 @@
             <div class="section-content section-content-p30">
                 <div class="container-fluid">
 
-                    <div class="box">
-                        <form method="post" th:action="@{/product/similiar}" >
+                    <h2 style=" text-align: center;">Sprawdz produkty będące aktualnie na promocji!</h2>
 
-
-                            <br><br>
-                            <select name="producent" id="producent" >
-                                <option value="" disabled selected>Producent</option>
-                                <option th:each="producent : ${producentList}" th:value="${producent.getId_producent()}" th:text="${producent.getName()}"></option>
-                            </select><br><br>
-
-                            <select name="category" id="category" onchange="this.form.submit()">
-                                <option value="" disabled selected>Kategoria</option>
-                                <option th:if="${chosen_category==0}" th:each="category : ${categoryList}" th:value="${category.getId_category()}" th:text="${category.getName()}"></option>
-                                <option th:if="${chosen_category!=0}" th:selected="${chosen_category==category.getId_category()}" th:each="category : ${categoryList}" th:value="${category.getId_category()}" th:text="${category.getName()}"></option>
-                            </select><br><br>
-
-                            <select  name="size" id="size">
-                                <option value="" disabled selected>Rozmiar</option>
-                                <option th:each="size : ${sizesList}" th:value="${size}" th:text="${size}"></option>
-                            </select><br><br>
-
-                            <!--<select name="age" id="age">
-                                <option value="" disabled selected>Wiek</option>
-                                <option th:each="age : ${agesList}" th:value="${age}" th:text="${age}"></option>
-                            </select><br><br>-->
-
-                            <select name="gender" id="gender">
-                                <option value="" disabled selected>Plec</option>
-                                <option th:each="gender : ${genderList}" th:value="${gender}" th:text="${gender}"></option>
-                            </select><br><br>
-
-                            <select name="season" id="season">
-                                <option value="" disabled selected>Sezon</option>
-                                <option th:each="season : ${seasonList}" th:value="${season}" th:text="${season}"></option>
-                            </select><br><br>
-
-                            <input type="number" id="price_min" th:name="price_min"  style="width: 100px; background-color: #0da8e4; text-align: center;" placeholder="Cena od: ">
-                            <input type="number" id="price_max" th:name="price_max"  style="width: 100px; background-color: #0da8e4; text-align: center; " placeholder="Cena do: ">
-                            <br><br>
-
-                            <button class="primary-btn" type="submit">Szukaj</button>
-                        </form>
-                    </div>
-                    <h2 th:if="${productList!=null && productList.isEmpty()}" style=" text-align: center;">Brak produktow zbliżonych do twoich preferencji!</h2>
                     <div class="row">
+                        <a th:href="@{/product/similiar}" th:if="${productList.isEmpty()}"><h1>Nie widzisz szukanego produktu, wyszukaj produkty podobne<br><br><br></h1></a>
                         <div class="col-md-3" th:each="product: ${productList}">
                             <div class="product-box">
-                                <a href="product-detail.html">
+                                <a th:href="@{/product/viewProduct/{productId}(productId=${product.id_product})}">
                                     <img th:src="${product.image}" class="img-responsive">
                                 </a>
-                                <a href="product-detail.html">
+                                <a th:href="@{/product/viewProduct/{productId}(productId=${product.id_product})}">
                                     <h1 th:text="${product.getName()}"></h1>
+                                    <h2 th:text="'Producent: '+${product.getProducent().getName()}"></h2>
                                     <h2 th:text="'Kategoria: '+${product.getId_category().getName()}"></h2>
                                     <h2 th:text="'Rozmiar: '+${product.getSize_age().getProduct_size()}"></h2>
                                     <h2 th:text="'Wiek: '+${product.getSize_age().getProduct_age()}"></h2>
                                 </a>
-                                <div class="price"  th:text="${product.price} + ' zł'"></td></div>
+                                <s><div class="price" th:text="${(product.discount*product.price).toString().substring(0,4)} + ' zł'"></div></s>
+                                <div class="price"  th:text="${product.price} + ' zł'"></div>
 
                                 <a class="primary-btn" type="button"
                                    th:href="@{/cart/add/{id_product}(id_product=${product.id_product},price_min=${price_min},price_max=${price_max},
@@ -152,8 +164,11 @@
 
                     </div>
 
-                    <div class="footer-pagination">
-                        <div class="row">
+
+
+
+
+
 
                         </div>
 
@@ -220,7 +235,24 @@
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="../static/css/test.js" th:src="@{/css/test.js}"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script th:inline="javascript">
+    /*<!~[CDATA[*/
+    var myval = /*[[${id_product}]]*/ "Test";
+    var modal = document.getElementById("myModal");
 
+    if(myval!=null){
+        modal.style.display = "block";
+    }
+
+
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on <span> (x), close the modal
+
+    /*]]>*/
+</script>
 </body>
 
 </html>

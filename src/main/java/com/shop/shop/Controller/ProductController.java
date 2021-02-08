@@ -61,6 +61,7 @@ public class ProductController {
                              @RequestParam(value = "listOfAgesChecked", required = false) List<String> listOfAgesChecked,
                              @RequestParam(value = "listOfSeasonChecked", required = false) List<String> listOfSeasonChecked,
                              @RequestParam(value = "listOfGenderChecked", required = false) List<String> listOfGenderChecked,
+                             @RequestParam(value = "listOfSizesChecked", required = false) List<String> listOfSizesChecked ,
                              @RequestParam(value = "price_min", required = false) String price_min,
                              @RequestParam(value = "price_max", required = false) String price_max,
                              @RequestParam(required = false) String drop_category,
@@ -69,6 +70,7 @@ public class ProductController {
                              @RequestParam(required = false) String drop_season,
                              @RequestParam(value = "pageSize", required = false) String pageSize,
                              @PathVariable(name = "pageNum") int pageNum, Model model) throws Exception {
+
 
         List<Category> categoryCheckedList = new ArrayList<>();
 
@@ -97,12 +99,20 @@ public class ProductController {
             }
         }
 
+        //
+        if(listOfCategoryCheckedint!=null){
+
+            model.addAttribute("sizesList",productService.getListOfSizeAges());
+        }
+
+        //
+
 
         List<Product> listProducts = productService.getListOfProducts() ;
 
 
 
-        listProducts =  filtering(listOfCategoryCheckedint, listOfAgesChecked, listOfSeasonChecked, listOfGenderChecked, listProducts, price_min, price_max, drop_category, drop_age, drop_gender, drop_season);
+        listProducts =  filtering(listOfSizesChecked, listOfCategoryCheckedint, listOfAgesChecked, listOfSeasonChecked, listOfGenderChecked, listProducts, price_min, price_max, drop_category, drop_age, drop_gender, drop_season);
 
 
         Pageable pageable ;
@@ -152,6 +162,7 @@ public class ProductController {
         model.addAttribute("agesCheckedList", listOfAgesChecked);
         model.addAttribute("genderCheckedList", listOfGenderChecked);
         model.addAttribute("seasonCheckedList", listOfSeasonChecked);
+        model.addAttribute("sizesCheckedList",listOfSizesChecked);
 
         model.addAttribute("productList", pages.getContent());
         model.addAttribute("price_min", price_min);
@@ -171,6 +182,7 @@ public class ProductController {
                               @RequestParam(value = "listOffAgesChecked", required = false) List<String> listOfAgesChecked,
                               @RequestParam(value = "listOffSeasonChecked", required = false) List<String> listOfSeasonChecked,
                               @RequestParam(value = "listOffGenderChecked", required = false) List<String> listOfGenderChecked,
+                              @RequestParam(value = "listOfSizesChecked", required = false) List<String> listOfSizesChecked ,
                               @RequestParam(required = false) String drop_category,
                               @RequestParam(required = false) String drop_age,
                               @RequestParam(required = false) String drop_gender,
@@ -180,6 +192,7 @@ public class ProductController {
                               @RequestParam(value = "id_product", required = false) String id_product,
                               @RequestParam(value = "pageSize", required = false) String pageSize,
                               @PathVariable(name = "pageNum") int pageNum, Model model) throws Exception {
+
 
 
 
@@ -201,6 +214,9 @@ public class ProductController {
 
             model.addAttribute("hidden_season", true);
             model.addAttribute("value_season", 0);
+
+            model.addAttribute("hidden_size", true);
+            model.addAttribute("value_size",0);
         }
 
 
@@ -248,7 +264,7 @@ public class ProductController {
             }
 
 
-            listProducts =  filtering(listOfCategoryCheckedint, listOfAgesChecked, listOfSeasonChecked, listOfGenderChecked, listProducts, price_min, price_max, drop_category, drop_age, drop_gender, drop_season);
+            listProducts =  filtering(listOfSizesChecked, listOfCategoryCheckedint, listOfAgesChecked, listOfSeasonChecked, listOfGenderChecked, listProducts, price_min, price_max, drop_category, drop_age, drop_gender, drop_season);
             if(listProducts.size()==0){
                 listProducts=productService.getListOfProducts();
             }
@@ -317,7 +333,9 @@ public class ProductController {
         model.addAttribute("seasonCheckedList", listOfSeasonChecked);
 
 
-
+        if(authentication.getAuthorities().toString().contains("Manager")){
+            return "redirect:/admin/panel";
+        }
 
         if (authentication.getName().equals("anonymousUser")) {
             return "product/products";
@@ -332,6 +350,16 @@ public class ProductController {
             return "product/products";
         }
 
+    }
+
+    @RequestMapping("/discountList")
+    public String discountList(Model model) {
+
+        List<Product> discount_products_list = productService.getListOfProductsWithDiscount();
+
+        model.addAttribute("productList", discount_products_list);
+
+        return "product/discountList";
     }
 
 
@@ -413,7 +441,7 @@ public class ProductController {
                 productList = productService.getListOfProductsOrderByNameDesc();
                 break;
             case 5:
-                productList = productService.getListOfProductsOrderBySaleDesc();
+               // productList = productService.getListOfProductsOrderBySaleDesc();
         }
 
         model.addAttribute("productList", productList);
@@ -535,7 +563,7 @@ public class ProductController {
     }
 
 
-    public List<Product> filtering(List<Integer> listOfCategoryCheckedint, List<String> listOfAgesChecked, List<String> listOfSeasonChecked, List<String> listOfGenderChecked, List<Product> list, String price_min, String price_max, String drop_category, String drop_age, String drop_gender, String drop_season) {
+    public List<Product> filtering(List<String> listOfSizesChecked, List<Integer> listOfCategoryCheckedint, List<String> listOfAgesChecked, List<String> listOfSeasonChecked, List<String> listOfGenderChecked, List<Product> list, String price_min, String price_max, String drop_category, String drop_age, String drop_gender, String drop_season) {
         //Sortowania poprzez cene
         if (price_min.compareTo("") == 0 && price_max.compareTo("") != 0) { //jezeli podana jest tylko maxymalna kwota
             int price_max_parsed = Integer.parseInt(price_max);
@@ -813,6 +841,12 @@ public class ProductController {
                         .filter(p -> listOfSeasonChecked.contains(p.getSeason()))
                         .collect(Collectors.toList());
             }
+        }
+
+        if(listOfSizesChecked!=null){
+            list = list.stream()
+                    .filter(p -> listOfSizesChecked.contains(p.getSize_age().getProduct_size()))
+                    .collect(Collectors.toList());
         }
 
         return list;
