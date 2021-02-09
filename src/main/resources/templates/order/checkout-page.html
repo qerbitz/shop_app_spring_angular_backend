@@ -41,7 +41,7 @@
 					<div class="container-fluid">
 						<div class="header-wrap">
 							<form class="form-header" method="post" th:action="@{/product/products_search/1}" id="getform">
-								<input class="au-input au-input-xl" type="text" name="value" id="value" th:object="${user}"
+								<input class="au-input au-input-xl" type="text" name="value" id="value" th:object="${user}" pattern="[^*()/><\][\\\x22,;|]+"
 									   placeholder="Szukaj produktów ..." form="getform"/>
 								<button class="au-btn-submit" type="submit" form="getform">
 									Szukaj
@@ -89,18 +89,18 @@
 								<div class="col-md-6">
 									<div class="input-space">
 
-										<input type="text" th:field="*{name}" placeholder="Imie" required>
+										<input type="text" th:field="*{name}" placeholder="Imie" required pattern="[^*()/><\][\\\x22,;|]+">
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="input-space">
-										<input type="text" th:field="*{surname}" placeholder="Nazwisko" required>
+										<input type="text" th:field="*{surname}" placeholder="Nazwisko" required pattern="[^*()/><\][\\\x22,;|]+">
 									</div>
 								</div>
 								<div class="clearfix"></div>
 								<div class="col-md-6">
 									<div class="input-space">
-										<input type="text" th:field="*{e_mail}" placeholder="Email Address" required>
+										<input type="text" th:field="*{e_mail}" placeholder="Email Address" required pattern="[^*()/><\][\\\x22,;|]+">
 									</div>
 								</div>
 							</div>
@@ -112,12 +112,12 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="input-space">
-										<input type="text" th:field="*{adress.street}" placeholder="Ulica" required>
+										<input type="text" th:field="*{adress.street}" placeholder="Ulica" required pattern="[^*()/><\][\\\x22,;|]+">
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="input-space">
-										<input type="text" th:field="*{adress.place}" placeholder="Miejscowosc" required>
+										<input type="text" th:field="*{adress.place}" placeholder="Miejscowosc" required pattern="[^*()/><\][\\\x22,;|]+">
 									</div>
 								</div>
 
@@ -128,7 +128,7 @@
 								</div>
 								<div class="col-md-12">
 									<div class="input-space">
-										<input type="text" th:field="*{adress.zip_code}" placeholder="Kod pocztowy" required>
+										<input type="text" th:field="*{adress.zip_code}" placeholder="Kod pocztowy" required pattern="[^*()/><\][\\\x22,;|]+">
 									</div>
 								</div>
 							</div>

@@ -35,7 +35,7 @@ public interface ProductService {
 
     List<Product> getListOfProductOrderByPriceDesc();
 
-    List<Purchased> getListOfProductsOrderBySaleDesc();
+    List<Purchased> getListOfProductsOrderBySaleDesc(int month);
 
     List<Product> getListOfProductByPriceBetween(int price_min, int price_max);
 

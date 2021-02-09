@@ -121,10 +121,10 @@ public class ProductServiceImpl implements ProductService {
 
     //Wyswietlanie produktow najpopularniejszych wobed sprzedazy malejaco
     @Override
-    public List<Purchased> getListOfProductsOrderBySaleDesc() {
+    public List<Purchased> getListOfProductsOrderBySaleDesc(int month) {
         List<Purchased> productList = new ArrayList<>();
 
-        for (Object[] obj : productRepository.findAllBySaleDesc()) {
+        for (Object[] obj : productRepository.findAllBySaleDesc(month)) {
             String product = String.valueOf(obj[0]);
             String counter = String.valueOf(obj[1]);
 

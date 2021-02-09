@@ -45,12 +45,13 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
                     "from orders o, cart_item ct, cart c, product p\n" +
                     "where o.id_cart=c.id_cart \n" +
                     "and c.id_cart=ct.id_cart \n" +
-                    "and p.id_product=ct.id_product \n" +
-                    "group by p.id_product\n" +
+                    "and p.id_product=ct.id_product\n" +
+                    "and month(o.order_date) = :month \n" +
+                    "group by p.id_product, o.order_date\n" +
                     "order by counter desc",
             nativeQuery = true
     )
-    List<Object[]> findAllBySaleDesc();
+    List<Object[]> findAllBySaleDesc(@Param("month")int month);
 
     @Query(value="SELECT * FROM product p, size_age sa" +
             " where p.size_age=sa.id_size_age" +

@@ -361,16 +361,16 @@ public class RecommendedController {
 
         for(int i=0; i<list_of_ages.size(); i++){
             if(list_of_ages.get(i).equals("2-3 lat")){
-                list_of_ages.set(i ,"24-36 msc");
+                list_of_ages.set(i ,"24-36 m-c");
             }
             if(list_of_ages.get(i).equals("3-4 lat")){
-                list_of_ages.set(i ,"36-48 msc");
+                list_of_ages.set(i ,"36-48 m-c");
             }
             if(list_of_ages.get(i).equals("4-5 lat")){
-                list_of_ages.set(i ,"48-60 msc");
+                list_of_ages.set(i ,"48-60 m-c");
             }
             if(list_of_ages.get(i).equals("5-6 lat")){
-                list_of_ages.set(i ,"60-72 msc");
+                list_of_ages.set(i ,"60-72 m-c");
             }
         }
 

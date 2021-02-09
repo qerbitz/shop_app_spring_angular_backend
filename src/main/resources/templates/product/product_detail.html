@@ -43,7 +43,7 @@
                 <div class="container-fluid">
                     <div class="header-wrap">
                         <form class="form-header" method="post" th:action="@{/product/products_search/1}" id="getform">
-                            <input class="au-input au-input-xl" type="text" name="value" id="value" th:object="${user}"
+                            <input class="au-input au-input-xl" type="text" name="value" id="value" th:object="${user}" pattern="[^*()/><\][\\\x22,;|]+"
                                    placeholder="Szukaj produktów ..." form="getform"/>
                             <button class="au-btn-submit" type="submit" form="getform">
                                 Szukaj

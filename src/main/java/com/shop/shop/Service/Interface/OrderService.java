@@ -11,5 +11,6 @@ public interface OrderService {
     void addNewOrder(Order order);
     void updateStatusOrder(Order order);
     List<Order> getAllOrdersByUser(User user);
+    List<Order> getAllOrders();
     Order getOrderById(int id_order);
 }

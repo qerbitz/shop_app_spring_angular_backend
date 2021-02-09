@@ -1,4 +1,4 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="utf-8">
@@ -31,6 +31,10 @@
         <div class="menu-sidebar-content js-scrollbar1">
             <nav class="navbar-sidebar">
                 <ul class="list-unstyled navbar-list">
+
+                    <button class="btn btn-secondary" name="discount_button"  style="width: 100px; background-color: #0da8e4">
+                        <a th:href="@{/admin/ordersList}">Zamówienia</a>
+                    </button>
                 </ul>
             </nav>
         </div>
@@ -44,8 +48,24 @@
             <div class="section-content section-content-p30">
                 <div class="container-fluid">
                     <div class="header-wrap">
+                        <form class="form-header" method="post" th:action="@{/product/products_search/1}" id="getform">
+                        </form>
+                        <div class="cart-area d-n">
+                        </div>
+                        <li class="dropdown" >
+                            <a href="javascript:void(0)" class="dropbtn"><img src="/images/nouser.png" height="1px"></a>
+                            <div class="dropdown-content">
+                                <a sec:authorize="isAuthenticated()" th:href="@{/order/allOrders}">Twoje zamowienia</a>
 
+                                <a th:href="@{/login/showLoginPage}" sec:authorize="isAnonymous()" href="javascript: document.logoutForm.submit()" role="menuitem">Zaloguj się</a>
+                                <a sec:authorize="isAuthenticated()" href="javascript: document.logoutForm.submit()" role="menuitem">Wyloguj sie</a>
 
+                                <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+                                    <input hidden type="submit" value="Sign Out"/>
+                                </form>
+                                </ul>
+                            </div>
+                    </div>
                     <div class="account-wrap"></div>
                 </div>
             </div>
@@ -57,13 +77,39 @@
             <div class="section-content section-content-p30">
                 <div class="container-fluid">
 
+                    <div class="box" style="margin-top: 50px">
+                        <form class="form-header" method="post" th:action="@{/admin/panel}">
+                            <select name="month" id="month" onchange="this.form.submit()">
+                                <option> - </option>
+                                <option th:value=1>Styczeń</option>
+                                <option th:value=2>Luty</option>
+                                <option th:value=3>Marzec</option>
+                                <option th:value=4>Kwiecień</option>
+                                <option th:value=5>Maj</option>
+                                <option th:value=6>Czerwiec</option>
+                                <option th:value=7>Lipiec</option>
+                                <option th:value=8>Sierpień</option>
+                                <option th:value=9>Wrzesień</option>
+                                <option th:value=10>Październik</option>
+                                <option th:value=11>Listopad</option>
+                                <option th:value=12>Grudzień</option>
+                            </select>
+                        </form>
+
+                    </div>
+
+                    <h2 style=" text-align: center; font-size: 16px" th:text="${month}"></h2>
+                    <br>
+
+
+
                     <table class="table table-bordered">
                         <tr>
                             <th width="10%">Id</th>
                             <th width="15%">Nazwa</th>
                             <th width="10%">Rozmiar</th>
                             <th width="20%">Ilosc sprzedanych</th>
-                            <th width="30%">Ilosc na magazynie</th>
+                            <th width="20%">Ilosc na magazynie</th>
                         </tr>
 
                         <tr th:each="product: ${productList}">

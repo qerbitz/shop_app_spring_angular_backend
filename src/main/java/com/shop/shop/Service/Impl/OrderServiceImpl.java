@@ -7,6 +7,7 @@ import com.shop.shop.Repositories.OrderRepository;
 import com.shop.shop.Repositories.ProductRepository;
 import com.shop.shop.Service.Interface.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +33,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getAllOrdersByUser(User user) {
         return orderRepository.getAllByUser(user);
+    }
+
+    @Override
+    public List<Order> getAllOrders() {
+        return orderRepository.findAllByOrderByOrderDateDesc();
     }
 
     @Override
