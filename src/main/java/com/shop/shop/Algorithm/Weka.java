@@ -23,7 +23,8 @@ public class Weka {
         data.setClassIndex(data.numAttributes() - 1);
 
 
-        String[] options = Utils.splitOptions("-N 100000 -C 0.1");
+
+        String[] options = Utils.splitOptions("-N 1000 -C 0.1");
         Apriori apriori = new Apriori();
         apriori.setOptions(options);
         apriori.buildAssociations(data); //Generowanie regul asocjacyjnych
@@ -69,11 +70,15 @@ public class Weka {
             int id_product2 = 0;
 
 
+            System.out.println(first);
+
             String[] firstRule = first.split("&");
             String[] secondRule = second.split("&");
 
 
             for (int j = 0; j < firstRule.length; j++) {
+
+
                 if (firstRule[j].matches(".product.*=" + product_name + ".*")) {
 
                     //Dla poprzednika
@@ -146,7 +151,7 @@ public class Weka {
                     }
                 }
             }
-            //System.out.println(poprzednikText + "=>" + nastepnikText);
+            System.out.println(poprzednikText + "=>" + nastepnikText);
         }
 
 

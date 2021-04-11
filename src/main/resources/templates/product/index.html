@@ -119,11 +119,11 @@
                                 <option th:each="season : ${seasonList}" th:value="${season}" th:text="${season}"></option>
                             </select><br><br>
 
-                            <input type="number" id="price_min" th:name="price_min"  style="width: 100px; background-color: #0da8e4; text-align: center;" placeholder="Cena od: ">
-                            <input type="number" id="price_max" th:name="price_max"  style="width: 100px; background-color: #0da8e4; text-align: center; " placeholder="Cena do: ">
+                            <input type="number" id="price_min" th:name="price_min"  style="width: 95px; background-color: #0da8e4; text-align: center;" placeholder="Cena od: ">
+                            <input type="number" id="price_max" th:name="price_max"  style="width: 95px; background-color: #0da8e4; text-align: center; " placeholder="Cena do: ">
                             <br><br>
 
-                            <button class="primary-btn" type="submit">Szukaj</button>
+                            <button class="primary-btn" type="submit" style="width: 200px">Szukaj</button>
                         </form>
                     </div>
                     <h2 th:if="${productList!=null && productList.isEmpty()}" style=" text-align: center;">Brak produktow zbliżonych do twoich preferencji!</h2>

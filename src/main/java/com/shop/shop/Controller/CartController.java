@@ -141,7 +141,6 @@ public class CartController {
         cartItemService.addCartItem(cartItem);
 
 
-        System.out.println(Integer.parseInt(id_product));
 
         redirect(listOfCategoryChecked, listOfAgesChecked, price_min, price_max, redirectAttributes, id_product);
         return "redirect:/product/productList/1";

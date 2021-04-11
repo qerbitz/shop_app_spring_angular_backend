@@ -59,7 +59,7 @@ public class OrderController {
         order.setCart(cart);
         order.setUser(user);
         order.setOrderDate(convertDate(LocalDate.now()));
-        order.setStatus("Oczekujacy");
+        order.setStatus("Oczekujący");
 
         orderService.addNewOrder(order);
         Cart newCart = new Cart();

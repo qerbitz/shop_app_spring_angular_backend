@@ -100,7 +100,12 @@
 								<div class="clearfix"></div>
 								<div class="col-md-6">
 									<div class="input-space">
-										<input type="text" th:field="*{e_mail}" placeholder="Email Address" required pattern="[^*()/><\][\\\x22,;|]+">
+										<input type="text" th:field="*{e_mail}" placeholder="Adres e-mail" required pattern="[^*()/><\][\\\x22,;|]+">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="input-space">
+										<input type="text" th:field="*{phone}" placeholder="Nr telefonu" required pattern="[^*()/><\][\\\x22,;|]+">
 									</div>
 								</div>
 							</div>
@@ -112,7 +117,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="input-space">
-										<input type="text" th:field="*{adress.street}" placeholder="Ulica" required pattern="[^*()/><\][\\\x22,;|]+">
+										<input type="text" th:field="*{adress.street}" placeholder="Ulica, nr domu" required pattern="[^*()/><\][\\\x22,;|]+">
 									</div>
 								</div>
 								<div class="col-md-12">

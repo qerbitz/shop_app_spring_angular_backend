@@ -26,7 +26,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void updateStatusOrder(Order order) {
-        order.setStatus("Oplacone");
+        order.setStatus("Wysłano");
         orderRepository.save(order);
     }
 

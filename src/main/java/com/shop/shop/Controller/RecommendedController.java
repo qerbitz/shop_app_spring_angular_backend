@@ -240,7 +240,6 @@ public class RecommendedController {
                 if (product.getProducent().getName().equals(all_products_list.get(j).getProducent().getName())) {
                     i++;
                     suma++;
-                    //System.out.println(all_products_list.get(j).getName() + " producent ok");
                 } else {
                     suma++;
                 }
@@ -249,7 +248,6 @@ public class RecommendedController {
             if(product.getSeason().equals(all_products_list.get(j).getSeason())){
                 i++;
                 suma++;
-                //System.out.println(all_products_list.get(j).getName()+" sezon ok");
             }
             else {
                 suma++;

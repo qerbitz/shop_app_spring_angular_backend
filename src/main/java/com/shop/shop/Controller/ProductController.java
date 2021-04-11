@@ -226,6 +226,11 @@ public class ProductController {
         //Lista proponowanych w okienku
         List<Integer> listRecommended = weka.Apriori(id_product);
 
+
+        for(int i=0; i<listRecommended.size(); i++){
+            System.out.println("listka: "+listRecommended);
+        }
+
         //Lista proponowanych w okienku
         List<Product> listRecommendedProducts = new ArrayList<>();
         if (listRecommended != null) {

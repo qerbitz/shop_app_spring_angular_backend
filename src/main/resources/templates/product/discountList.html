@@ -150,7 +150,7 @@
                                     <h2 th:text="'Rozmiar: '+${product.getSize_age().getProduct_size()}"></h2>
                                     <h2 th:text="'Wiek: '+${product.getSize_age().getProduct_age()}"></h2>
                                 </a>
-                                <s><div class="price" th:text="${(product.discount*product.price).toString().substring(0,4)} + ' zł'"></div></s>
+                                <div class="price" th:text="'- '+ ${product.discount.toString().substring(0,2)} + ' %'" style="color: darkred"></div>
                                 <div class="price"  th:text="${product.price} + ' zł'"></div>
 
                                 <a class="primary-btn" type="button"

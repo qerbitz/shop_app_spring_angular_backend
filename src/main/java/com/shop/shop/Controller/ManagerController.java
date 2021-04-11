@@ -1,8 +1,10 @@
 package com.shop.shop.Controller;
 
+import com.shop.shop.Entity.User;
 import com.shop.shop.Service.Interface.CartService;
 import com.shop.shop.Service.Interface.OrderService;
 import com.shop.shop.Service.Interface.ProductService;
+import com.shop.shop.Service.Interface.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,9 @@ public class ManagerController {
 
     @Autowired
     CartService cartService;
+
+    @Autowired
+    UserService userService;
 
     @RequestMapping("/panel")
     public String panel(Model model) {
@@ -59,6 +64,9 @@ public class ManagerController {
 
 
 
+        User user = userService.getUserByUsername(orderService.getOrderById(orderId).getUser().getUsername());
+
+
         if(cartId!=orderService.getOrderById(orderId).getCart().getId_cart())
         {
             redirectAttributes.addAttribute("cartId", orderService.getOrderById(orderId).getCart().getId_cart());
@@ -69,7 +77,18 @@ public class ManagerController {
         model.addAttribute("quantity", cartService.getQuantityofCart(cartId));
         model.addAttribute("cart", cartService.getCartById(cartId).getCartItems());
         model.addAttribute("total_order", cartService.getTotalPrice(cartId));
+        model.addAttribute("user",user);
+        model.addAttribute("order", orderService.getOrderById(orderId));
         return "manager/manager_view_orders_details";
+    }
+
+    @GetMapping("/updateStatus")
+    public String updateStatus(@RequestParam(value = "orderId") int orderId){
+
+
+        orderService.updateStatusOrder(orderService.getOrderById(orderId));
+
+        return "redirect:/admin/ordersList";
     }
 
     public String changeMonth(String value){

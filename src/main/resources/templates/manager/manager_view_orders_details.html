@@ -31,15 +31,16 @@
         <div class="menu-sidebar-content js-scrollbar1">
             <nav class="navbar-sidebar">
                 <ul class="list-unstyled navbar-list">
-
                     <button class="btn btn-secondary" name="discount_button"  style="width: 150px; background-color: #0da8e4">
                         <a th:href="@{/admin/ordersList}">Zamówienia</a>
                     </button>
 
                     <br><br>
+
                     <button class="btn btn-secondary" name="discount_button"  style="width: 150px; background-color: #0da8e4">
                         <a th:href="@{/admin/panel}">Sprzedaż</a>
                     </button>
+
                 </ul>
             </nav>
         </div>
@@ -81,57 +82,47 @@
         <div class="main-content">
             <div class="section-content section-content-p30">
                 <div class="container-fluid">
-
-                    <div class="box" style="margin-top: 50px">
-                        <form class="form-header" method="post" th:action="@{/admin/panel}">
-                            <select name="month" id="month" onchange="this.form.submit()">
-                                <option> - </option>
-                                <option th:value=1>Styczeń</option>
-                                <option th:value=2>Luty</option>
-                                <option th:value=3>Marzec</option>
-                                <option th:value=4>Kwiecień</option>
-                                <option th:value=5>Maj</option>
-                                <option th:value=6>Czerwiec</option>
-                                <option th:value=7>Lipiec</option>
-                                <option th:value=8>Sierpień</option>
-                                <option th:value=9>Wrzesień</option>
-                                <option th:value=10>Październik</option>
-                                <option th:value=11>Listopad</option>
-                                <option th:value=12>Grudzień</option>
-                            </select>
-                        </form>
-
-                    </div>
-
-                    <h2 style=" text-align: center; font-size: 16px" th:text="${month}"></h2>
-                    <br>
-
-
-
                     <table class="table table-bordered">
                         <tr>
-                            <th width="10%">Id</th>
-                            <th width="15%">Nazwa</th>
-                            <th width="10%">Rozmiar</th>
-                            <th width="20%">Ilosc sprzedanych</th>
-                            <th width="20%">Ilosc na magazynie</th>
+                            <th width="20%">Zdj</th>
+                            <th width="50%">Szczegóły</th>
+                            <th width="30%"></th>
                         </tr>
 
-                        <tr th:each="product: ${productList}">
-                            <td th:text="${product.getProduct().id_product}">
+                        <tr th:each="item: ${cart}">
+                            <td><img th:src="${item.getProduct().getImage()}" class="img-responsive"
+                                     width="150px"></td>
                             <td>
-                                <p th:text="${product.getProduct().name}"></p>
+
+                                <p th:text="'Produkt: '+${item.getProduct().getName()}"></p>
+                                <p th:text="'Kategoria: '+${item.getProduct().getId_category().getName()}"></p>
+                                <p th:text="'Rozmiar: '+${item.getProduct().getSize_age().getProduct_size()}"></p>
+                                <p th:text="'Sezon: '+${item.getProduct().getSeason()}"></p>
                             </td>
                             <td>
-                                <p th:text="${product.getProduct().size_age.product_size}"></p>
-                            </td>
-                            <td>
-                                <p th:text="${product.getPurchased()}"></p>
-                            </td>
-                            <td>
-                                <p th:text="${product.getProduct().quantity}"></p>
+                                <div class="items">
+                                    <label>Ilosc</label> <select>
+                                    <option th:text="${item.getQuantity()}"></option>
+                                </select>
+                                </div>
+                                <p th:text="'Cena: ' + ${item.getProduct().getPrice()+ 'zł'}"></p>
                             </td>
                         </tr>
+                        <tr>
+                            <td colspan="2">
+                                <p th:text="${user.name + ' '+ user.surname}"> <br>
+                                <p th:text="${user.adress.getZip_code() + ' '+ user.adress.getPlace()}"> <br>
+                                <p th:text="${user.adress.zip_code + ' '+ user.adress.nr_house}"> <br>
+                                <p th:text="${user.phone+ ' , '+ user.e_mail}"> <br>
+                            </td>
+                            <td><p>Suma produktów <b th:text="${quantity}"></b></p>
+                                <p></p></br>
+                                <p>Laczna kwota <b th:text="${total_order}"> </b></p><br>
+                                <a th:href="@{/admin/ordersList}" class="primary-btn">Wróć</a>
+                                <a th:href="@{/admin/updateStatus/(orderId=${order.getId_order()})}" class="primary-btn">Zaaktualizuj status</a>
+                            </td>
+                        </tr>
+
                     </table>
 
                 </div>

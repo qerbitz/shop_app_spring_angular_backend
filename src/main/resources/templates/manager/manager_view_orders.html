@@ -31,7 +31,6 @@
         <div class="menu-sidebar-content js-scrollbar1">
             <nav class="navbar-sidebar">
                 <ul class="list-unstyled navbar-list">
-
                     <button class="btn btn-secondary" name="discount_button"  style="width: 150px; background-color: #0da8e4">
                         <a th:href="@{/admin/ordersList}">Zamówienia</a>
                     </button>
@@ -82,54 +81,24 @@
             <div class="section-content section-content-p30">
                 <div class="container-fluid">
 
-                    <div class="box" style="margin-top: 50px">
-                        <form class="form-header" method="post" th:action="@{/admin/panel}">
-                            <select name="month" id="month" onchange="this.form.submit()">
-                                <option> - </option>
-                                <option th:value=1>Styczeń</option>
-                                <option th:value=2>Luty</option>
-                                <option th:value=3>Marzec</option>
-                                <option th:value=4>Kwiecień</option>
-                                <option th:value=5>Maj</option>
-                                <option th:value=6>Czerwiec</option>
-                                <option th:value=7>Lipiec</option>
-                                <option th:value=8>Sierpień</option>
-                                <option th:value=9>Wrzesień</option>
-                                <option th:value=10>Październik</option>
-                                <option th:value=11>Listopad</option>
-                                <option th:value=12>Grudzień</option>
-                            </select>
-                        </form>
-
-                    </div>
-
-                    <h2 style=" text-align: center; font-size: 16px" th:text="${month}"></h2>
-                    <br>
-
-
-
                     <table class="table table-bordered">
                         <tr>
-                            <th width="10%">Id</th>
-                            <th width="15%">Nazwa</th>
-                            <th width="10%">Rozmiar</th>
-                            <th width="20%">Ilosc sprzedanych</th>
-                            <th width="20%">Ilosc na magazynie</th>
+                            <th width="10%">Order id</th>
+                            <th width="20%">Data zamowienia</th>
+                            <th width="20%">Status</th>
+                            <th width="20%">Zobacz szczegóły</th>
                         </tr>
 
-                        <tr th:each="product: ${productList}">
-                            <td th:text="${product.getProduct().id_product}">
+                        <tr th:each="order: ${orders_list}">
+                            <td th:text="${order.id_order}">
                             <td>
-                                <p th:text="${product.getProduct().name}"></p>
+                                <p th:text="${order.getOrderDate().toString().substring(0,10)}"></p>
+                            </td>
+                            <td th:text="${order.getStatus()}">
+
                             </td>
                             <td>
-                                <p th:text="${product.getProduct().size_age.product_size}"></p>
-                            </td>
-                            <td>
-                                <p th:text="${product.getPurchased()}"></p>
-                            </td>
-                            <td>
-                                <p th:text="${product.getProduct().quantity}"></p>
+                                <a th:href="@{/admin/detailsOrder/{id_cart}(id_cart=${order.cart.id_cart},orderId=${order.id_order})}" onclick="refreshPage()" class="primary-btn">Pokaż</a>
                             </td>
                         </tr>
                     </table>
