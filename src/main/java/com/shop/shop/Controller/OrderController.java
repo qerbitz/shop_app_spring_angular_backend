@@ -44,6 +44,7 @@ public class OrderController {
         model.addAttribute("total", cartService.getTotalPrice(user.getCart().getId_cart()));
         model.addAttribute("cart", cartService.getCartById(user.getCart().getId_cart()).getCartItems());
 
+        System.out.println("xdd");
 
         return "order/checkout-page";
     }
@@ -77,6 +78,7 @@ public class OrderController {
     public String allOrders(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getUserByUsername(authentication.getName());
+
 
         model.addAttribute("orders_list",orderService.getAllOrdersByUser(userService.getUserByUsername(user.getUsername())));
         model.addAttribute("total", cartService.getTotalPrice(user.getCart().getId_cart()));

@@ -24,7 +24,7 @@
 		<!-- MENU SIDEBAR-->
 		<aside class="menu-sidebar d-none d-lg-block">
 			<div class="logo">
-				<a th:href="@{/product/productList/1}">
+				<a th:href="@{/product/products/1}">
 					<img src="/images/logo.png" alt="Strona glowna" style="height: 70px">
 				</a>
 			</div>
@@ -37,7 +37,7 @@
 						</button>
 						<br><br>
 
-						<form method="post" th:action="@{/product/productList/1}"
+						<form method="post" th:action="@{/product/products/1}"
 							  th:object="${categoryList}" id="getforma">
 
 
@@ -119,7 +119,7 @@
 								<div class="dropdown-content">
 									<a sec:authorize="isAuthenticated()" th:href="@{/order/allOrders}">Twoje zamowienia</a>
 
-									<a th:href="@{/login/showLoginPage}" sec:authorize="isAnonymous()" href="javascript: document.logoutForm.submit()" role="menuitem">Zaloguj się</a>
+									<a th:href="@{/login}" sec:authorize="isAnonymous()" href="javascript: document.logoutForm.submit()" role="menuitem">Zaloguj się</a>
 									<a sec:authorize="isAuthenticated()" href="javascript: document.logoutForm.submit()" role="menuitem">Wyloguj sie</a>
 
 									<form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
@@ -299,7 +299,7 @@
 				<div class="footer__widget">
 					<ul>
 
-						<li><a th:href="@{/login/showLoginPage}">Logowanie</a></li>
+						<li><a th:href="@{/login}">Logowanie</a></li>
 						<li><a th:href="@{/registration/showRegistrationForm}" >Rejestracja</a></li>
 					</ul>
 

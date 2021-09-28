@@ -1,9 +1,16 @@
 package com.shop.shop.Entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name="orders")
 public class Order {
 
@@ -26,63 +33,5 @@ public class Order {
     @JoinColumn(name = "id_cart", nullable = false)
     private Cart cart;
 
-    public Order(int id_order, Date orderDate, double amount, User user) {
-        this.id_order = id_order;
-        this.orderDate = orderDate;
-        this.user = user;
-    }
 
-    public Order() {
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Cart getCart() {
-        return cart;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
-    }
-
-    public int getId_order() {
-        return id_order;
-    }
-
-    public void setId_order(int id_order) {
-        this.id_order = id_order;
-    }
-
-    public Date getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(Date orderDate) {
-        this.orderDate = orderDate;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id_order=" + id_order +
-                ", orderDate=" + orderDate +
-                ", status='" + status + '\'' +
-                ", user=" + user +
-                ", cart=" + cart +
-                '}';
-    }
 }

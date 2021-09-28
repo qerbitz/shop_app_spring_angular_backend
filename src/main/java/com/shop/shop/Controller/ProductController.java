@@ -11,16 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.script.Invocable;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import java.io.FileReader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,7 +32,6 @@ public class ProductController {
     UserService userService;
     @Autowired
     CartService cartService;
-
     @Autowired
     OrderService orderService;
 
@@ -72,107 +61,37 @@ public class ProductController {
                              @PathVariable(name = "pageNum") int pageNum, Model model) throws Exception {
 
 
-        List<Category> categoryCheckedList = new ArrayList<>();
+        filterpost_body(listOfSizesChecked, listOfCategoryCheckedint, listOfAgesChecked, listOfSeasonChecked, listOfGenderChecked, price_min, price_max, drop_category, drop_age, drop_gender, drop_season, model, pageSize, pageNum);
 
-        if(listOfAgesChecked!=null){
-            for(int i=0; i<listOfAgesChecked.size(); i++){
-                if(listOfAgesChecked.get(i).equals("2-3 lat")){
-                    listOfAgesChecked.set(i ,"24-36 msc");
-                }
-                if(listOfAgesChecked.get(i).equals("3-4 lat")){
-                    listOfAgesChecked.set(i ,"36-48 msc");
-                }
-                if(listOfAgesChecked.get(i).equals("4-5 lat")){
-                    listOfAgesChecked.set(i ,"48-60 msc");
-                }
-                if(listOfAgesChecked.get(i).equals("5-6 lat")){
-                    listOfAgesChecked.set(i ,"60-72 msc");
-                }
-            }
+        return "product/products";
+    }
+
+
+    @PostMapping("/products/{pageNum}")
+    public String filterpost_unauthenticated(@RequestParam(value = "listOfCategoryChecked", required = false) List<Integer> listOfCategoryCheckedint,
+                             @RequestParam(value = "listOfAgesChecked", required = false) List<String> listOfAgesChecked,
+                             @RequestParam(value = "listOfSeasonChecked", required = false) List<String> listOfSeasonChecked,
+                             @RequestParam(value = "listOfGenderChecked", required = false) List<String> listOfGenderChecked,
+                             @RequestParam(value = "listOfSizesChecked", required = false) List<String> listOfSizesChecked ,
+                             @RequestParam(value = "price_min", required = false) String price_min,
+                             @RequestParam(value = "price_max", required = false) String price_max,
+                             @RequestParam(required = false) String drop_category,
+                             @RequestParam(required = false) String drop_age,
+                             @RequestParam(required = false) String drop_gender,
+                             @RequestParam(required = false) String drop_season,
+                             @RequestParam(value = "pageSize", required = false) String pageSize,
+                             @PathVariable(name = "pageNum") int pageNum, Model model) throws Exception {
+
+
+        //pobranie autentykacji
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+
+        if (!authentication.getName().equals("anonymousUser")) {
+            return "redirect:/product/productList/1";
         }
 
-
-
-        if (listOfCategoryCheckedint != null) {
-            for (int i = 0; i < listOfCategoryCheckedint.size(); i++) {
-                categoryCheckedList.add(categoryService.getCategoryById(listOfCategoryCheckedint.get(i)));
-            }
-        }
-
-        //
-        if(listOfCategoryCheckedint!=null){
-
-            model.addAttribute("sizesList",productService.getListOfSizeAges());
-        }
-
-        //
-
-
-        List<Product> listProducts = productService.getListOfProducts() ;
-
-
-
-        listProducts =  filtering(listOfSizesChecked, listOfCategoryCheckedint, listOfAgesChecked, listOfSeasonChecked, listOfGenderChecked, listProducts, price_min, price_max, drop_category, drop_age, drop_gender, drop_season);
-
-
-        Pageable pageable ;
-        if(pageSize==null){
-            pageable = PageRequest.of(pageNum - 1, Integer.parseInt(help1));
-        }
-        else{
-            pageable = PageRequest.of(pageNum - 1, Integer.parseInt(pageSize));
-            help1=pageSize;
-        }
-
-        int start = (int) pageable.getOffset();
-        int end = (start + pageable.getPageSize()) > listProducts.size() ? listProducts.size() : (start + pageable.getPageSize());
-        Page<Product> pages = new PageImpl<Product>(listProducts.subList(start, end), pageable, listProducts.size());
-
-
-        if(listOfAgesChecked!=null){
-            for(int i=0; i<listOfAgesChecked.size(); i++){
-                if(listOfAgesChecked.get(i).equals("24-36 msc")){
-                    listOfAgesChecked.set(i ,"2-3 lata");
-                }
-                if(listOfAgesChecked.get(i).equals("36-48 msc")){
-                    listOfAgesChecked.set(i ,"3-4 lata");
-                }
-                if(listOfAgesChecked.get(i).equals("48-60 msc")){
-                    listOfAgesChecked.set(i ,"4-5 lat");
-                }
-                if(listOfAgesChecked.get(i).equals("60-72 msc")){
-                    listOfAgesChecked.set(i ,"5-6 lat");
-                }
-            }
-        }
-
-
-        model.addAttribute("currentPage", pageNum);
-        model.addAttribute("totalPages", pages.getTotalPages());
-        model.addAttribute("totalItems", pages.getTotalElements());
-        model.addAttribute("pageItems", pages.getNumberOfElements());
-
-        model.addAttribute("categoryList", categoryService.getListOfCategories());
-        model.addAttribute("agesList", productService.getListOfAges());
-        model.addAttribute("genderList", productService.getListOfGenders());
-        model.addAttribute("seasonList", productService.getListOfSeasons());
-
-        model.addAttribute("categoryCheckedList", categoryCheckedList);
-        model.addAttribute("categoryCheckedListint", listOfCategoryCheckedint);
-        model.addAttribute("agesCheckedList", listOfAgesChecked);
-        model.addAttribute("genderCheckedList", listOfGenderChecked);
-        model.addAttribute("seasonCheckedList", listOfSeasonChecked);
-        model.addAttribute("sizesCheckedList",listOfSizesChecked);
-
-        model.addAttribute("productList", pages.getContent());
-        model.addAttribute("price_min", price_min);
-        model.addAttribute("price_max", price_max);
-
-
-
-
-        showCategoryLi(drop_category, drop_age, drop_gender, drop_season, model);
-
+        filterpost_body(listOfSizesChecked, listOfCategoryCheckedint, listOfAgesChecked, listOfSeasonChecked, listOfGenderChecked, price_min, price_max, drop_category, drop_age, drop_gender, drop_season, model, pageSize, pageNum);
         return "product/products";
     }
 
@@ -194,167 +113,55 @@ public class ProductController {
                               @PathVariable(name = "pageNum") int pageNum, Model model) throws Exception {
 
 
-
-
-        //czyszczenie kategorii
-        if(listOfAgesChecked==null || listOfCategoryCheckedint==null || listOfGenderChecked==null || listOfSeasonChecked==null){
-            pierwsza=0;
-            druga=0;
-            trzecia=0;
-            czwarta=0;
-
-            model.addAttribute("hidden_category", true);
-            model.addAttribute("value_category", 0);
-
-            model.addAttribute("hidden_age", true);
-            model.addAttribute("value_age", 0);
-
-            model.addAttribute("hidden_gender", true);
-            model.addAttribute("value_gender", 0);
-
-            model.addAttribute("hidden_season", true);
-            model.addAttribute("value_season", 0);
-
-            model.addAttribute("hidden_size", true);
-            model.addAttribute("value_size",0);
-        }
-
+        trash(listOfSizesChecked, listOfCategoryCheckedint, listOfAgesChecked, listOfSeasonChecked, listOfGenderChecked, price_min, price_max, drop_category, drop_age, drop_gender, drop_season, model, id_product, pageSize, pageNum);
 
         //pobranie autentykacji
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        //Lista proponowanych w okienku
-        List<Integer> listRecommended = weka.Apriori(id_product);
-
-
-        for(int i=0; i<listRecommended.size(); i++){
-            System.out.println("listka: "+listRecommended);
-        }
-
-        //Lista proponowanych w okienku
-        List<Product> listRecommendedProducts = new ArrayList<>();
-        if (listRecommended != null) {
-            for (int i = 0; i < listRecommended.size(); i++) {
-                listRecommendedProducts.add(productService.getProductById(listRecommended.get(i)));
-            }
-        }
-
-
-        //Wyszukanie wszystkich produktow i podzielenie ich na strony
-
-        Page<Product> page;
-
-        if(pageSize==null){
-             page = productService.listAll(pageNum, Integer.parseInt(help1));
-        }
-        else{
-             page = productService.listAll(pageNum, Integer.parseInt(pageSize));
-             help1=pageSize;
-        }
-        /////
-        if(listOfAgesChecked!=null || listOfCategoryCheckedint!=null || listOfGenderChecked!=null || listOfSeasonChecked!=null){
-            List<Product> listProducts = productService.getListOfProducts();
-
-            if(listOfAgesChecked.size()==0){
-                listOfAgesChecked=null;
-            }
-            if(listOfCategoryCheckedint.size()==0){
-                listOfCategoryCheckedint=null;
-            }
-            if(listOfGenderChecked.size()==0){
-                listOfGenderChecked=null;
-            }
-            if(listOfSeasonChecked.size()==0){
-                listOfSeasonChecked=null;
-            }
-
-
-            listProducts =  filtering(listOfSizesChecked, listOfCategoryCheckedint, listOfAgesChecked, listOfSeasonChecked, listOfGenderChecked, listProducts, price_min, price_max, drop_category, drop_age, drop_gender, drop_season);
-            if(listProducts.size()==0){
-                listProducts=productService.getListOfProducts();
-            }
-
-
-
-            Pageable pageable ;
-            if(pageSize==null){
-                pageable = PageRequest.of(pageNum - 1, Integer.parseInt(help1));
-            }
-            else{
-                pageable = PageRequest.of(pageNum - 1, Integer.parseInt(pageSize));
-                help1=pageSize;
-            }
-
-
-
-            int start = (int) pageable.getOffset();
-            int end = (start + pageable.getPageSize()) > listProducts.size() ? listProducts.size() : (start + pageable.getPageSize());
-            Page<Product> pages = new PageImpl<Product>(listProducts.subList(start, end), pageable, listProducts.size());
-
-
-            model.addAttribute("currentPage", pageNum);
-            model.addAttribute("totalPages", pages.getTotalPages());
-            model.addAttribute("totalItems", pages.getTotalElements());
-            model.addAttribute("pageItems", pages.getNumberOfElements());
-
-
-            List<Product> listProductss = pages.getContent();
-
-            model.addAttribute("productList", listProductss);
-
-        }else{
-            List<Product> listProducts = page.getContent();
-
-            model.addAttribute("currentPage", pageNum);
-            model.addAttribute("totalPages", page.getTotalPages());
-            model.addAttribute("totalItems", page.getTotalElements());
-            model.addAttribute("pageItems", page.getNumberOfElements());
-            model.addAttribute("productList", listProducts);
-        }
-
-
-        model.addAttribute("recommendedList", listRecommendedProducts);
-        model.addAttribute("id_product", id_product);
-        if (id_product != null) {
-            model.addAttribute("purchased_product", productService.getProductById(Integer.parseInt(id_product)));
-        }
-
-
-
-        List<Category> categoryCheckedList = new ArrayList<>();
-
-
-
-        if (listOfCategoryCheckedint != null) {
-            for (int i = 0; i < listOfCategoryCheckedint.size(); i++) {
-                categoryCheckedList.add(categoryService.getCategoryById(listOfCategoryCheckedint.get(i)));
-            }
-        }
-
-        model.addAttribute("categoryCheckedList", categoryCheckedList);
-        model.addAttribute("categoryCheckedListint", listOfCategoryCheckedint);
-        model.addAttribute("agesCheckedList", listOfAgesChecked);
-        model.addAttribute("genderCheckedList", listOfGenderChecked);
-        model.addAttribute("seasonCheckedList", listOfSeasonChecked);
-
-
-        if(authentication.getAuthorities().toString().contains("Manager")){
+        if (authentication.getAuthorities().toString().contains("Manager")) {
             return "redirect:/admin/panel";
         }
+            if (authentication.getName().equals("anonymousUser")) {
+                return "product/products";
+            } else {
+                User user = userService.getUserByUsername(authentication.getName());
+                int cartId = user.getCart().getId_cart();
+                user.setLast_log(convertDate(LocalDate.now()));
+                userService.updateUser(user);
+                model.addAttribute("quantity", cartService.getQuantityofCart(cartId));
+                model.addAttribute("total", cartService.getTotalPrice(user.getCart().getId_cart()));
 
-        if (authentication.getName().equals("anonymousUser")) {
-            return "product/products";
-        } else {
-            User user = userService.getUserByUsername(authentication.getName());
-            int cartId = user.getCart().getId_cart();
-            user.setLast_log(convertDate(LocalDate.now()));
-            userService.updateUser(user);
-            model.addAttribute("quantity", cartService.getQuantityofCart(cartId));
-            model.addAttribute("total", cartService.getTotalPrice(user.getCart().getId_cart()));
+                return "product/products";
+            }
+    }
 
-            return "product/products";
+    @GetMapping("/products/{pageNum}")
+    public String productList_unauthenticated(@RequestParam(value = "listOffCategoryChecked", required = false) List<Integer> listOfCategoryCheckedint,
+                              @RequestParam(value = "listOffAgesChecked", required = false) List<String> listOfAgesChecked,
+                              @RequestParam(value = "listOffSeasonChecked", required = false) List<String> listOfSeasonChecked,
+                              @RequestParam(value = "listOffGenderChecked", required = false) List<String> listOfGenderChecked,
+                              @RequestParam(value = "listOfSizesChecked", required = false) List<String> listOfSizesChecked ,
+                              @RequestParam(required = false) String drop_category,
+                              @RequestParam(required = false) String drop_age,
+                              @RequestParam(required = false) String drop_gender,
+                              @RequestParam(required = false) String drop_season,
+                              @RequestParam(value = "price_min", required = false) String price_min,
+                              @RequestParam(value = "price_max", required = false) String price_max,
+                              @RequestParam(value = "id_product", required = false) String id_product,
+                              @RequestParam(value = "pageSize", required = false) String pageSize,
+                              @PathVariable(name = "pageNum") int pageNum, Model model) throws Exception {
+
+        //pobranie autentykacji
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+
+        if (!authentication.getName().equals("anonymousUser")) {
+            return "redirect:/product/productList/1";
         }
 
+        trash(listOfSizesChecked, listOfCategoryCheckedint, listOfAgesChecked, listOfSeasonChecked, listOfGenderChecked, price_min, price_max, drop_category, drop_age, drop_gender, drop_season, model, id_product, pageSize, pageNum);
+
+        return "product/products";
     }
 
     @RequestMapping("/discountList")
@@ -861,4 +668,242 @@ public class ProductController {
         return java.sql.Date.valueOf(dateToConvert);
     }
 
+
+    void trash(List<String> listOfSizesChecked, List<Integer> listOfCategoryCheckedint, List<String> listOfAgesChecked, List<String> listOfSeasonChecked, List<String> listOfGenderChecked, String price_min, String price_max, String drop_category, String drop_age, String drop_gender, String drop_season, Model model, String id_product, String pageSize, int pageNum) throws Exception {
+        //czyszczenie kategorii
+        if (listOfAgesChecked == null || listOfCategoryCheckedint == null || listOfGenderChecked == null || listOfSeasonChecked == null) {
+            pierwsza = 0;
+            druga = 0;
+            trzecia = 0;
+            czwarta = 0;
+
+            model.addAttribute("hidden_category", true);
+            model.addAttribute("value_category", 0);
+
+            model.addAttribute("hidden_age", true);
+            model.addAttribute("value_age", 0);
+
+            model.addAttribute("hidden_gender", true);
+            model.addAttribute("value_gender", 0);
+
+            model.addAttribute("hidden_season", true);
+            model.addAttribute("value_season", 0);
+
+            model.addAttribute("hidden_size", true);
+            model.addAttribute("value_size", 0);
+        }
+
+        //Lista proponowanych w okienku
+        List<Integer> listRecommended = weka.Apriori(id_product);
+
+
+        for (int i = 0; i < listRecommended.size(); i++) {
+            System.out.println("listka: " + listRecommended);
+        }
+
+        //Lista proponowanych w okienku
+        List<Product> listRecommendedProducts = new ArrayList<>();
+        if (listRecommended != null) {
+            for (int i = 0; i < listRecommended.size(); i++) {
+                listRecommendedProducts.add(productService.getProductById(listRecommended.get(i)));
+            }
+        }
+
+
+        //Wyszukanie wszystkich produktow i podzielenie ich na strony
+
+        Page<Product> page;
+
+        if (pageSize == null) {
+            page = productService.listAll(pageNum, Integer.parseInt(help1));
+        } else {
+            page = productService.listAll(pageNum, Integer.parseInt(pageSize));
+            help1 = pageSize;
+        }
+        /////
+        if (listOfAgesChecked != null || listOfCategoryCheckedint != null || listOfGenderChecked != null || listOfSeasonChecked != null) {
+            List<Product> listProducts = productService.getListOfProducts();
+
+            if (listOfAgesChecked.size() == 0) {
+                listOfAgesChecked = null;
+            }
+            if (listOfCategoryCheckedint.size() == 0) {
+                listOfCategoryCheckedint = null;
+            }
+            if (listOfGenderChecked.size() == 0) {
+                listOfGenderChecked = null;
+            }
+            if (listOfSeasonChecked.size() == 0) {
+                listOfSeasonChecked = null;
+            }
+
+
+            listProducts = filtering(listOfSizesChecked, listOfCategoryCheckedint, listOfAgesChecked, listOfSeasonChecked, listOfGenderChecked, listProducts, price_min, price_max, drop_category, drop_age, drop_gender, drop_season);
+            if (listProducts.size() == 0) {
+                listProducts = productService.getListOfProducts();
+            }
+
+
+            Pageable pageable;
+            if (pageSize == null) {
+                pageable = PageRequest.of(pageNum - 1, Integer.parseInt(help1));
+            } else {
+                pageable = PageRequest.of(pageNum - 1, Integer.parseInt(pageSize));
+                help1 = pageSize;
+            }
+
+
+            int start = (int) pageable.getOffset();
+            int end = (start + pageable.getPageSize()) > listProducts.size() ? listProducts.size() : (start + pageable.getPageSize());
+            Page<Product> pages = new PageImpl<Product>(listProducts.subList(start, end), pageable, listProducts.size());
+
+
+            model.addAttribute("currentPage", pageNum);
+            model.addAttribute("totalPages", pages.getTotalPages());
+            model.addAttribute("totalItems", pages.getTotalElements());
+            model.addAttribute("pageItems", pages.getNumberOfElements());
+
+
+            List<Product> listProductss = pages.getContent();
+
+            model.addAttribute("productList", listProductss);
+
+        } else {
+            List<Product> listProducts = page.getContent();
+
+            model.addAttribute("currentPage", pageNum);
+            model.addAttribute("totalPages", page.getTotalPages());
+            model.addAttribute("totalItems", page.getTotalElements());
+            model.addAttribute("pageItems", page.getNumberOfElements());
+            model.addAttribute("productList", listProducts);
+        }
+
+
+        model.addAttribute("recommendedList", listRecommendedProducts);
+        model.addAttribute("id_product", id_product);
+        if (id_product != null) {
+            model.addAttribute("purchased_product", productService.getProductById(Integer.parseInt(id_product)));
+        }
+
+
+        List<Category> categoryCheckedList = new ArrayList<>();
+
+
+        if (listOfCategoryCheckedint != null) {
+            for (int i = 0; i < listOfCategoryCheckedint.size(); i++) {
+                categoryCheckedList.add(categoryService.getCategoryById(listOfCategoryCheckedint.get(i)));
+            }
+        }
+
+        model.addAttribute("categoryCheckedList", categoryCheckedList);
+        model.addAttribute("categoryCheckedListint", listOfCategoryCheckedint);
+        model.addAttribute("agesCheckedList", listOfAgesChecked);
+        model.addAttribute("genderCheckedList", listOfGenderChecked);
+        model.addAttribute("seasonCheckedList", listOfSeasonChecked);
+
+    }
+
+    void filterpost_body(List<String> listOfSizesChecked, List<Integer> listOfCategoryCheckedint, List<String> listOfAgesChecked, List<String> listOfSeasonChecked, List<String> listOfGenderChecked, String price_min, String price_max, String drop_category, String drop_age, String drop_gender, String drop_season, Model model, String pageSize, int pageNum){
+
+        List<Category> categoryCheckedList = new ArrayList<>();
+
+        if(listOfAgesChecked!=null){
+            for(int i=0; i<listOfAgesChecked.size(); i++){
+                if(listOfAgesChecked.get(i).equals("2-3 lat")){
+                    listOfAgesChecked.set(i ,"24-36 msc");
+                }
+                if(listOfAgesChecked.get(i).equals("3-4 lat")){
+                    listOfAgesChecked.set(i ,"36-48 msc");
+                }
+                if(listOfAgesChecked.get(i).equals("4-5 lat")){
+                    listOfAgesChecked.set(i ,"48-60 msc");
+                }
+                if(listOfAgesChecked.get(i).equals("5-6 lat")){
+                    listOfAgesChecked.set(i ,"60-72 msc");
+                }
+            }
+        }
+
+
+
+        if (listOfCategoryCheckedint != null) {
+            for (int i = 0; i < listOfCategoryCheckedint.size(); i++) {
+                categoryCheckedList.add(categoryService.getCategoryById(listOfCategoryCheckedint.get(i)));
+            }
+        }
+
+        //
+        if(listOfCategoryCheckedint!=null){
+
+            model.addAttribute("sizesList",productService.getListOfSizeAges());
+        }
+
+        //
+
+
+        List<Product> listProducts = productService.getListOfProducts() ;
+
+
+
+        listProducts =  filtering(listOfSizesChecked, listOfCategoryCheckedint, listOfAgesChecked, listOfSeasonChecked, listOfGenderChecked, listProducts, price_min, price_max, drop_category, drop_age, drop_gender, drop_season);
+
+
+        Pageable pageable ;
+        if(pageSize==null){
+            pageable = PageRequest.of(pageNum - 1, Integer.parseInt(help1));
+        }
+        else{
+            pageable = PageRequest.of(pageNum - 1, Integer.parseInt(pageSize));
+            help1=pageSize;
+        }
+
+        int start = (int) pageable.getOffset();
+        int end = (start + pageable.getPageSize()) > listProducts.size() ? listProducts.size() : (start + pageable.getPageSize());
+        Page<Product> pages = new PageImpl<Product>(listProducts.subList(start, end), pageable, listProducts.size());
+
+
+        if(listOfAgesChecked!=null){
+            for(int i=0; i<listOfAgesChecked.size(); i++){
+                if(listOfAgesChecked.get(i).equals("24-36 msc")){
+                    listOfAgesChecked.set(i ,"2-3 lata");
+                }
+                if(listOfAgesChecked.get(i).equals("36-48 msc")){
+                    listOfAgesChecked.set(i ,"3-4 lata");
+                }
+                if(listOfAgesChecked.get(i).equals("48-60 msc")){
+                    listOfAgesChecked.set(i ,"4-5 lat");
+                }
+                if(listOfAgesChecked.get(i).equals("60-72 msc")){
+                    listOfAgesChecked.set(i ,"5-6 lat");
+                }
+            }
+        }
+
+
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("totalPages", pages.getTotalPages());
+        model.addAttribute("totalItems", pages.getTotalElements());
+        model.addAttribute("pageItems", pages.getNumberOfElements());
+
+        model.addAttribute("categoryList", categoryService.getListOfCategories());
+        model.addAttribute("agesList", productService.getListOfAges());
+        model.addAttribute("genderList", productService.getListOfGenders());
+        model.addAttribute("seasonList", productService.getListOfSeasons());
+
+        model.addAttribute("categoryCheckedList", categoryCheckedList);
+        model.addAttribute("categoryCheckedListint", listOfCategoryCheckedint);
+        model.addAttribute("agesCheckedList", listOfAgesChecked);
+        model.addAttribute("genderCheckedList", listOfGenderChecked);
+        model.addAttribute("seasonCheckedList", listOfSeasonChecked);
+        model.addAttribute("sizesCheckedList",listOfSizesChecked);
+
+        model.addAttribute("productList", pages.getContent());
+        model.addAttribute("price_min", price_min);
+        model.addAttribute("price_max", price_max);
+
+
+
+
+        showCategoryLi(drop_category, drop_age, drop_gender, drop_season, model);
+    }
 }

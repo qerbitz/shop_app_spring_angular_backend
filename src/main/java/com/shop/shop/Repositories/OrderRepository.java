@@ -16,7 +16,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     //Zwraca wszystkie zamowienia dla danego uzytkownika w celu sprawdzenia historii zamowien
     List<Order> getAllByUser(User user);
 
-    Optional<Order> getAllByUserOrderByOrderDateDesc(User user);
+    //Optional<com.shop.shop.Order> getAllByUserOrderByOrderDateDesc(User user);
 
     List<Order> findAllByOrderByOrderDateDesc();
 

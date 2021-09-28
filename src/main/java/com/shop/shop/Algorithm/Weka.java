@@ -151,7 +151,7 @@ public class Weka {
                     }
                 }
             }
-            System.out.println(poprzednikText + "=>" + nastepnikText);
+          //  System.out.println(poprzednikText + "=>" + nastepnikText);
         }
 
 

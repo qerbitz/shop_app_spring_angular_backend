@@ -95,7 +95,7 @@ h1{
     <div class="loginbox">
     <img src="/images/avatar.png" class="avatar">
         <h1>Zaloguj się</h1>
-        <form th:action="@{/authenticateTheUser}" th:object="${user}" method="POST" modelAttribute="user">
+        <form th:action="@{/login}" th:object="${user}" method="POST" modelAttribute="user">
         <p th:if="${param.error}" class="error">Login lub hasło jest niepoporawne</p>
             <p th:if="${param.logout}" class="error">Zostałeś wylogowany</p>
             <input type="text" name="username" placeholder="Login" onfocus="this.placeholder=''" onblur="this.placeholder='Login'">
@@ -106,7 +106,7 @@ h1{
             
             
             <a href="/registration/showRegistrationForm">Zarejestruj się</a><br>
-            <a href="/product/productList/1">Strona główna</a><br>
+            <a href="/product/products/1">Strona główna</a><br>
         </form>
         
     </div>

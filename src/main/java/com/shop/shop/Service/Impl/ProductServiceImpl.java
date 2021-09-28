@@ -8,6 +8,8 @@ import com.shop.shop.Repositories.ProducentRepository;
 import com.shop.shop.Repositories.ProductRepository;
 import com.shop.shop.Repositories.Size_AgeRepository;
 import com.shop.shop.Service.Interface.ProductService;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,6 +29,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     Size_AgeRepository size_ageRepository;
+
 
     @Override
     public List<Product> getListofAvaliableProductsByName(String name) {
