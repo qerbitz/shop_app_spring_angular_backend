@@ -3,19 +3,22 @@ jwt:
   secret: '[a-zA-Z0-9._]^+$Guidelines89797987forAlphabeticalArraNumeralsandOtherSymbo$'
 
 
-#server:
- # port: 8081
-#  error:
-#    whitelabel:
-#      enabled: false
+server:
+  port: 8081
+  error:
+    whitelabel:
+      enabled: false
 
 spring:
   datasource:
-    driver-class-name: org.postgresql.Driver
-  #url: jdbc:mysql://localhost:3306/supportportal
-    url: ${JDBC_DATABASE_URL}
-    username: ${JDBC_DATABASE_USERNAME}
-    password: ${JDBC_DATABASE_PASSWORD}
+    #url: jdbc:mysql://localhost:3306/supportportal
+    #username: root
+    #password:
+    url: ec2-52-70-186-184.compute-1.amazonaws.com:5432/d10tbg3k81g9bi
+    username: tppxxefmbngmfb
+    password: b8a1260a3c0e5533132bc03133f95f3bb6a89a579dab5751f15b0117affac688
+
+
   jpa:
     show-sql: true
     hibernate:
