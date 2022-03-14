@@ -14,7 +14,7 @@ spring:
     #url: jdbc:mysql://localhost:3306/supportportal
     #username: root
     #password:
-    url: ec2-52-70-186-184.compute-1.amazonaws.com:5432/d10tbg3k81g9bi
+    url: jdbc:postgresql://ec2-52-70-186-184.compute-1.amazonaws.com:5432/d10tbg3k81g9bi
     username: tppxxefmbngmfb
     password: b8a1260a3c0e5533132bc03133f95f3bb6a89a579dab5751f15b0117affac688
 
