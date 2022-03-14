@@ -10,10 +10,14 @@ server:
 #      enabled: false
 
 spring:
+  #autoconfigure:
+    #exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
   datasource:
-    #url: jdbc:mysql://localhost:3306/supportportal
+    driver-class-name: org.postgresql.Driver
+  #url: jdbc:mysql://localhost:3306/supportportal
+   # url:
     #password:
-    #username: root
+    #username:
   jpa:
     show-sql: true
     hibernate:
@@ -25,6 +29,7 @@ spring:
   cache:
     jcache:
       config: classpath:ehcache.xml
+
 
   #mvc:
    # throw-exception-if-no-handler-found: true
