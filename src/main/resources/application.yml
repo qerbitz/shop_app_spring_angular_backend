@@ -3,11 +3,11 @@ jwt:
   secret: '[a-zA-Z0-9._]^+$Guidelines89797987forAlphabeticalArraNumeralsandOtherSymbo$'
 
 
-server:
-  port: 8081
-  error:
-    whitelabel:
-      enabled: false
+#server:
+  #port: 8081
+  #error:
+  #  whitelabel:
+   #   enabled: false
 
 spring:
   datasource:
