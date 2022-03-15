@@ -12,7 +12,7 @@
 	<artifactId>shop</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>sleepy-brushlands-54388</name>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<description>Engineer Project</description>
 
 	<properties>
