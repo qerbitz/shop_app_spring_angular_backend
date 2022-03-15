@@ -19,7 +19,8 @@ import javax.mail.MessagingException;
 import java.util.List;
 
 
-@CrossOrigin(origins = "https://spring-angular-frontend-shop.herokuapp.com/")
+//@CrossOrigin(origins = "https://spring-angular-frontend-shop.herokuapp.com")
+@CrossOrigin
 @RestController
 @RequestMapping("/product")
 public class ProductController {

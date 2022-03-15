@@ -4,7 +4,7 @@ jwt:
 
 
 #server:
- # port: 8081
+  #port: 8080
   #error:
   #  whitelabel:
    #   enabled: false
@@ -30,6 +30,7 @@ spring:
   cache:
     jcache:
       config: classpath:ehcache.xml
+
 
 
   #mvc:
