@@ -19,7 +19,7 @@ import javax.mail.MessagingException;
 import java.util.List;
 
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://spring-angular-frontend-shop.herokuapp.com/")
 @RestController
 @RequestMapping("/product")
 public class ProductController {
