@@ -1,21 +1,23 @@
 package com.shop.shop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name="orders")
 @Getter
 @Setter
-public class Order {
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Order{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,22 +36,23 @@ public class Order {
     @Column(name="status")
     private String status;
 
-    @Column(name="date_created")
-    @CreationTimestamp
-    private Date dateCreated;
+    @Column(name="order_date")
+    private Date orderDate;
 
-    @Column(name="last_updated")
-    @UpdateTimestamp
-    private Date lastUpdated;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user" ,nullable = false)
+    private User user;
+
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
-    private Set<OrderItem> orderItems = new HashSet<>();
+    private List<OrderItem> orderItems = new ArrayList<>();
 
     public void add(OrderItem item) {
 
         if (item != null) {
             if (orderItems == null) {
-                orderItems = new HashSet<>();
+                orderItems = new ArrayList<>();
             }
 
             orderItems.add(item);

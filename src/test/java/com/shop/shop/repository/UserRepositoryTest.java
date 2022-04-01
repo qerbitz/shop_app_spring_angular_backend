@@ -1,11 +1,16 @@
 package com.shop.shop.repository;
 
+import com.shop.shop.entity.Product;
 import com.shop.shop.entity.User;
+import com.shop.shop.repositories.ProductRepository;
 import com.shop.shop.repositories.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -15,6 +20,9 @@ public class UserRepositoryTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @AfterEach
     void tearDown() {
@@ -61,4 +69,5 @@ public class UserRepositoryTest {
         // then
         assertThat(expected).isTrue();
     }
+
 }

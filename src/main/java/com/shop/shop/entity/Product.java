@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -30,20 +32,33 @@ public class Product implements Serializable {
     @Column(name = "price")
     private Double price;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_category", nullable = false)
     private Category category;
 
     @Column(name = "image")
     private String image;
 
-    @Column(name = "quantity")
-    private int quantity;
-
     @Column(name = "season")
     private String season;
 
     @Column(name = "discount")
     private Double discount;
+
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    private List<Product_Size> product_sizes = new ArrayList<>();
+
+    public void add(Product_Size item) {
+
+        if (item != null) {
+            if (product_sizes == null) {
+                product_sizes = new ArrayList<>();
+            }
+
+            product_sizes.add(item);
+            item.setProduct(this);
+        }
+    }
 
 }

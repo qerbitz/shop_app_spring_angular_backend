@@ -1,6 +1,5 @@
-package com.shop.shop.service.Interface;
+package com.shop.shop.service.Impl;
 
-import com.shop.shop.entity.Purchase;
 import com.sun.mail.smtp.SMTPTransport;
 import org.springframework.stereotype.Service;
 
@@ -27,13 +26,13 @@ public class EmailService {
         smtpTransport.close();
     }
 
-    public void sendTestEmail(Purchase purchase) throws MessagingException {
+    /*public void sendTestEmail(Purchase purchase) throws MessagingException {
         Message message = sendOrder(purchase);
         SMTPTransport smtpTransport = (SMTPTransport) getEmailSession().getTransport(SIMPLE_MAIL_TRANSFER_PROTOCOL);
         smtpTransport.connect(GMAIL_SMTP_SERVER, USERNAME, PASSWORD);
         smtpTransport.sendMessage(message, message.getAllRecipients());
         smtpTransport.close();
-    }
+    }*/
 
     private Message createEmail(String password, String email) throws MessagingException {
         Message message = new MimeMessage(getEmailSession());
@@ -47,7 +46,7 @@ public class EmailService {
         return message;
     }
 
-    private Message sendOrder(Purchase purchase) throws MessagingException{
+    /*private Message sendOrder(Purchase purchase) throws MessagingException{
         Message message = new MimeMessage(getEmailSession());
         message.setFrom(new InternetAddress(FROM_EMAIL));
         message.setRecipients(TO, InternetAddress.parse("johnjanrambo21@gmail.com", false));
@@ -57,7 +56,7 @@ public class EmailService {
         message.setSentDate(new Date());
         message.saveChanges();
         return message;
-    }
+    }*/
 
     private Session getEmailSession() {
         Properties properties = System.getProperties();

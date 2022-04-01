@@ -45,6 +45,7 @@ public class LoginController {
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody User user) throws UserNotFoundException, UsernameExistException, EmailExistException, MessagingException {
+        System.out.println(user);
         User newUser = userService.register(user.getUsername(), user.getPassword(), user.getEmail());
         return new ResponseEntity<>(newUser, OK);
     }
@@ -57,7 +58,7 @@ public class LoginController {
         HttpHeaders headers = new HttpHeaders();
         headers.add(AUTHORIZATION, jwtTokenProvider.generateJwtToken(user));
 
-        //headers.add(JWT_TOKEN_HEADER, jwtTokenProvider.generateJwtToken(user));
+        headers.add(JWT_TOKEN_HEADER, jwtTokenProvider.generateJwtToken(user));
         return headers;
     }
 

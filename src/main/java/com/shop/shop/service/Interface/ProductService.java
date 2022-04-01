@@ -2,46 +2,21 @@ package com.shop.shop.service.Interface;
 
 import com.shop.shop.entity.Product;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-
 public interface ProductService {
 
-    List<Product> getListofAvaliableProductsByName(String name);
 
-    List<String> getListOfSizesBy(int category_id);
+    Page<Product> allProductsList(Pageable pageable, int sort_option);
 
-    String getAgeOfSize(String size);
+    Page<Product> ByNameContainingProductsList(Pageable pageable, String keyword);
 
-    List<String> getListOfGenders();
+    Page<Product> ByCategoryProductsList(Pageable pageable, int id_category, int price, int sort_option, String gender);
 
-    List<Product> getListOfProducts();
-
-    List<Product> getListOfProductsByCategory(int category);
-
-    List<Product> getListOfProductsOrderByNameAsc();
-
-    List<Product> getListOfProductsOrderByNameDesc();
-
-    List<Product> getListOfProductOrderByPriceAsc();
-
-    List<Product> getListOfProductOrderByPriceDesc();
-
-    List<Product> getListOfProductByPriceBetween(int price_min, int price_max);
-
-    List<Product> getListOfProductsByAgeContaining(int nowy_poczatek, int nowy_koniec, List<Product> proponowane, String season, String gender);
-
-    List<Product> getListOfProductsWithDiscount();
-
-    List<String> getListOfAges();
-
-    List<String> getListOfSeasons();
-
-    Page<Product> listAll(int pageNum, int pageSize);
+    List<Product> BySaleProductsList();
 
     Product getProductById(int id);
-
-
 
 }

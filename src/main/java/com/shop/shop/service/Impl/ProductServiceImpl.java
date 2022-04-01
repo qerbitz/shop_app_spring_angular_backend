@@ -1,13 +1,13 @@
 package com.shop.shop.service.Impl;
 
+import com.shop.shop.entity.Category;
 import com.shop.shop.entity.Product;
+import com.shop.shop.repositories.CategoryRepository;
 import com.shop.shop.repositories.ProductRepository;
 import com.shop.shop.service.Interface.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -18,228 +18,8 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     ProductRepository productRepository;
 
-   // @Autowired
-   // Size_AgeRepository size_ageRepository;
-
-
-    /*@Override
-    public List<Product> getListofAvaliableProductsByName(String name) {
-
-        List<Product> AvaliableOtherSizes = new ArrayList<>();
-
-
-        for(Object[] obj: productRepository.findAvaliableProductsByName(name)){
-            int ajdi = Integer.parseInt(String.valueOf(obj[0]));
-            //String size = String.valueOf(obj[1]);
-
-            AvaliableOtherSizes.add(productRepository.getOne(ajdi));
-        }
-
-        for(int i=0;i<AvaliableOtherSizes.size();i++){
-            for(int j=AvaliableOtherSizes.size()-1; j>0; j--){
-                if(AvaliableOtherSizes.get(i).getSize_age().getProduct_size()==AvaliableOtherSizes.get(j).getSize_age().getProduct_size()){
-                    AvaliableOtherSizes.remove(i);
-                }
-            }
-        }
-
-        return AvaliableOtherSizes;
-    }*/
-
-    @Override
-    public List<Product> getListofAvaliableProductsByName(String name) {
-        return null;
-    }
-
-    @Override
-    public List<String> getListOfSizesBy(int category_id) {
-
-        List<String> sizesList = new ArrayList<>();
-
-        for (Object[] obj : productRepository.findAllSizesByCategoryId(category_id)) {
-            String size = String.valueOf(obj[0]);
-            sizesList.add(size);
-        }
-
-        return sizesList;
-    }
-
-    @Override
-    public String getAgeOfSize(String size) {
-        return productRepository.getAgeOfSize(size);
-    }
-
-    @Override
-    public List<String> getListOfGenders() {
-        List<String> genderList = new ArrayList<>();
-        genderList.add("Chłopak");
-        genderList.add("Dziewczynka");
-        return genderList;
-    }
-
-    @Override
-    public List<Product> getListOfProducts() {
-        return productRepository.findAll();
-    }
-
-    @Override
-    public List<Product> getListOfProductsByCategory(int category) {
-        return productRepository.findById_category(category);
-    }
-
-    @Override
-    public List<Product> getListOfProductsOrderByNameAsc() {
-        return productRepository.findAllByOrderByNameAsc();
-    }
-
-    @Override
-    public List<Product> getListOfProductsOrderByNameDesc() {
-        return productRepository.findAllByOrderByNameDesc();
-    }
-
-    @Override
-    public List<Product> getListOfProductOrderByPriceAsc() {
-        return productRepository.findAllByOrderByPriceAsc();
-    }
-
-    @Override
-    public List<Product> getListOfProductOrderByPriceDesc() {
-        return productRepository.findAllByOrderByPriceDesc();
-    }
-
-
-    //Wyswietlanie produktow najpopularniejszych wobed sprzedazy malejaco
-    /*@Override
-    public List<Purchased> getListOfProductsOrderBySaleDesc(int month) {
-        List<Purchased> productList = new ArrayList<>();
-
-        for (Object[] obj : productRepository.findAllBySaleDesc(month)) {
-            String product = String.valueOf(obj[0]);
-            String counter = String.valueOf(obj[1]);
-
-            Purchased purchased = new Purchased();
-            purchased.setProduct(productRepository.getOne(Integer.parseInt(product)));
-            purchased.setPurchased(Integer.parseInt(counter));
-
-            productList.add(purchased);
-        }
-        return productList;
-    }*/
-
-    @Override
-    public List<Product> getListOfProductByPriceBetween(int price_min, int price_max) {
-        return productRepository.findAllByPriceBetween(price_min, price_max);
-    }
-
-    @Override
-    public List<Product> getListOfProductsByAgeContaining(int nowy_poczatek, int nowy_koniec, List<Product> proponowane, String season, String gender) {
-        List<Product> proponowaneNowe = new ArrayList<>();
-
-        Set<Product> productSet1 = new HashSet<>();
-
-        //Pomiedzy 2 a 4 mscem
-        if (isBetween(2, 4, nowy_poczatek) || isBetween(2, 4, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("2-4 msc", season, gender), proponowane);
-        }
-        //Pomiedzy 2 a 6 mscem
-        if (isBetween(2, 6, nowy_poczatek) || isBetween(2, 6, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("0-6 msc", season, gender), proponowane);
-        }
-        //Pomiedzy 4 a 6 mscem
-        if (isBetween(4, 6, nowy_poczatek) || isBetween(4, 6, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("4-6 msc", season, gender), proponowane);
-        }
-        //Pomiedzy 6 a 9 mscem
-        if (isBetween(6, 9, nowy_poczatek) || isBetween(6, 9, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("6-9 msc", season, gender), proponowane);
-        }
-        //Pomiedzy 6 a 12 mscem
-        if (isBetween(6, 12, nowy_poczatek) || isBetween(6, 12, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("6-12 msc", season, gender), proponowane);
-        }
-        //Pomiedzy 9 a 12 mscem
-        if (isBetween(9, 12, nowy_poczatek) || isBetween(9, 12, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("9-12 msc", season, gender), proponowane);
-        }
-        //Pomiedzy 1 a 1,5 rokiem
-        if (isBetween(12, 18, nowy_poczatek) || isBetween(12, 18, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("12-18 msc", season, gender), proponowane);
-        }
-        //Pomiedzy 1 a 2 rokiem
-        if (isBetween(12, 24, nowy_poczatek) || isBetween(12, 24, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("12-24 msc", season, gender), proponowane);
-        }
-        //Pomiedzy 1,5 a 2 rokiem
-        if (isBetween(18, 24, nowy_poczatek) || isBetween(18, 24, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("18-24 msc", season, gender), proponowane);
-        }
-        //Pomiedzy 2 a 3 rokiem
-        if (isBetween(24, 36, nowy_poczatek) || isBetween(24, 36, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("24-36 msc", season, gender), proponowane);
-        }
-        //Pomiedzy 2 a 4 rokiem
-        if (isBetween(24, 48, nowy_poczatek) || isBetween(24, 48, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("24-48 msc", season, gender), proponowane);
-        }
-        //Pomiedzy 3 a 4 rokiem
-        if (isBetween(36, 48, nowy_poczatek) || isBetween(36, 48, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("36-48 msc", season, gender), proponowane);
-        }
-        //Pomiedzy 4 a 5 rokiem
-        if (isBetween(48, 60, nowy_poczatek) || isBetween(48, 60, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("48-60 msc", season, gender), proponowane);
-        }
-        //Pomiedzy 5 a 6 rokiem
-        if (isBetween(60, 72, nowy_poczatek) || isBetween(60, 72, nowy_koniec)) {
-            proponowaneNowe = findLoop(productRepository.findAllByAgeAndSeasonContaining("60-72", season, gender), proponowane);
-        }
-
-        if (!proponowaneNowe.isEmpty()) {
-            proponowaneNowe.removeIf(yourInt -> !productSet1.add(yourInt));
-        }
-
-        return proponowaneNowe;
-    }
-
-    @Override
-    public List<Product> getListOfProductsWithDiscount() {
-        return productRepository.findAllByDiscountAvalaible();
-    }
-
-    @Override
-    public List<String> getListOfAges() {
-        List<String> listOfAges2 = new ArrayList<>();
-
-
-        listOfAges2.add("0-2 msc");
-        listOfAges2.add("2-4 msc");
-        listOfAges2.add("2-6 msc");
-        listOfAges2.add("4-6 msc");
-        listOfAges2.add("6-9 msc");
-        listOfAges2.add("6-12 msc");
-        listOfAges2.add("9-12 msc");
-        listOfAges2.add("12-18 msc");
-        listOfAges2.add("12-24 msc");
-        listOfAges2.add("18-24 msc");
-        listOfAges2.add("2-3 lata");
-        listOfAges2.add("3-4 lata");
-        listOfAges2.add("4-5 lat");
-        listOfAges2.add("5-6 lat");
-
-
-        return listOfAges2;
-    }
-
-    @Override
-    public List<String> getListOfSeasons() {
-        List<String> listofSeasons = new ArrayList<>();
-
-        for(Object[] obj : productRepository.findAllSeasons()){
-            String season = String.valueOf(obj[0]);
-            listofSeasons.add(season);
-        }
-        return listofSeasons;
-    }
+    @Autowired
+    CategoryRepository categoryRepository;
 
     //Wyszukiwanie produktu po id
     @Override
@@ -247,22 +27,86 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.getOne(id);
     }
 
-    public static boolean isBetween(int a, int b, int c) {
-        return b > a ? c >= a && c <= b : c >= b && c < a;
-    }
-
-    public List<Product> findLoop(List<Product> cosiktam, List<Product> proponowane) {
-        proponowane.addAll(cosiktam);
-
-        return proponowane;
-    }
-
     @Cacheable(cacheNames = "allProductsList")
-    public Page<Product> listAll(int pageNum, int pageSize) {
+    public Page<Product> allProductsList(Pageable pageable, int sort_option) {
+        return productRepository.findAll(handlePageResult(pageable,sort_option));
+    }
 
-        Pageable pageable = PageRequest.of(pageNum, pageSize);
+    @Override
+    public Page<Product> ByNameContainingProductsList(Pageable pageable,String keyword) {
+        return productRepository.findByNameContaining(pageable, keyword);
+    }
 
-        return productRepository.findAll(pageable);
+    @Override
+    public Page<Product> ByCategoryProductsList(Pageable pageable, int id_category, int price, int sort_option, String gender) {
+
+
+        List<Product> tako = new ArrayList<>();
+        if(id_category==0){
+            tako = productRepository.findAll(pageable).getContent();
+        }
+        else{
+            tako = productRepository.findById_category(pageable, id_category).getContent();
+        }
+        List<Product> tako2 = new ArrayList<>();
+        if(!gender.equals("all")){
+            for(int i=0; i<tako.size(); i++){
+                if(tako.get(i).getGender().equals(gender)){
+                    tako2.add(tako.get(i));
+                }
+            }
+
+            final int start = (int)pageable.getOffset();
+            final int end = Math.min((start + pageable.getPageSize()), tako2.size());
+            final Page<Product> page = new PageImpl<>(tako2.subList(start, end), pageable, tako2.size());
+
+            return page;
+        }
+        else {
+            return productRepository.findById_category(handlePageResult(pageable, sort_option), id_category);
+        }
+    }
+
+    @Override
+    public List<Product> BySaleProductsList() {
+        List<Product> productList = new ArrayList<>();
+
+        for (Object[] obj : productRepository.findAllBySaleDesc()) {
+            String product_id = String.valueOf(obj[0]);
+            productList.add(productRepository.getOne(Integer.parseInt(product_id)));
+        }
+        return productList;
+    }
+
+    public Pageable handlePageResult(Pageable pageable, int sort_option){
+        //It's just default initialization
+        Pageable page = PageRequest.of(0,15);
+        int page_number = pageable.getPageNumber();
+        int page_size = pageable.getPageSize();
+
+        switch (sort_option){
+            case 0:{
+                page = PageRequest.of(page_number, page_size);
+                break;
+            }
+            case 1:{
+                page = PageRequest.of(page_number, page_size, Sort.by("name").ascending());
+                break;
+            }
+            case 2:{
+                page = PageRequest.of(page_number, page_size, Sort.by("name").descending());
+                break;
+            }
+            case 3:{
+                page = PageRequest.of(page_number, page_size, Sort.by("price").ascending());
+                break;
+            }
+            case 4:{
+                page = PageRequest.of(page_number, page_size, Sort.by("price").descending());
+                break;
+            }
+        }
+        return page;
     }
 
 

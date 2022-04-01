@@ -1,6 +1,6 @@
 package com.shop.shop.listener;
 
-import com.shop.shop.service.Interface.LoginAttemptService;
+import com.shop.shop.service.Impl.LoginAttemptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;

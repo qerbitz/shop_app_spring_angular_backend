@@ -60,9 +60,9 @@ public class LoginControllerTest {
 
         //when
         User user = new User();
-        user.setUsername("test");
-        user.setPassword("test");
-        user.setEmail("test@wp.pl");
+        user.setUsername("testdsa");
+        user.setPassword("testsdadsa");
+        user.setEmail("tdsaaest@wp.pl");
         userService.register(user.getUsername(),user.getPassword(),user.getEmail());
         String jsonUser = mapper.writeValueAsString(user);
 

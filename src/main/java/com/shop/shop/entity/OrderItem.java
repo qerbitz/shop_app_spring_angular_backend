@@ -1,6 +1,10 @@
 package com.shop.shop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,6 +13,8 @@ import javax.persistence.*;
 @Table(name="order_item")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderItem {
 
     @Id
@@ -25,6 +31,7 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
+    @JsonIgnore
     private Order order;
 
 }

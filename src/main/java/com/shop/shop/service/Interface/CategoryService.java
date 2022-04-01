@@ -7,6 +7,4 @@ import java.util.List;
 public interface CategoryService {
 
     List<Category> getListOfCategories();
-
-    Category getCategoryById(int id);
 }

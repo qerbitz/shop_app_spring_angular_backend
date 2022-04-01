@@ -15,8 +15,6 @@ import com.shop.shop.exception.EmailNotFoundException;
 import com.shop.shop.exception.UserNotFoundException;
 import com.shop.shop.exception.UsernameExistException;
 import com.shop.shop.repositories.UserRepository;
-import com.shop.shop.service.Interface.EmailService;
-import com.shop.shop.service.Interface.LoginAttemptService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
