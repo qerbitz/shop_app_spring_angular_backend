@@ -22,7 +22,7 @@ public class Starter {
         this.categoryRepository = categoryRepository;
     }
 
-   /* @EventListener(ApplicationReadyEvent.class)
+    @EventListener(ApplicationReadyEvent.class)
     public void init() {
 
         Category category1 = new Category();
@@ -102,5 +102,5 @@ public class Starter {
         productRepository.save(produkt7);
         productRepository.save(produkt8);
 
-    }*/
+    }
 }
