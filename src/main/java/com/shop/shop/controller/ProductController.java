@@ -17,7 +17,7 @@ import javax.mail.MessagingException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping("/product")
 public class ProductController {
