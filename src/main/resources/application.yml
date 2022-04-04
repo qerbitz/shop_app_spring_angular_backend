@@ -3,8 +3,8 @@ jwt:
   secret: '[a-zA-Z0-9._]^+$Guidelines89797987forAlphabeticalArraNumeralsandOtherSymbo$'
 
 
-#server:
-  #port: 8081
+server:
+  port: 8081
   #error:
   #  whitelabel:
    #   enabled: false
@@ -14,15 +14,15 @@ spring:
    # url: jdbc:mysql://localhost:3306/supportportal
     #username: root
     #password:
-    url: jdbc:postgresql://ec2-52-70-186-184.compute-1.amazonaws.com:5432/d10tbg3k81g9bi
-    username: tppxxefmbngmfb
-    password: b8a1260a3c0e5533132bc03133f95f3bb6a89a579dab5751f15b0117affac688
+    url: jdbc:postgresql://ec2-44-194-4-127.compute-1.amazonaws.com/d5fgmanokcco5k
+    username: dbpoapdjrynpjn
+    password: 3a29c6bf3c561fece273349ae53950043b92ff0b36a1a88a444b252b3fe8b5d9
 
 
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
       hibernate:
         #dialect: org.hibernate.dialect.MySQL8Dialect
