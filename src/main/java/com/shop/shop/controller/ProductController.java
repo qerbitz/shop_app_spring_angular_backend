@@ -67,13 +67,26 @@ public class ProductController {
                                                              @RequestParam("size") int size,
                                                              @RequestParam("category") String category,
                                                              @RequestParam("gender") String gender,
-                                                             @RequestParam(value = "price", required = false, defaultValue = "0") int price,
+                                                             @RequestParam("price") String price,
                                                              @RequestParam("sort_option") int sort_option){
         Pageable pageable = PageRequest.of(page,size);
 
-        System.out.println(price);
         int kategoria = Integer.parseInt(category);
-        Page<Product> products = productService.ByCategoryProductsList(pageable, kategoria, price, sort_option, gender);
+        String[] parts = price.split("-");
+        String part1 = parts[0];
+        String part2 = parts[1];
+
+        int cena_min = Integer.parseInt(part1);
+        int cena_max = Integer.parseInt(part2);
+
+
+        System.out.println(kategoria);
+        System.out.println(gender);
+        System.out.println(cena_min);
+        System.out.println(cena_max);
+
+
+        Page<Product> products = productService.ByCategoryProductsList(pageable, kategoria, cena_min, cena_max, sort_option, gender);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 

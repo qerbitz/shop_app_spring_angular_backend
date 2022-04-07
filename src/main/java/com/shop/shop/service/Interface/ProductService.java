@@ -13,7 +13,7 @@ public interface ProductService {
 
     Page<Product> ByNameContainingProductsList(Pageable pageable, String keyword);
 
-    Page<Product> ByCategoryProductsList(Pageable pageable, int id_category, int price, int sort_option, String gender);
+    Page<Product> ByCategoryProductsList(Pageable pageable, int id_category, int price_min, int price_max, int sort_option, String gender);
 
     List<Product> BySaleProductsList();
 

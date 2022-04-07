@@ -19,7 +19,6 @@ import static com.shop.shop.constant.SecurityConstant.JWT_TOKEN_HEADER;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.*;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/user")
 public class LoginController {

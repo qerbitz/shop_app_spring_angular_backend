@@ -11,6 +11,8 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -38,33 +40,59 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> ByCategoryProductsList(Pageable pageable, int id_category, int price, int sort_option, String gender) {
+    public Page<Product> ByCategoryProductsList(Pageable pageable, int id_category, int price_min, int price_max, int sort_option, String gender) {
 
 
-        List<Product> tako = new ArrayList<>();
+        System.out.println(pageable);
+
+        List<Product> allProductList;
         if(id_category==0){
-            tako = productRepository.findAll(pageable).getContent();
+            allProductList = productRepository.findAll();
         }
         else{
-            tako = productRepository.findById_category(pageable, id_category).getContent();
+            allProductList = productRepository.findById_category(pageable, id_category).getContent();
         }
-        List<Product> tako2 = new ArrayList<>();
-        if(!gender.equals("all")){
-            for(int i=0; i<tako.size(); i++){
-                if(tako.get(i).getGender().equals(gender)){
-                    tako2.add(tako.get(i));
-                }
-            }
+
+        List<Product> finalProductList = null;
+
+
+        Predicate<Product> byPriceMin = p -> p.getPrice() > price_min;
+        Predicate<Product> byPriceMax = person -> person.getPrice() < price_max;
+        Predicate<Product> byGender = person -> person.getGender().equals(gender);
+
+        List<Product> sortedProductList = allProductList.stream()
+                .filter(byPriceMin).filter(byPriceMax).
+                collect(Collectors.toList());
+
+        System.out.println("raz"+sortedProductList.size());
+
+        if(!gender.equals("all")) {
+            List<Product> sortedProductList2 = sortedProductList.stream()
+                    .filter(byGender).collect(Collectors.toList());
+
+
+
+            System.out.println("dwa"+sortedProductList2.size());
+
+            sortedProductList.clear();
+
+            sortedProductList.addAll(sortedProductList2);
+
+        }
+        
+
 
             final int start = (int)pageable.getOffset();
-            final int end = Math.min((start + pageable.getPageSize()), tako2.size());
-            final Page<Product> page = new PageImpl<>(tako2.subList(start, end), pageable, tako2.size());
+            final int end = Math.min((start + pageable.getPageSize()), sortedProductList.size());
+            final Page<Product> page = new PageImpl<>(sortedProductList.subList(start, end), pageable, sortedProductList.size());
 
-            return page;
-        }
-        else {
-            return productRepository.findById_category(handlePageResult(pageable, sort_option), id_category);
-        }
+
+            final Page<Product> page2 = new PageImpl<>(sortedProductList.subList(start, end), handlePageResult(page.getPageable(), sort_option), sortedProductList.size());
+            return page2;
+        //}
+       //// else {
+          //  return productRepository.findById_category(handlePageResult(pageable, sort_option), id_category);
+       // }
     }
 
     @Override

@@ -18,8 +18,8 @@ public class User implements Serializable {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long id;
     private String userId;
-    //private String firstName;
-    //private String lastName;
+    private String firstName;
+    private String lastName;
     private String username;
    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
@@ -33,17 +33,21 @@ public class User implements Serializable {
     private boolean isActive;
     private boolean isNotLocked;
 
+
+   // @OneToOne()
+    //@JoinColumn(name = "id_adress", nullable = false)
+   // private Address address;
+
+
+
     public User(){}
 
     public User(Long id, String userId, String firstName, String lastName, String username, String password, String email, String profileImageUrl, Date lastLoginDate, Date lastLoginDateDisplay, Date joinDate, String role, String[] authorities, boolean isActive, boolean isNotLocked) {
         this.id = id;
         this.userId = userId;
-      //  this.firstName = firstName;
-       // this.lastName = lastName;
         this.username = username;
         this.password = password;
         this.email = email;
-     //   this.profileImageUrl = profileImageUrl;
         this.lastLoginDate = lastLoginDate;
         this.lastLoginDateDisplay = lastLoginDateDisplay;
         this.joinDate = joinDate;

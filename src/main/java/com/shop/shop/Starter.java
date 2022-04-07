@@ -45,60 +45,68 @@ public class Starter {
 
         Product produkt1 = new Product();
         produkt1.setId_product(1);
-        produkt1.setName("buty");
-        produkt1.setPrice(13.69);
+        produkt1.setName("Bluza męska niebieska");
+        produkt1.setPrice(59.99);
         produkt1.setDiscount(1.25);
         produkt1.setGender("Man");
+        produkt1.setImage("../../../assets/blue_blouse.jpg");
         produkt1.setCategory(category1);
 
         Product produkt2 = new Product();
         produkt2.setId_product(2);
-        produkt2.setName("czapka");
-        produkt2.setPrice(132.69);
+        produkt2.setName("Bluza męska czerwona");
+        produkt2.setPrice(129.99);
         produkt2.setGender("Man");
+        produkt2.setImage("../../../assets/red_hoodie.jpg");
         produkt2.setCategory(category1);
 
         Product produkt3 = new Product();
         produkt3.setId_product(3);
-        produkt3.setName("arafatka");
-        produkt3.setPrice(135.69);
-        produkt3.setGender("Woman");
+        produkt3.setName("Szara bluza");
+        produkt3.setPrice(65.99);
+        produkt3.setGender("Man");
+        produkt3.setImage("../../../assets/grey_blous.jpg");
         produkt3.setCategory(category1);
 
         Product produkt4 = new Product();
         produkt4.setId_product(4);
-        produkt4.setName("żeżucha");
-        produkt4.setPrice(12.61);
+        produkt4.setName("Buty");
+        produkt4.setPrice(199.99);
         produkt4.setDiscount(1.30);
-        produkt4.setGender("Man");
+        produkt4.setGender("Child");
+        produkt4.setImage("../../../assets/white_shoe.jpg");
         produkt4.setCategory(category2);
 
         Product produkt5 = new Product();
         produkt5.setId_product(5);
-        produkt5.setName("grzebyk");
-        produkt5.setPrice(15.69);
-        produkt5.setGender("Woman");
+        produkt5.setName("Bluza męska");
+        produkt5.setPrice(85.69);
+        produkt5.setGender("Man");
+        produkt5.setImage("../../../assets/dark_blouse.jpg");
         produkt5.setCategory(category2);
 
         Product produkt6 = new Product();
         produkt6.setId_product(6);
-        produkt6.setName("szklanka");
-        produkt6.setPrice(15.69);
+        produkt6.setName("Buty dziecięce");
+        produkt6.setPrice(159.99);
         produkt6.setGender("Child");
+        produkt6.setImage("../../../assets/buty_szare_dzieciece.jpg");
         produkt6.setCategory(category3);
 
         Product produkt7 = new Product();
         produkt7.setId_product(7);
-        produkt7.setName("tłok");
-        produkt7.setPrice(152.69);
+        produkt7.setName("Buty treningowe damskie");
+        produkt7.setPrice(189.99);
         produkt7.setGender("Woman");
+        produkt7.setImage("../../../assets/buty_rozowe_woman.jpg");
         produkt7.setCategory(category2);
 
         Product produkt8 = new Product();
         produkt8.setId_product(8);
-        produkt8.setName("zatrzask");
-        produkt8.setPrice(29.99);
-        produkt7.setGender("Man");
+        produkt8.setName("Obcasy niebieskie");
+        produkt8.setPrice(229.99);
+        produkt8.setGender("Woman");
+        produkt8.setImage("../../../assets/obcas_blue_jpg.jpg");
         produkt8.setCategory(category3);
 
         productRepository.save(produkt1);
