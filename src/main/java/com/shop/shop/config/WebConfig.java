@@ -34,7 +34,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*")
-                .allowedOrigins("*");
+                .allowedOrigins("https://spring-angular-frontend-shop.herokuapp.com");
     }
 
 }
