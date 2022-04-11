@@ -3,17 +3,17 @@ jwt:
   secret: '[a-zA-Z0-9._]^+$Guidelines89797987forAlphabeticalArraNumeralsandOtherSymbo$'
 
 
-server:
-  port: 8081
+#server:
+  #port: 8081
   #error:
   #  whitelabel:
    #   enabled: false
 
 spring:
   datasource:
-    #url: jdbc:mysql://localhost:3306/supportportal
-    #username: root
-    #password:
+   # url: jdbc:mysql://localhost:3306/supportportal
+   # username: root
+   # password:
     url: jdbc:postgresql://ec2-44-194-4-127.compute-1.amazonaws.com/d5fgmanokcco5k
     username: dbpoapdjrynpjn
     password: 3a29c6bf3c561fece273349ae53950043b92ff0b36a1a88a444b252b3fe8b5d9
@@ -30,8 +30,6 @@ spring:
   cache:
     jcache:
       config: classpath:ehcache.xml
-
-
 
 
   #mvc:
