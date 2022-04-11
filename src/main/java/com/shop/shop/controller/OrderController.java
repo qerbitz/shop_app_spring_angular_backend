@@ -32,7 +32,7 @@ public class OrderController {
 
     @PostMapping("/placeOrder")
     public ResponseEntity<Order> saveOrder(@RequestBody Order order){
-        order.setUser(userService.findUserByUsername("test2503"));
+        //order.setUser(userService.findUserByUsername("test2503"));
         orderService.addNewOrder(order);
 
         return new ResponseEntity<>(HttpStatus.OK);

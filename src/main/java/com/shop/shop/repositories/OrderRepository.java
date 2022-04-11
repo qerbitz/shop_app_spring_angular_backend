@@ -11,7 +11,7 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
     //Zwraca wszystkie zamowienia dla danego uzytkownika w celu sprawdzenia historii zamowien
-    List<Order> getAllByUserOrderByOrderDateDesc(User user);
+    //List<Order> getAllByUserOrderByOrderDateDesc(User user);
 
     Order getOrderByOrderTrackingNumber(String orderTrackingNumber);
 

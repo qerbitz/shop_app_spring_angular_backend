@@ -53,7 +53,7 @@ class UserServiceImplTest {
         user.setActive(true);
         user.setAuthorities(new String[]{"JaneDoe"});
         user.setEmail("jane.doe@example.org");
-        user.setId(123L);
+        //user.setId(123L);
         LocalDateTime atStartOfDayResult = LocalDate.of(1970, 1, 1).atStartOfDay();
         user.setJoinDate(Date.from(atStartOfDayResult.atZone(ZoneId.of("UTC")).toInstant()));
         LocalDateTime atStartOfDayResult1 = LocalDate.of(1970, 1, 1).atStartOfDay();
@@ -70,7 +70,7 @@ class UserServiceImplTest {
         user1.setActive(true);
         user1.setAuthorities(new String[]{"JaneDoe"});
         user1.setEmail("jane.doe@example.org");
-        user1.setId(123L);
+       // user1.setId(123L);
         LocalDateTime atStartOfDayResult3 = LocalDate.of(1970, 1, 1).atStartOfDay();
         user1.setJoinDate(Date.from(atStartOfDayResult3.atZone(ZoneId.of("UTC")).toInstant()));
         LocalDateTime atStartOfDayResult4 = LocalDate.of(1970, 1, 1).atStartOfDay();
@@ -99,7 +99,7 @@ class UserServiceImplTest {
         user.setActive(true);
         user.setAuthorities(new String[]{"JaneDoe"});
         user.setEmail("jane.doe@example.org");
-        user.setId(123L);
+        //user.setId(123L);
         LocalDateTime atStartOfDayResult = LocalDate.of(1970, 1, 1).atStartOfDay();
         user.setJoinDate(Date.from(atStartOfDayResult.atZone(ZoneId.of("UTC")).toInstant()));
         LocalDateTime atStartOfDayResult1 = LocalDate.of(1970, 1, 1).atStartOfDay();
@@ -116,7 +116,7 @@ class UserServiceImplTest {
         user1.setActive(true);
         user1.setAuthorities(new String[]{"JaneDoe"});
         user1.setEmail("jane.doe@example.org");
-        user1.setId(123L);
+        //user1.setId(123L);
         LocalDateTime atStartOfDayResult3 = LocalDate.of(1970, 1, 1).atStartOfDay();
         user1.setJoinDate(Date.from(atStartOfDayResult3.atZone(ZoneId.of("UTC")).toInstant()));
         LocalDateTime atStartOfDayResult4 = LocalDate.of(1970, 1, 1).atStartOfDay();
@@ -142,7 +142,7 @@ class UserServiceImplTest {
         user.setActive(true);
         user.setAuthorities(new String[]{"JaneDoe"});
         user.setEmail("jane.doe@example.org");
-        user.setId(123L);
+        //user.setId(123L);
         LocalDateTime atStartOfDayResult = LocalDate.of(1970, 1, 1).atStartOfDay();
         user.setJoinDate(Date.from(atStartOfDayResult.atZone(ZoneId.of("UTC")).toInstant()));
         LocalDateTime atStartOfDayResult1 = LocalDate.of(1970, 1, 1).atStartOfDay();
@@ -168,7 +168,7 @@ class UserServiceImplTest {
         user.setActive(true);
         user.setAuthorities(new String[]{"JaneDoe"});
         user.setEmail("jane.doe@example.org");
-        user.setId(123L);
+       // user.setId(123L);
         LocalDateTime atStartOfDayResult = LocalDate.of(1970, 1, 1).atStartOfDay();
         user.setJoinDate(Date.from(atStartOfDayResult.atZone(ZoneId.of("UTC")).toInstant()));
         LocalDateTime atStartOfDayResult1 = LocalDate.of(1970, 1, 1).atStartOfDay();
@@ -198,7 +198,7 @@ class UserServiceImplTest {
         user.setActive(true);
         user.setAuthorities(new String[]{"JaneDoe"});
         user.setEmail("jane.doe@example.org");
-        user.setId(123L);
+       // user.setId(123L);
         LocalDateTime atStartOfDayResult = LocalDate.of(1970, 1, 1).atStartOfDay();
         user.setJoinDate(Date.from(atStartOfDayResult.atZone(ZoneId.of("UTC")).toInstant()));
         LocalDateTime atStartOfDayResult1 = LocalDate.of(1970, 1, 1).atStartOfDay();
@@ -228,7 +228,7 @@ class UserServiceImplTest {
         user.setActive(true);
         user.setAuthorities(new String[]{"JaneDoe"});
         user.setEmail("jane.doe@example.org");
-        user.setId(123L);
+       // user.setId(123L);
         LocalDateTime atStartOfDayResult = LocalDate.of(1970, 1, 1).atStartOfDay();
         user.setJoinDate(Date.from(atStartOfDayResult.atZone(ZoneId.of("UTC")).toInstant()));
         LocalDateTime atStartOfDayResult1 = LocalDate.of(1970, 1, 1).atStartOfDay();
@@ -245,7 +245,7 @@ class UserServiceImplTest {
         user1.setActive(true);
         user1.setAuthorities(new String[]{"JaneDoe"});
         user1.setEmail("jane.doe@example.org");
-        user1.setId(123L);
+        //user1.setId(123L);
         LocalDateTime atStartOfDayResult3 = LocalDate.of(1970, 1, 1).atStartOfDay();
         user1.setJoinDate(Date.from(atStartOfDayResult3.atZone(ZoneId.of("UTC")).toInstant()));
         LocalDateTime atStartOfDayResult4 = LocalDate.of(1970, 1, 1).atStartOfDay();

@@ -34,7 +34,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getAllOrdersByUser(User user) {
-        return orderRepository.getAllByUserOrderByOrderDateDesc(user);
+       // return orderRepository.getAllByUserOrderByOrderDateDesc(user);
+        return null;
     }
 
     @Override
