@@ -4,7 +4,7 @@ jwt:
 
 
 #server:
- # port: 8081
+  #port: 8081
   #error:
   #  whitelabel:
    #   enabled: false
@@ -15,9 +15,9 @@ spring:
     #username: root
     #password:
 
-    url: jdbc:postgresql://ec2-34-207-12-160.compute-1.amazonaws.com/dc04vm14j6k5fv
-    username: sqxnspakehkgff
-    password: ebc086f6e00bc0b601601ea10fe12f727d0726004a492a12669122293a765751
+    url: jdbc:postgresql://ec2-34-207-12-160.compute-1.amazonaws.com/d4lijeo8ueg51b
+    username: diwlqcchrwrgfb
+    password: c7869a8472f27eed12e585e12e715343d8547b3c20bfa873633fd3375ef27a4d
     #data: classpath:/create.sql
 
 
