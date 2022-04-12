@@ -22,7 +22,7 @@ public class User implements Serializable {
     //@Column(nullable = false, updatable = false)
     //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "id")
-    private int id;
+    private Long id;
     private String userId;
     private String firstName;
     private String lastName;

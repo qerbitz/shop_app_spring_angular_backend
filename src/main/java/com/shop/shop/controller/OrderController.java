@@ -9,6 +9,7 @@ import com.shop.shop.service.Interface.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,17 +23,20 @@ public class OrderController {
 
     private UserService userService;
     private OrderService orderService;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    public OrderController(UserService userService, OrderService orderService) {
+    public OrderController(UserService userService, AuthenticationManager authenticationManager, OrderService orderService) {
         this.userService = userService;
+        this.authenticationManager = authenticationManager;
         this.orderService = orderService;
     }
 
 
     @PostMapping("/placeOrder")
     public ResponseEntity<Order> saveOrder(@RequestBody Order order){
-        //order.setUser(userService.findUserByUsername("test2503"));
+        System.out.println(order.getUser());
+        order.setUser(userService.findUserByUsername("test2503"));
         orderService.addNewOrder(order);
 
         return new ResponseEntity<>(HttpStatus.OK);
