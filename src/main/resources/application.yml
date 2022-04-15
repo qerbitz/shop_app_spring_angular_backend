@@ -3,11 +3,11 @@ jwt:
   secret: '[a-zA-Z0-9._]^+$Guidelines89797987forAlphabeticalArraNumeralsandOtherSymbo$'
 
 
-#server:
-  #port: 8081
-  #error:
-  #  whitelabel:
-   #   enabled: false
+    #server:
+    #port: 8081
+    #error:
+    #  whitelabel:
+  #   enabled: false
 
 spring:
   datasource:
@@ -15,9 +15,9 @@ spring:
     #username: root
     #password:
 
-    url: jdbc:postgresql://ec2-34-207-12-160.compute-1.amazonaws.com/d4lijeo8ueg51b
-    username: diwlqcchrwrgfb
-    password: c7869a8472f27eed12e585e12e715343d8547b3c20bfa873633fd3375ef27a4d
+    url: jdbc:postgresql://ec2-54-172-175-251.compute-1.amazonaws.com/d7gsmpbma7jor
+    username: aaetzyzfzzyfsp
+    password: 239b4d357f6ef2f1ea9815abae13926d8a762fde0a47898206e4a5a6d2b71bb1
     #data: classpath:/create.sql
 
 
@@ -27,7 +27,7 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        #dialect: org.hibernate.dialect.MySQL8Dialect
+      #dialect: org.hibernate.dialect.MySQL8Dialect
       dialect: org.hibernate.dialect.PostgreSQLDialect
   cache:
     jcache:
@@ -36,8 +36,8 @@ spring:
 
 
 
-  #mvc:
-   # throw-exception-if-no-handler-found: true
-  #resources:
-   # add-mappings: false
+    #mvc:
+    # throw-exception-if-no-handler-found: true
+    #resources:
+    # add-mappings: false
 
