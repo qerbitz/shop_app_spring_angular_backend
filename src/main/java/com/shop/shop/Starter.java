@@ -9,6 +9,9 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Component
 public class Starter {
@@ -39,6 +42,15 @@ public class Starter {
         category3.setId_category(3);
         category3.setName("trzecia");
 
+
+        List<Category> listka12 = new ArrayList<>();
+        listka12.add(category1);
+        listka12.add(category2);
+
+        List<Category> listka3 = new ArrayList<>();
+        listka3.add(category1);
+        listka3.add(category2);
+
         categoryRepository.save(category1);
         categoryRepository.save(category2);
         categoryRepository.save(category3);
@@ -50,7 +62,7 @@ public class Starter {
         produkt1.setDiscount(1.25);
         produkt1.setGender("Man");
         produkt1.setImage("../../../assets/blue_blouse.jpg");
-        produkt1.setCategory(category1);
+        produkt1.setCategories(listka12);
 
         Product produkt2 = new Product();
         produkt2.setId_product(2);
@@ -58,7 +70,7 @@ public class Starter {
         produkt2.setPrice(129.99);
         produkt2.setGender("Man");
         produkt2.setImage("../../../assets/red_hoodie.jpg");
-        produkt2.setCategory(category1);
+        produkt2.setCategories(listka3);
 
         Product produkt3 = new Product();
         produkt3.setId_product(3);
@@ -66,7 +78,7 @@ public class Starter {
         produkt3.setPrice(65.99);
         produkt3.setGender("Man");
         produkt3.setImage("../../../assets/grey_blous.jpg");
-        produkt3.setCategory(category1);
+        produkt3.setCategories(listka12);
 
         Product produkt4 = new Product();
         produkt4.setId_product(4);
@@ -75,7 +87,7 @@ public class Starter {
         produkt4.setDiscount(1.30);
         produkt4.setGender("Child");
         produkt4.setImage("../../../assets/white_shoe.jpg");
-        produkt4.setCategory(category2);
+        //produkt4.setCategory(category2);
 
         Product produkt5 = new Product();
         produkt5.setId_product(5);
@@ -83,7 +95,7 @@ public class Starter {
         produkt5.setPrice(85.69);
         produkt5.setGender("Man");
         produkt5.setImage("../../../assets/dark_blouse.jpg");
-        produkt5.setCategory(category2);
+        //produkt5.setCategory(category2);
 
         Product produkt6 = new Product();
         produkt6.setId_product(6);
@@ -91,7 +103,7 @@ public class Starter {
         produkt6.setPrice(159.99);
         produkt6.setGender("Child");
         produkt6.setImage("../../../assets/buty_szare_dzieciece.jpg");
-        produkt6.setCategory(category3);
+       // produkt6.setCategory(category3);
 
         Product produkt7 = new Product();
         produkt7.setId_product(7);
@@ -99,7 +111,7 @@ public class Starter {
         produkt7.setPrice(189.99);
         produkt7.setGender("Woman");
         produkt7.setImage("../../../assets/buty_rozowe_woman.jpg");
-        produkt7.setCategory(category2);
+        //produkt7.setCategory(category2);
 
         Product produkt8 = new Product();
         produkt8.setId_product(8);
@@ -107,7 +119,7 @@ public class Starter {
         produkt8.setPrice(229.99);
         produkt8.setGender("Woman");
         produkt8.setImage("../../../assets/obcas_blue_jpg.jpg");
-        produkt8.setCategory(category3);
+        //produkt8.setCategory(category3);
 
         productRepository.save(produkt1);
         productRepository.save(produkt2);

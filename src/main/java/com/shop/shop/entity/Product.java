@@ -15,39 +15,30 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="product")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Product implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_product")
     private int id_product;
 
-    @Column(name = "name")
     private String name;
-
-    @Column(name = "gender")
     private String gender;
-
-    @Column(name = "price")
     private Double price;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "id_category", nullable = false)
-    private Category category;
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            joinColumns = { @JoinColumn(name = "product_id")},
+            inverseJoinColumns = { @JoinColumn(name = "category_id")}
+    )
+    private List<Category> categories = new ArrayList<>();
 
-    @Column(name = "image")
     private String image;
-
-    @Column(name = "season")
     private String season;
-
-    @Column(name = "discount")
     private Double discount;
 
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<Product_Size> product_sizes = new ArrayList<>();
 
     public void add(Product_Size item) {

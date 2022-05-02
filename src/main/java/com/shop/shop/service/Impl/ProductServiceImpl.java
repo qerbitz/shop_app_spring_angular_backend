@@ -29,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.getOne(id);
     }
 
-    @Cacheable(cacheNames = "allProductsList")
+   // @Cacheable(cacheNames = "allProductsList")
     public Page<Product> allProductsList(Pageable pageable, int sort_option) {
         return productRepository.findAll(handlePageResult(pageable,sort_option));
     }

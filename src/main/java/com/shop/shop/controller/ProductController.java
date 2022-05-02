@@ -1,5 +1,7 @@
 package com.shop.shop.controller;
 
+import com.shop.shop.Dto.CategoryDto;
+import com.shop.shop.Dto.ProductDto;
 import com.shop.shop.entity.*;
 import com.shop.shop.repositories.ProductRepository;
 import com.shop.shop.response.PurchaseResponse;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.shop.shop.mapper.ReadDtoMapper.*;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -45,12 +49,22 @@ public class ProductController {
     //private AuthenticationManager authenticationManager;
 
     @GetMapping("/productList")
-    public ResponseEntity<Page<Product>> productList(@RequestParam("page") int page,
+    public ResponseEntity<Page<ProductDto>> productList(@RequestParam("page") int page,
                                                      @RequestParam("size") int size,
                                                      @RequestParam("sort_option") int sort_option){
+
         Pageable pageable = PageRequest.of(page,size);
         Page<Product> products = productService.allProductsList(pageable, sort_option);
-        return new ResponseEntity<>(products, HttpStatus.OK);
+
+        List<ProductDto> listka2 = mapProductToProductReadDtoList(productService.allProductsList(pageable, sort_option).getContent());
+
+
+        final int start = (int)pageable.getOffset();
+        final int end = Math.min((start + pageable.getPageSize()), listka2.size());
+        final Page<ProductDto> page2 = new PageImpl<>(listka2.subList(start, end), pageable, listka2.size());
+
+
+        return new ResponseEntity<>(page2, HttpStatus.OK);
     }
 
     @GetMapping("/searchList")
@@ -97,9 +111,9 @@ public class ProductController {
     }
 
     @GetMapping("/categoryList")
-    public ResponseEntity<List<Category>> categoryList(){
+    public ResponseEntity<List<CategoryDto>> categoryList(){
         List<Category> categories = categoryService.getListOfCategories();
-        return new ResponseEntity<>(categories, HttpStatus.OK);
+        return new ResponseEntity<>(mapCategoryToPostReadDtoList(categories), HttpStatus.OK);
     }
 
     @GetMapping("/viewProduct/{productId}")
@@ -108,6 +122,5 @@ public class ProductController {
         Product product = productService.getProductById(productId);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
-
 
 }
