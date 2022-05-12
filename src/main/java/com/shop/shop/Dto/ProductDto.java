@@ -11,13 +11,15 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ProductDto {
 
+    private int id_product;
     public String name;
     private Double price;
     private String image;
 
 
     public static final class ProductDtoBuilder {
-        private String name;
+        private int id_product;
+        public String name;
         private Double price;
         private String image;
 
@@ -26,6 +28,11 @@ public class ProductDto {
 
         public static ProductDtoBuilder aProductDto() {
             return new ProductDtoBuilder();
+        }
+
+        public ProductDtoBuilder withId(int id) {
+            this.id_product = id;
+            return this;
         }
 
         public ProductDtoBuilder withName(String name) {
@@ -43,14 +50,13 @@ public class ProductDto {
             return this;
         }
 
-
-
         public ProductDto build() {
-            ProductDto postReadDto = new ProductDto();
-            postReadDto.name = this.name;
-            postReadDto.price = this.price;
-            postReadDto.image = this.image;
-            return postReadDto;
+            ProductDto productDto = new ProductDto();
+            productDto.setId_product(this.id_product);
+            productDto.setName(this.name);
+            productDto.setPrice(this.price);
+            productDto.setImage(this.image);
+            return productDto;
         }
     }
 }

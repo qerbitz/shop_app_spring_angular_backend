@@ -15,4 +15,6 @@ public interface UserService {
     User findUserByEmail(String email);
 
     void resetPassword(String email) throws MessagingException, EmailNotFoundException;
+
+
 }

@@ -8,6 +8,7 @@ import com.shop.shop.response.PurchaseResponse;
 import com.shop.shop.service.Impl.EmailService;
 import com.shop.shop.service.Interface.*;
 import com.shop.shop.utility.JWTTokenProvider;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,10 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.mail.MessagingException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import static com.shop.shop.mapper.ReadDtoMapper.*;
@@ -34,6 +38,7 @@ public class ProductController {
     private UserService userService;
     private EmailService emailService;
     private JWTTokenProvider jwtTokenProvider;
+
 
     @Autowired
     public ProductController(ProductService productService, ProductRepository productRepository, CategoryService categoryService, UserService userService, EmailService emailService, JWTTokenProvider jwtTokenProvider) {
@@ -54,17 +59,10 @@ public class ProductController {
                                                      @RequestParam("sort_option") int sort_option){
 
         Pageable pageable = PageRequest.of(page,size);
-        Page<Product> products = productService.allProductsList(pageable, sort_option);
 
-        List<ProductDto> listka2 = mapProductToProductReadDtoList(productService.allProductsList(pageable, sort_option).getContent());
+        List<ProductDto> finalList = mapProductToProductReadDtoList(productService.allProductsList(pageable, sort_option).getContent());
 
-
-        final int start = (int)pageable.getOffset();
-        final int end = Math.min((start + pageable.getPageSize()), listka2.size());
-        final Page<ProductDto> page2 = new PageImpl<>(listka2.subList(start, end), pageable, listka2.size());
-
-
-        return new ResponseEntity<>(page2, HttpStatus.OK);
+        return new ResponseEntity<>(convertToPage(pageable, finalList), HttpStatus.OK);
     }
 
     @GetMapping("/searchList")
@@ -105,22 +103,31 @@ public class ProductController {
     }
 
     @GetMapping("/BySaleProductList")
-    public ResponseEntity<List<Product>> BySaleProductList(){
+    public ResponseEntity<List<ProductDto>> BySaleProductList(){
+
         List<Product> productList = productService.BySaleProductsList();
-        return new ResponseEntity<>(productList, HttpStatus.OK);
+        return new ResponseEntity<>(mapProductToProductReadDtoList(productList), HttpStatus.OK);
     }
 
     @GetMapping("/categoryList")
     public ResponseEntity<List<CategoryDto>> categoryList(){
         List<Category> categories = categoryService.getListOfCategories();
-        return new ResponseEntity<>(mapCategoryToPostReadDtoList(categories), HttpStatus.OK);
+        return new ResponseEntity<>(mapCategoryToCategoryReadDtoList(categories), HttpStatus.OK);
     }
 
     @GetMapping("/viewProduct/{productId}")
-    public ResponseEntity<Product> viewProduct(@PathVariable int productId) {
+    public ResponseEntity<ProductDto> viewProduct(@PathVariable int productId) {
 
         Product product = productService.getProductById(productId);
-        return new ResponseEntity<>(product, HttpStatus.OK);
+        return new ResponseEntity<>(mapProductToDto(product), HttpStatus.OK);
+    }
+
+    public Page<ProductDto> convertToPage(Pageable pageable, List<ProductDto> productList){
+        final int start = (int)pageable.getOffset();
+        final int end = Math.min((start + pageable.getPageSize()), productList.size());
+        final Page<ProductDto> page2 = new PageImpl<>(productList.subList(start, end), pageable, productList.size());
+
+        return page2;
     }
 
 }

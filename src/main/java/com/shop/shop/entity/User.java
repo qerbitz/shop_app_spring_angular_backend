@@ -19,7 +19,6 @@ import java.util.Date;
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    //@Column(nullable = false, updatable = false)
     //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "id")
     private Long id;
@@ -39,10 +38,8 @@ public class User implements Serializable {
     private boolean isActive;
     private boolean isNotLocked;
 
-
-   // @OneToOne()
-    //@JoinColumn(name = "id_adress", nullable = false)
-   // private Address address;
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    private Address address;
 
 
 }
