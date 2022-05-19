@@ -1,49 +1,26 @@
 package com.shop.shop.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.shop.shop.entity.Address;
 import com.shop.shop.entity.User;
-import com.shop.shop.exception.EmailExistException;
-import com.shop.shop.exception.UserNotFoundException;
-import com.shop.shop.exception.UsernameExistException;
 import com.shop.shop.repositories.UserRepository;
 import com.shop.shop.service.Interface.UserService;
-import com.shop.shop.utility.JWTTokenProvider;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.TestingAuthenticationToken;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.util.List;
 
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -55,11 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 public class LoginControllerTest {
 
-   // @MockBean
-   // private AuthenticationManager authenticationManager;
-
-   // @MockBean
-  //  private JWTTokenProvider jWTTokenProvider;
 
     @Autowired
     private MockMvc mockMvc;
@@ -191,7 +163,6 @@ public class LoginControllerTest {
     }
 
 
-
     @Test
     void shouldLockAccountsAfterTooManyTry() throws Exception {
 
@@ -207,42 +178,27 @@ public class LoginControllerTest {
         String jsonUser = mapper.writeValueAsString(user);
 
         //when
-        mockMvc.perform(post("/user/login").header("Origin", "*")
-                        .content(jsonUser).contentType(MediaType.APPLICATION_JSON)
-                )
-                .andDo(print())
-                .andExpect(status().is(400))
-                .andReturn();
+        repeatBruteForceLoginWithBadCredentials(jsonUser);
 
-         mockMvc.perform(post("/user/login").header("Origin", "*")
-                        .content(jsonUser).contentType(MediaType.APPLICATION_JSON)
-                )
-                .andDo(print())
-                .andExpect(status().is(400))
-                .andReturn();
-
-        mockMvc.perform(post("/user/login").header("Origin", "*")
-                        .content(jsonUser).contentType(MediaType.APPLICATION_JSON)
-                )
-                .andDo(print())
-                .andExpect(status().is(400))
-                .andReturn();
-
-        mockMvc.perform(post("/user/login").header("Origin", "*")
-                        .content(jsonUser).contentType(MediaType.APPLICATION_JSON)
-                )
-                .andDo(print())
-                .andExpect(status().is(400))
-                .andReturn();
-
-         //then
+        //then
         mockMvc.perform(post("/user/login").header("Origin", "*")
                         .content(jsonUser).contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
                 .andExpect(status().is(401))
                 .andReturn();
+    }
 
 
+    void repeatBruteForceLoginWithBadCredentials(String jsonUser) throws Exception {
+
+        for (int i = 0; i < 50; i++) {
+            mockMvc.perform(post("/user/login").header("Origin", "*")
+                            .content(jsonUser).contentType(MediaType.APPLICATION_JSON)
+                    )
+                    .andDo(print())
+                    .andExpect(status().is(400))
+                    .andReturn();
+        }
     }
 }
