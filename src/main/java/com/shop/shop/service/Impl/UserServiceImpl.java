@@ -1,6 +1,7 @@
 package com.shop.shop.service.Impl;
 
 
+import com.shop.shop.entity.Address;
 import com.shop.shop.entity.User;
 import com.shop.shop.entity.UserPrincipal;
 import com.shop.shop.exception.*;
@@ -19,6 +20,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.util.Date;
+import java.util.Optional;
 
 import static com.shop.shop.constant.UserImplConstant.*;
 import static com.shop.shop.enumeration.Role.*;
@@ -60,14 +62,14 @@ public class  UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User register(String username, String password, String email) throws UserNotFoundException, EmailExistException, UsernameExistException {
-        validateNewUsernameAndEmail(StringUtils.EMPTY, username, email);
+        validateNewUsernameAndEmail(username, email);
         User user = new User();
-       // String password = generatePassword();
         user.setUserId(generateUserId());
         user.setUsername(username);
         user.setEmail(email);
         user.setJoinDate(new Date());
         user.setPassword(encodePassword(password));
+        user.setAddress(new Address());
         user.setActive(true);
         user.setNotLocked(true);
         user.setRole(ROLE_USER.name());
@@ -87,50 +89,33 @@ public class  UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findUserByEmail(email);
     }
 
-    @Override
+   /* @Override
     public void resetPassword(String email) throws MessagingException, EmailNotFoundException {
         User user = userRepository.findUserByEmail(email);
         if (user == null) {
             throw new EmailNotFoundException(NO_USER_FOUND_BY_EMAIL + email);
         }
-        String password = generatePassword();
-        user.setPassword(encodePassword(password));
-        userRepository.save(user);
-        emailService.sendNewPasswordEmail(password, user.getEmail());
-    }
+      //  String password = generatePassword();
+      //  user.setPassword(encodePassword(password));
+       // userRepository.save(user);
+       // emailService.sendNewPasswordEmail(password, user.getEmail());
+    }*/
 
-    private User validateNewUsernameAndEmail(String currentUsername, String newUsername, String newEmail) throws EmailExistException, UsernameExistException, UserNotFoundException {
+    private User validateNewUsernameAndEmail(String newUsername, String newEmail) throws EmailExistException, UsernameExistException, UserNotFoundException {
         User userByNewUsername = findUserByUsername(newUsername);
         User userByNewEmail = findUserByEmail(newEmail);
-        if(StringUtils.isNotBlank(currentUsername)) {
-            User currentUser = findUserByUsername(currentUsername);
-            if(currentUser == null) {
-                throw new UserNotFoundException(NO_USER_FOUND_BY_USERNAME + currentUsername);
-            }
-            //if(userByNewUsername != null && !currentUser.getId().equals(userByNewUsername.getId())) {
-              //  throw new UsernameExistException(USERNAME_ALREADY_EXISTS);
-           // }
-           // if(userByNewEmail != null && !currentUser.getId().equals(userByNewEmail.getId())) {
-           //     throw new EmailExistException(EMAIL_ALREADY_EXISTS);
-           // }
-            return currentUser;
-        } else {
-            if(userByNewUsername != null) {
-                throw new UsernameExistException(USERNAME_ALREADY_EXISTS);
-            }
-            if(userByNewEmail != null) {
-                throw new EmailExistException(EMAIL_ALREADY_EXISTS);
-            }
-            return null;
+
+        if(userByNewUsername != null) {
+            throw new UsernameExistException(USERNAME_ALREADY_EXISTS);
         }
+        if(userByNewEmail != null) {
+            throw new EmailExistException(EMAIL_ALREADY_EXISTS);
+        }
+        return null;
     }
 
     private String encodePassword(String password) {
         return bCryptPasswordEncoder.encode(password);
-    }
-
-    private String generatePassword() {
-        return RandomStringUtils.randomAlphanumeric(10);
     }
 
     private String generateUserId() {

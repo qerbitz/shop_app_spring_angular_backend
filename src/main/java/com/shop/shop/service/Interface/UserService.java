@@ -3,6 +3,7 @@ package com.shop.shop.service.Interface;
 
 import com.shop.shop.entity.User;
 import com.shop.shop.exception.*;
+import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 
@@ -14,7 +15,7 @@ public interface UserService {
 
     User findUserByEmail(String email);
 
-    void resetPassword(String email) throws MessagingException, EmailNotFoundException;
+   // void resetPassword(String email) throws MessagingException, EmailNotFoundException;
 
 
 }

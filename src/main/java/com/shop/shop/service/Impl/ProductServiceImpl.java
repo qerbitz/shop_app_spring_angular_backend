@@ -1,18 +1,21 @@
 package com.shop.shop.service.Impl;
 
-import com.shop.shop.entity.Category;
 import com.shop.shop.entity.Product;
+import com.shop.shop.mapper.ReadDtoMapper;
 import com.shop.shop.repositories.CategoryRepository;
 import com.shop.shop.repositories.ProductRepository;
 import com.shop.shop.service.Interface.ProductService;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import com.shop.shop.Dto.ProductDto;
 
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import static com.shop.shop.mapper.ReadDtoMapper.*;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -25,8 +28,10 @@ public class ProductServiceImpl implements ProductService {
 
     //Wyszukiwanie produktu po id
     @Override
-    public Product getProductById(int id) {
-        return productRepository.getOne(id);
+    public ProductDto getProductById(int id) throws NotFoundException {
+        return productRepository.findById(id)
+                .map(ReadDtoMapper::mapProductToDto)
+                .orElseThrow(() -> new NotFoundException("No product found by id: "+id));
     }
 
    // @Cacheable(cacheNames = "allProductsList")

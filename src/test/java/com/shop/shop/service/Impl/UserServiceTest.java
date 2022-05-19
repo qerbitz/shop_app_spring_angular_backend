@@ -2,65 +2,106 @@ package com.shop.shop.service.Impl;
 
 import static com.shop.shop.constant.UserImplConstant.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.verify;
 
 import com.shop.shop.entity.User;
+import com.shop.shop.entity.UserPrincipal;
 import com.shop.shop.exception.EmailExistException;
 import com.shop.shop.exception.UserNotFoundException;
 import com.shop.shop.exception.UsernameExistException;
 import com.shop.shop.repositories.UserRepository;
 
-import com.shop.shop.service.Interface.UserService;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 
 import javax.mail.MessagingException;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.*;
 
 
-@ContextConfiguration(classes = {UserServiceImpl.class, BCryptPasswordEncoder.class})
-@ExtendWith(SpringExtension.class)
-@ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
-
-    @Autowired
+    @Mock
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @MockBean
-    private EmailService emailService;
-
-    @MockBean
-    private LoginAttemptService loginAttemptService;
-
-    @MockBean
+    @Mock
     private UserRepository userRepository;
 
-    @Autowired
-    private UserService underTest;
+    @InjectMocks
+    private UserServiceImpl underTest;
 
-    @Autowired
-    private UserServiceImpl underTestImpl;
+    @Mock
+    private LoginAttemptService loginAttemptService;
 
+    @BeforeEach
+    void setUp() throws Exception{
+        MockitoAnnotations.initMocks(this);
+    }
+
+    @Test
+    void willThrowWhenNoUserWasFound() {
+
+        assertThatThrownBy(() -> underTest.loadUserByUsername("janedoe"))
+                .isInstanceOf(UsernameNotFoundException.class)
+                .hasMessageContaining(NO_USER_FOUND_BY_USERNAME);
+
+    }
+
+    @Test
+    void willSuccessfullyLoadUserByUsername() {
+
+        //given
+        User user = new User();
+        user.setUsername("janedoe");
+
+        //when
+        when(userRepository.findUserByUsername(anyString())).thenReturn(user);
+
+        UserDetails userDetails = underTest.loadUserByUsername(anyString());
+
+        assertNotNull(userDetails);
+        assertEquals("janedoe", userDetails.getUsername());
+    }
+
+
+    @Test
+    void willFindSuccessfullyUserByUsername() {
+
+        //given
+        User user = new User();
+        user.setUsername("janedoe");
+
+        //when
+        when(userRepository.findUserByUsername(anyString())).thenReturn(user);
+
+        User user2 = underTest.findUserByUsername(anyString());
+
+        assertNotNull(user2);
+        assertEquals("janedoe",user2.getUsername());
+    }
+
+    @Test
+    void willNotFoundSuccessfullyUserByUsername() {
+
+
+        //when
+        when(userRepository.findUserByUsername(anyString())).thenReturn(null);
+
+        User user2 = underTest.findUserByUsername("test@test.pl");
+
+        assertNull(user2);
+    }
 
     @Test
     void shouldRegisterSuccessfully() throws UserNotFoundException, EmailExistException, MessagingException, UsernameExistException {
@@ -74,8 +115,7 @@ class UserServiceTest {
         underTest.register(user.getUsername(), user.getPassword(), user.getEmail());
 
 
-        given(userRepository.findUserByEmail(anyString()))
-                .willReturn(user);
+        given(userRepository.findUserByEmail(anyString())).willReturn(user);
 
         //then
 
@@ -89,29 +129,7 @@ class UserServiceTest {
 
         assertThat(capturedUser.getUsername()).isEqualTo(user.getUsername());
 
-
-    }
-
-    @Test
-    void willLoadSuccessfullyUserByUsername() {
-
-        //given
-
-        User user = new User();
-        user.setEmail("jane.doe@example.org");
-        user.setPassword("iloveyou");
-        user.setUsername("janedoe");
-
-       // given(userRepository.findUserByUsername(anyString()))
-         //       .willReturn(user);
-
-        assertThatThrownBy(() -> underTestImpl.loadUserByUsername(user.getUsername()))
-                .isInstanceOf(UsernameNotFoundException.class)
-                .hasMessageContaining(NO_USER_FOUND_BY_USERNAME);
-
-        //then
-        verify(userRepository, never()).save(any());
-
+        verify(userRepository).save(any());
     }
 
     @Test
@@ -124,22 +142,23 @@ class UserServiceTest {
         user.setPassword("iloveyou");
         user.setUsername("janedoe");
 
-        given(userRepository.findUserByEmail(anyString()))
-                .willReturn(user);
+
+
+       when(userRepository.findUserByEmail(anyString()))
+                .thenReturn(user);
 
         assertThatThrownBy(() -> underTest.register(user.getUsername(), user.getPassword(), user.getEmail()))
                 .isInstanceOf(EmailExistException.class)
                 .hasMessageContaining(EMAIL_ALREADY_EXISTS);
 
-
-        //then
-
         verify(userRepository, never()).save(any());
+
 
     }
 
     @Test
     void willThrowWhenUsernameExist() {
+
 
         //given
 
@@ -148,8 +167,9 @@ class UserServiceTest {
         user.setPassword("iloveyou");
         user.setUsername("janedoe");
 
-        given(userRepository.findUserByUsername(anyString()))
-                .willReturn(user);
+
+        when(userRepository.findUserByUsername(anyString()))
+                .thenReturn(user);
 
         assertThatThrownBy(() -> underTest.register(user.getUsername(), user.getPassword(), user.getEmail()))
                 .isInstanceOf(UsernameExistException.class)
@@ -158,5 +178,6 @@ class UserServiceTest {
         verify(userRepository, never()).save(any());
 
     }
-}
 
+
+}

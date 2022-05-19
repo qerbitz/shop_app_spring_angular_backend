@@ -2,7 +2,6 @@ package com.shop.shop.repository;
 
 
 import com.shop.shop.entity.User;
-import com.shop.shop.repositories.ProductRepository;
 import com.shop.shop.repositories.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -35,6 +34,19 @@ public class UserRepositoryTest {
 
         // when
         boolean expected = userRepository.findUserByUsername(user.getUsername())!=null;
+
+        // then
+        assertThat(expected).isTrue();
+    }
+
+    @Test
+    void itShouldNotFindUserByUsername(){
+        // given
+        String username = "testNotFound";
+
+
+        // when
+        boolean expected = userRepository.findUserByUsername(username)==null;
 
         // then
         assertThat(expected).isTrue();

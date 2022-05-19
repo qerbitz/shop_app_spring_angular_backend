@@ -4,11 +4,10 @@ import com.shop.shop.Dto.CategoryDto;
 import com.shop.shop.Dto.ProductDto;
 import com.shop.shop.entity.*;
 import com.shop.shop.repositories.ProductRepository;
-import com.shop.shop.response.PurchaseResponse;
 import com.shop.shop.service.Impl.EmailService;
 import com.shop.shop.service.Interface.*;
 import com.shop.shop.utility.JWTTokenProvider;
-import lombok.var;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
@@ -16,12 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-import javax.mail.MessagingException;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.stream.Collectors;
+
 
 import static com.shop.shop.mapper.ReadDtoMapper.*;
 
@@ -65,14 +61,14 @@ public class ProductController {
         return new ResponseEntity<>(convertToPage(pageable, finalList), HttpStatus.OK);
     }
 
-    @GetMapping("/searchList")
+   /* @GetMapping("/searchList")
     public ResponseEntity<Page<Product>> productSearchList(@RequestParam("page") int page,
                                                            @RequestParam("size") int size,
                                                            @RequestParam("theKeyword") String keyword){
         Pageable pageable = PageRequest.of(page,size);
         Page<Product> products = productService.ByNameContainingProductsList(pageable, keyword);
         return new ResponseEntity<>(products, HttpStatus.OK);
-    }
+    }*/
 
     @GetMapping("/filter")
     public ResponseEntity<Page<Product>> productfilterList(@RequestParam("page") int page,
@@ -116,10 +112,15 @@ public class ProductController {
     }
 
     @GetMapping("/viewProduct/{productId}")
-    public ResponseEntity<ProductDto> viewProduct(@PathVariable int productId) {
+    public ResponseEntity<ProductDto> viewProduct(@PathVariable int productId) throws NotFoundException {
 
-        Product product = productService.getProductById(productId);
-        return new ResponseEntity<>(mapProductToDto(product), HttpStatus.OK);
+        ProductDto product = productService.getProductById(productId);
+        return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
+    @GetMapping("/test")
+    public String test(){
+        return "test";
     }
 
     public Page<ProductDto> convertToPage(Pageable pageable, List<ProductDto> productList){

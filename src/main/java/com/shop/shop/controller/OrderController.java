@@ -5,6 +5,7 @@ import com.shop.shop.Dto.OrderDto;
 import com.shop.shop.Dto.Purchase;
 import com.shop.shop.entity.Order;
 import com.shop.shop.entity.User;
+import com.shop.shop.exception.UserNotFoundException;
 import com.shop.shop.service.Interface.OrderService;
 import com.shop.shop.service.Interface.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +46,9 @@ public class OrderController {
     }
 
     @GetMapping("/allOrders")
-    public ResponseEntity<List<OrderDto>> allOrders(){
+    public ResponseEntity<List<OrderDto>> allOrders(@RequestParam("username") String username) {
 
-        User user = userService.findUserByUsername("test2503");
+        User user = userService.findUserByUsername(username);
         List<Order> all_user_orders = orderService.getAllOrdersByUser(user);
 
 

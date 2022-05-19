@@ -1,6 +1,8 @@
 package com.shop.shop.service.Interface;
 
+import com.shop.shop.Dto.ProductDto;
 import com.shop.shop.entity.Product;
+import javassist.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -17,6 +19,6 @@ public interface ProductService {
 
     List<Product> BySaleProductsList();
 
-    Product getProductById(int id);
+    ProductDto getProductById(int id) throws NotFoundException;
 
 }

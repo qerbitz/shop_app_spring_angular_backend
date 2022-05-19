@@ -1,11 +1,9 @@
 package com.shop.shop.controller;
 
-import com.shop.shop.service.Interface.CategoryService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 
@@ -25,7 +23,44 @@ public class ProductControllerTest {
 
     @Test
     void shouldGetAllProducts() throws Exception {
-        mockMvc.perform(get("/product/productList?page=1&size=1"))
+        mockMvc.perform(get("/product/productList").header("Origin", "*")
+                        .param("page", "1")
+                        .param("size","1")
+                        .param("sort_option", "0")
+                )
+                .andDo(print())
+                .andExpect(status().is(200))
+                .andReturn();
+    }
+
+    @Test
+    void shouldGetAllProductsFiltered() throws Exception {
+        mockMvc.perform(get("/product/filter").header("Origin", "*")
+                        .param("page", "0")
+                        .param("size","1")
+                        .param("sort_option", "0")
+                        .param("category","0")
+                        .param("gender","")
+                        .param("price","0-100")
+                )
+                .andDo(print())
+                .andExpect(status().is(200))
+                .andReturn();
+    }
+
+    @Test
+    void shouldGetSingleProduct() throws Exception{
+        mockMvc.perform(get("/product/viewProduct/1").header("Origin", "*")
+                )
+                .andDo(print())
+                .andExpect(status().is(200))
+                .andReturn();
+    }
+
+    @Test
+    void shouldGetAllProductsBySale() throws Exception {
+        mockMvc.perform(get("/product/BySaleProductList").header("Origin", "*")
+                )
                 .andDo(print())
                 .andExpect(status().is(200))
                 .andReturn();
@@ -33,7 +68,7 @@ public class ProductControllerTest {
 
     @Test
     void shouldGetAllProductsByKeyword() throws Exception {
-        mockMvc.perform(get("/product/productList?page=1&size=1&theKeyword=xd"))
+        mockMvc.perform(get("/product/productList?page=1&size=1&theKeyword=xd&sort_option=0").header("Origin", "*"))
                 .andDo(print())
                 .andExpect(status().is(200))
                 .andReturn();
@@ -42,11 +77,10 @@ public class ProductControllerTest {
     @Test
     void shouldGetAllCategories() throws Exception {
 
-        mockMvc.perform(get("/product/categoryList"))
+        mockMvc.perform(get("/product/categoryList").header("Origin", "*"))
                 .andDo(print())
                 .andExpect(status().is(200))
                 .andExpect(content().contentType("application/json"))
-                .andExpect(content().string("[]"))
                 .andReturn();
     }
 

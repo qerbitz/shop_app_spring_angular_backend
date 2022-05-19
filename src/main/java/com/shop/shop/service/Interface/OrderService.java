@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface OrderService {
 
-    void addNewOrder(Purchase purchase);
+    String addNewOrder(Purchase purchase);
     //void updateStatusOrder(Order order);
     List<Order> getAllOrdersByUser(User user);
     Order getOrderById(String order_number);

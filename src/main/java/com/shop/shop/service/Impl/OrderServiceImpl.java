@@ -12,6 +12,7 @@ import com.shop.shop.service.Interface.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Service
+@Transactional
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
@@ -31,25 +33,37 @@ public class OrderServiceImpl implements OrderService {
     UserService userService;
 
     @Override
-    public void addNewOrder(Purchase purchase) {
+    public String addNewOrder(Purchase purchase) {
         
 
         Order order = purchase.getOrder();
-        order.setOrderTrackingNumber(generateOrderTrackingNumber());
+        String orderTrackingNumber = generateOrderTrackingNumber();
+        order.setOrderTrackingNumber(orderTrackingNumber);
+        order.setOrderDate(convertDate(LocalDate.now()));
         order.setStatus("Oczekujący");
 
         Set<OrderItem> orderItems = purchase.getOrderItems();
         orderItems.forEach(item -> order.add(item));
 
 
-        User user = userService.findUserByUsername("test2503");
+        User user = userService.findUserByUsername(purchase.getUser().getUsername());
+        user.setFirstName(purchase.getUser().getFirstName());
+        user.setLastName(purchase.getUser().getLastName());
+        user.setEmail(purchase.getUser().getEmail());
+
         Address address = user.getAddress();
         address.setCity(purchase.getAddress().getCity());
         address.setStreet(purchase.getAddress().getStreet());
         address.setZipCode(purchase.getAddress().getZipCode());
 
+        order.setUser(user);
+
+
         orderRepository.save(order);
         userRepository.save(user);
+
+
+        return orderTrackingNumber;
     }
 
     @Override
